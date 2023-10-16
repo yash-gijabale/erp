@@ -16,6 +16,7 @@
                     <th>Project Name</th>
                     <th>Strucute Name</th>
                     <th>Location</th>
+                    <th>Status</th>
                     <th>Attempt Date</th>
                     <th>Target Date</th>
                     <th>Action</th>
@@ -32,6 +33,7 @@
                         <td><?php echo get_projectname_by_id($observation->project_id) ?></td>
                         <td><?php echo structurename_by_id($observation->structure_id) ?></td>
                         <td><?php echo $observation->location ?></td>
+                        <td><span class="badge <?php echo get_opbservation_status($observation->status)['color'] ?>"><?php echo get_opbservation_status($observation->status)['status'] ?></span></td>
                         <td><?php echo date('d-m-Y',strtotime($observation->observation_date)) ?></td>
                         <td><?php echo date('d-m-Y',strtotime($observation->target_date)) ?></td>
                 

@@ -36,7 +36,7 @@
               <div class="inner">
                 <h3><?php echo $total_structurs ?></h3>
 
-                <p>In Progress observation</p>
+                <p>In Progress</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>

@@ -108,3 +108,5 @@ $route['delete-user/(:any)'] = 'users/delete_user/$1';
 
 
 $route['generate-report'] = 'report/generate_report';
+
+$route['check-list'] = 'checklist/check_list';

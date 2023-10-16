@@ -37,6 +37,7 @@ class Observations extends CI_Controller {
                 'reference' => $postData['reference'],
                 'observation_severity' => $postData['severity_id'],
                 'site_representative' => $postData['site_representative'],
+                'status' => $postData['status'],
                 'observation_date' => $postData['observation_date'],
                 'target_date' => $postData['target_date']
             );
@@ -132,6 +133,7 @@ class Observations extends CI_Controller {
                 'reference' => $postData['reference'],
                 'observation_severity' => $postData['severity_id'],
                 'site_representative' => $postData['site_representative'],
+                'status' => $postData['status'],
                 'observation_date' => $postData['observation_date'],
                 'target_date' => $postData['target_date']
             );

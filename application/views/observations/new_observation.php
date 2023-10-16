@@ -135,6 +135,14 @@
             </select>
         </div>
         <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Observation Status:</label>
+            <select name="status" class="form-select" required>
+                <option value="0" selected >Open</option>
+                <option value="1" >Im progress</option>
+                <option value="2" >Close</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Attempt Date:</label>
             <input type="date" name="observation_date" class="form-control" id="exampleInputPassword1" required>
         </div>

@@ -17,7 +17,7 @@ if($user_type == '1'){
 
     <?php echo form_open_multipart('edit-view-observation/'.$observation->observation_id) ?>
     <div class="card-body row">
-    <div class="form-group col-md-4">
+        <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Developer:</label>
             <select name="developer_id" id="developer_select" class="form-select" required <?php echo $readonly ?> >
                 <option value="" selected>Select Developer</option>
@@ -43,7 +43,7 @@ if($user_type == '1'){
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Stage:</label>
             <?php $ob_floors = json_decode($observation->floors); ?>
-            <select name="stages_id[]" id="stage_select" class="form-select"  multiple="multiple" required <?php echo $readonly ?>
+            <select name="stages_id[]" id="stage_select" class="form-select"  multiple="multiple" required <?php echo $readonly ?>>
                 <?php foreach($floors as $key=>$floor){ ?>
                     <option value="<?php echo $floor->stage_id ?>" <?php echo($floor->stage_id == $ob_floors[$key] ? 'selected' : '') ?>><?php echo $floor->stage_name ?></option>
                 <?php } ?>
@@ -115,6 +115,15 @@ if($user_type == '1'){
                 <?php foreach($observation_severity as $severity){ ?>
                     <option value="<?php echo($severity->severity_id) ?>" <?php echo($severity->severity_id == $observation->observation_severity ? 'selected' : '') ?>><?php echo($severity->severity_name) ?></option>
                 <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Observation Status:</label>
+            <select name="status" class="form-select" required>
+                <option value="<?php echo $observation->status ?>" selected ><?php echo get_opbservation_status($observation->status)['status'] ?></option>
+                <option value="0" >Open</option>
+                <option value="1" >Im progress</option>
+                <option value="2" >Close</option>
             </select>
         </div>
         <div class="form-group col-md-4">

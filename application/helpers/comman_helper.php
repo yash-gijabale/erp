@@ -52,6 +52,16 @@ function get_tradegroup_by_id($id){
     }
 }
 
+function get_subgroup_by_id($id){
+    $CI =& get_instance();
+    $res = $CI->Comman_model->get_data_by_id('*','subgroup', array('subgroup_id'=> $id));
+    if($res){
+        return $res->subgroup_name;
+    }else{
+        return '';
+    }
+}
+
 function get_project_type($type_id){
     $CI =& get_instance();
     $type = array(
@@ -106,4 +116,22 @@ function get_all_roles(){
         return $develoers;
     }
 
+    function get_opbservation_status($id)
+    {
+        $status = array
+        (
+            '0' => 'Open',
+            '1' => 'In progress',
+            '2' => 'Close',
+        );
+        $color = array
+        (
+            '0' => 'badge-danger',
+            '1' => 'badge-warning',
+            '2' => 'badge-success',
+        );
+        $data['status'] = $status[$id];
+        $data['color'] = $color[$id];
+        return $data;
+    }
 ?>

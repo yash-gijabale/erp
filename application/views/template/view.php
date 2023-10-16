@@ -243,6 +243,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/check-list'?>" class="nav-link">
+                                    <i class="fa fa-list-ul" aria-hidden="true"></i>
+                                        <p>Ckeck List</p>
+                                    </a>
+                        </li>
+                        <li class="nav-item">
                                     <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Log Out</p>
@@ -264,6 +270,12 @@
                                     <a href="<?php echo base_url().'index.php/observation-list'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>List</p>
+                                    </a>
+                        </li>
+                        <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/check-list'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ckeck List</p>
                                     </a>
                         </li>
                         <li class="nav-item">
