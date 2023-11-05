@@ -57,4 +57,10 @@ class Welcome extends CI_Controller {
 		$this->session->unset_userdata('user_data');
 		redirect('welcome/index');
 	}
+
+
+	public function test(){
+		$data['_view'] = 'admin/test';
+		$this->load->view('template/view', $data);
+	}
 }

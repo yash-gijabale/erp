@@ -68,14 +68,15 @@
                             class="img-circle elevation-2" alt="User Image"> -->
                     </div>
                     <div class="info">
-                        
+                    <?php $role_name = (get_role_of_user($this->session->userdata('user_data')->user_type)); ?>
                         <a href="#" class="d-block">EPR</a>
+                        <span class="text-light"><?php echo $role_name; ?></span>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <?php $user_type = $this->session->userdata('user_data')->user_type;
+                    <?php $user_type = $this->session->userdata('user_data')->user_type; 
                     if($user_type == '1') { ?>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
@@ -203,6 +204,12 @@
                                     <a href="<?php echo base_url().'index.php/observation-list'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/approval-list'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Approvals</p>
                                     </a>
                                 </li>
 

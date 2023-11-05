@@ -1,4 +1,5 @@
-
+<?php $user_type = $this->session->userdata('user_data')->user_type;
+ $user_id = $this->session->userdata('user_data')->user_id; ?>
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">New Observation</h3>
@@ -143,6 +144,16 @@
             </select>
         </div>
         <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Allocate To:</label>
+            <?php $roles = get_all_roles(); ?>
+            <select name="allocate_to" class="form-select" require>
+                <option value="" selected>Select Type</option>
+                <?php foreach($roles as $role){ ?>
+                    <option value="<?php echo $role->role_id ?>"><?php echo $role->role_title ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Attempt Date:</label>
             <input type="date" name="observation_date" class="form-control" id="exampleInputPassword1" required>
         </div>
@@ -150,6 +161,9 @@
             <label for="exampleInputPassword1">Target Date:</label>
             <input type="date" name="target_date" class="form-control" id="exampleInputPassword1" required>
         </div>
+
+        <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+        <input type="hidden" name="role_id" value="<?php echo $user_type ?>">
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">Submit</button>

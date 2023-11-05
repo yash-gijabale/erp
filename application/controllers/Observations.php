@@ -38,11 +38,21 @@ class Observations extends CI_Controller {
                 'observation_severity' => $postData['severity_id'],
                 'site_representative' => $postData['site_representative'],
                 'status' => $postData['status'],
+                'closed_by' => $postData['allocate_to'],
                 'observation_date' => $postData['observation_date'],
                 'target_date' => $postData['target_date']
             );
             // echo'<pre>';print_r($observation_param);exit;
             $observation_id = $this->Comman_model->insert_data('observations', $observation_param);
+            $history_param = array
+          (
+            'observation_id' => $observation_id,
+            'user_id' => $postData['user_id'],
+            'role_id' => $postData['role_id'],
+            'comment' => $postData['remark'],
+          );
+
+          $history_id = $this->Comman_model->insert_data('observation_history', $history_param);
             if($observation_id){
                 $image_name[] = $_FILES['observation_image'];
                 $image_name[] = $_FILES['recommended_image'];
@@ -82,6 +92,7 @@ class Observations extends CI_Controller {
                                             $image_param = array(
                                                 'observation_id' => $observation_id,
                                                 'image_path' => $filenm,
+                                                'obj_history_id' => $history_id,
                                                 'image_type' => $imgkey
                                             );
                                             $this->Comman_model->insert_data('observation_images',$image_param);
@@ -108,7 +119,17 @@ class Observations extends CI_Controller {
 	}
 
     public function observation_list(){
-        $data['all_observations'] = $this->Comman_model->get_data('*', 'observations');
+        $user_type = $this->session->userdata('user_data')->user_type;
+        if($user_type == '3' || $user_type == '4')
+        {
+            $table = get_history_table_by_role_id($user_type);
+			$join = array($this->db->join($table.' b','a.observation_id=b.observation_id'));
+            $data['all_observations'] = $this->Comman_model->get_data('a.*,b.*', 'observations a',$where=false,$join);
+            // echo'<pre>';print_r($data['all_observations']);exit;
+        }else
+        {
+            $data['all_observations'] = $this->Comman_model->get_data('*', 'observations');
+        }
         $data['_view'] = 'observations/observation_list';
 		$this->load->view('template/view', $data);
     }
@@ -117,34 +138,69 @@ class Observations extends CI_Controller {
 
         $postData = $this->input->post();
         if($postData){
-            // echo'<pre>';print_r($postData);exit;
-            $observation_param = array(
-                'client_id' => $postData['developer_id'],
-                'project_id' => $postData['project_id'],
-                'structure_id' => $postData['structure_id'],
-                'floors' => json_encode($postData['stages_id']),
-                'tradegroup_id' => $postData['trade_group'],
-                'activity_id' => $postData['activity_id'],
-                'observation_category' => $postData['category_id'],
-                'observation_type' => $postData['observation_Type_id'],
-                'location' => $postData['location'],
-                'description' => $postData['decsription'],
-                'remark' => $postData['remark'],
-                'reference' => $postData['reference'],
-                'observation_severity' => $postData['severity_id'],
-                'site_representative' => $postData['site_representative'],
-                'status' => $postData['status'],
-                'observation_date' => $postData['observation_date'],
-                'target_date' => $postData['target_date']
-            );
+        //   print_r($table);exit;
+            if($postData['role_id'] == '1'){
+                $observation_param = array(
+                    'client_id' => $postData['developer_id'],
+                    'project_id' => $postData['project_id'],
+                    'structure_id' => $postData['structure_id'],
+                    'floors' => json_encode($postData['stages_id']),
+                    'tradegroup_id' => $postData['trade_group'],
+                    'activity_id' => $postData['activity_id'],
+                    'observation_category' => $postData['category_id'],
+                    'observation_type' => $postData['observation_Type_id'],
+                    'location' => $postData['location'],
+                    'description' => $postData['decsription'],
+                    'remark' => $postData['remark'],
+                    'reference' => $postData['reference'],
+                    'observation_severity' => $postData['severity_id'],
+                    'site_representative' => $postData['site_representative'],
+                    'status' => $postData['status'],
+                    'observation_date' => $postData['observation_date'],
+                    'target_date' => $postData['target_date']
+                );
+            }else{
+                $observation_param = array
+                (
+                    'location' => $postData['location'],
+                    'description' => $postData['decsription'],
+                    'remark' => $postData['remark'],
+                    'status' => '1',
+                    
+
+                );
+            }
+            
             // echo'<pre>';print_r($observation_param);exit;
           $this->Comman_model->update_data('observations', $observation_param, array('observation_id'=>$observation_id));
+          $history_param = array
+          (
+            'observation_id' => $observation_id,
+            'user_id' => $postData['user_id'],
+            'role_id' => $postData['role_id'],
+            'comment' => $postData['remark'],
+          );
+
+          $history_id = $this->Comman_model->insert_data('observation_history', $history_param);
+          $user_param = array
+          (
+            'observation_id' => $observation_id,
+            'obj_history_id' => $history_id,
+            'added_by' => $postData['user_id'],
+            'assigned_to' => $postData['user_id'],
+          );
+          $table = get_history_table_by_role_id($postData['allocated_to']);
+          $user_history = $this->Comman_model->insert_data($table,$user_param);
         }
+        // echo'<pre>';print_r('3');exit;
+
 
                 $image_name[] = $_FILES['observation_image'];
-                $image_name[] = $_FILES['recommended_image'];
-                if(!empty($image_name[0])){
-                //     echo'<pre>';print_r($image_name);exit;
+                if($postData['user_type'] != '1'){
+                    $image_name[] = $_FILES['recommended_image'];
+                }
+                if(!empty($image_name[0]['name'][0])){
+                    // echo'<pre>';print_r($image_name);exit;
                 foreach($image_name as $imgkey=>$imgval)
                 {
                                 $pcount = count($imgval['name']);
@@ -180,8 +236,11 @@ class Observations extends CI_Controller {
                                             $image_param = array(
                                                 'observation_id' => $observation_id,
                                                 'image_path' => $filenm,
-                                                'image_type' => $imgkey
+                                                'image_type' => $imgkey,
+                                                'obj_history_id' => $history_id
                                             );
+                                        // echo'<pre>';print_r($image_param);exit;
+
                                             $this->Comman_model->insert_data('observation_images',$image_param);
                                             
                                         }
@@ -191,6 +250,7 @@ class Observations extends CI_Controller {
                             
                 }
             }
+
         $data['observation'] = $this->Comman_model->get_data_by_id('*','observations', array('observation_id'=> $observation_id));
         $data['observation_image'] = $this->Comman_model->get_data('*','observation_images', array('observation_id'=> $observation_id, 'image_type'=>'0'));
         $data['recommendation_image'] = $this->Comman_model->get_data('*','observation_images', array('observation_id'=> $observation_id, 'image_type'=>'1'));
@@ -210,7 +270,7 @@ class Observations extends CI_Controller {
             if($id){
                 $this->Comman_model->permanant_delete('observations', array('observation_id'=> $id));
                 $this->Comman_model->permanant_delete('observation_images', array('observation_id'=> $id));
-                redirect('index.php/observation-list');
+                redirect('observation-list');
             }
             
     }
@@ -218,8 +278,73 @@ class Observations extends CI_Controller {
     public function delete_image ($id,$obj_id){
         if($id){
             $this->Comman_model->permanant_delete('observation_images', array('image_id'=> $id));
-            redirect('index.php/edit-view-observation/'.$obj_id);
+            redirect('edit-view-observation/'.$obj_id);
         }
+    }
+
+    // public function send_for_approval(){
+    //     $user_id = $this->input->post('user_id');
+    //     $obj_id = $this->input->post('observation_id');
+    //     $user_type = $this->input->post('user_type');
+    //     if($obj_id){
+    //         $observations = $this->Comman_model->get_data('*', 'responsible_history', array('added_by'=>$user_id, 'observation_id'=>$obj_id),$join=false,$orderclm='history_id', $order='DESC');
+    //         echo json_encode($observations[0]);
+    //         if($observations){
+    //             $obj = $observations[0];
+    //             if($user_type == '2'){
+    //                 $param = array
+    //                 (
+    //                     'observation_id' => $obj->observation_id,
+    //                     'obj_history_id' => $obj->obj_history_id,
+    //                     'added_by' => $obj->added_by,
+    //                     'assigned_to' => $obj->added_by,
+    //                 );
+    //                 $res = $this->Comman_model->insert_data('site_enginner_history', $param);
+    //                 echo $res;
+    //             }
+    //         }
+    //     }
+    // }
+
+    public function get_approval_list()
+    {
+        $user_data = $this->session->userdata('user_data');
+        $approvals = $this->Comman_model->get_data('*','site_enginner_history',flase,$join=false,$orderclm='history_id', $order='DESC');
+        echo'<pre>';print_r($approvals);exit;
+        
+        $all_approval = array();
+        foreach($approvals as $approval)
+        {
+            $obj = $this->Comman_model->get_data_by_id('*', 'observations', array('observation_id' => $approval->observation_id));
+            $history_obj = $this->Comman_model->get_data_by_id('*', 'observation_history', array('obj_history_id' => $approval->obj_history_id));
+            if($obj){
+                $obj->comment = $history_obj->comment;
+                array_push($all_approval, $obj);
+            }    
+        }
+        // echo'<pre>';print_r($all_approval);exit;
+        $data['all_approval'] = $all_approval;
+        $data['_view'] = 'observations/all_approval';
+		$this->load->view('template/view', $data);
+    }
+
+    public function get_remark_history()
+    {
+        $id = $this->input->post('observation_id');
+        $row_history = $this->Comman_model->get_data('*', 'observation_history',array('observation_id' => $id));
+        $finalData = array();
+        foreach($row_history as $history)
+        {
+            $history_arr = array();
+            $history_arr['userName'] = get_username_by_id($history->user_id);
+            $history_arr['role'] = get_role_of_user($history->role_id);
+            $history_arr['comment'] = $history->comment;
+            $history_arr['created_date'] = date('d-M-Y h:i:A', strtotime($history->cretated_at));
+            $history_arr['images'] = $this->Comman_model->get_data('*', 'observation_images', array('observation_id' => $id, 'obj_history_id' => $history->obj_history_id));
+            
+            array_push($finalData, $history_arr);
+        }
+        echo json_encode($finalData);
     }
 
 }

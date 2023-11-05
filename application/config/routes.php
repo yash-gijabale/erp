@@ -99,6 +99,7 @@ $route['observation-list'] = 'observations/observation_list';
 $route['edit-view-observation/(:any)'] = 'observations/edit_view_observation/$1';
 $route['remove-observation/(:any)'] = 'observations/remove_observation/$1';
 $route['delete-image/(:any)/(:any)'] = 'observations/delete_image/$1/$2';
+$route['approval-list'] = 'observations/get_approval_list';
 
 
 $route['user-list'] = 'users/user_list';
@@ -110,3 +111,7 @@ $route['delete-user/(:any)'] = 'users/delete_user/$1';
 $route['generate-report'] = 'report/generate_report';
 
 $route['check-list'] = 'checklist/check_list';
+
+
+
+$route['test'] = 'welcome/test';

@@ -134,4 +134,40 @@ function get_all_roles(){
         $data['color'] = $color[$id];
         return $data;
     }
+
+    function get_role_of_user($id){
+        $CI =& get_instance();
+        $role = $CI->Comman_model->get_data_by_id('*','roles', array('role_id' => $id));
+        if($role){
+    
+            return $role->role_title;
+        }else{
+            return '';
+        }
+    }
+
+    function get_history_table_by_role_id($id)
+    {
+        $tables = array
+        (
+            '1' => 'site_enginner_history',
+            '2' => 'responsible_history',
+            '3' => 'reviewer_history',
+            '4' => 'approval_history'
+        );
+
+        $table = $tables[$id];
+        return $table;
+    }
+
+    function get_username_by_id($id){
+        $CI =& get_instance();
+        $user = $CI->Comman_model->get_data_by_id('*','users', array('user_id' => $id));
+        if($user){
+            $name = $user->first_name." ".$user->last_name;
+            return $name;
+        }else{
+            return '';
+        }
+    }
 ?>

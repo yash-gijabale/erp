@@ -56,7 +56,7 @@ $defalut_Date = date('Y-m-d',time())
     <?php echo form_close() ?>
 </div>
 
-<?php if($report_data){ ?>
+
 <div class="card card-success mb-5">
     <div class="card-header">
         <h3 class="card-title">Your Report</h3>
@@ -187,7 +187,7 @@ $defalut_Date = date('Y-m-d',time())
 <?php }?> 
     
 </div>
-<?php }?> 
+
    
 <script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
