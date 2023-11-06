@@ -15,7 +15,9 @@ if($user_type == '1'){
         <h3 class="card-title">Observation Details</h3>
     </div>
 
-    <?php echo form_open_multipart('edit-view-observation/'.$observation->observation_id) ?>
+    <?php 
+    $attributes = array('id' => 'edit-form');
+    echo form_open_multipart('edit-view-observation/'.$observation->observation_id, $attributes) ?>
     <div class="card-body row">
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Developer:</label>
@@ -197,14 +199,30 @@ if($user_type == '1'){
     <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
     <input type="hidden" name="role_id" value="<?php echo $user_type ?>">
     <input type="hidden" name="allocated_to" value="<?php echo $observation->closed_by ?>">
+    <?php if($observation->status != '2') { ?>
     <div class="card-footer">
         <button type="submit" class="btn btn-success">Update</button>
-        <button type="button" class="btn btn-warning" id="aprroval_btn"
-            onclick="sendForApprovl('<?php echo $user_id?>', '<?php echo $observation->observation_id?>')">Send for
-            Approval</button>
-    </div>
-    <?php echo form_close() ?>
+        <?php echo form_close() ?>
 
+        <?php if($user_type != $observation->closed_by) { ?>
+            <span type="button" class="btn btn-warning" id="aprroval_btn" onclick="sendForApproval('<?php echo $observation->observation_id ?>')">Forword</span>
+        <?php } ?>
+
+        <?php if($user_type != '2'){ ?>
+            <button type="button" class="btn btn-danger" id="aprroval_btn" onclick="rejectApproval('<?php echo $observation->observation_id ?>')">Reject</button>
+        <?php } ?>
+
+        <?php if($user_type == $observation->closed_by){ ?>
+            <button type="button" class="btn btn-primary" id="aprroval_btn" onclick="closeObservation('<?php echo $observation->observation_id ?>')">Close</button>
+        <?php } ?>
+
+    </div>
+    <?php }else{ ?>
+        <div class="card-footer">
+        <button type="button" class="btn btn-secondary disabled">Observation is closed</button>
+        <?php echo form_close() ?>
+    </div>
+    <?php } ?>
 </div>
 
 </div>
@@ -392,26 +410,42 @@ if($user_type == '1'){
 
 
 
-    function sendForApprovl(userID, objId) {
-        var user_type = "<?php echo $user_type ?>"
-        $('#aprroval_btn').html('Loading.....')
+    function sendForApproval(id) {
+        console.log(id)
         $.ajax({
             url: "<?php echo base_url().'index.php/observations/send_for_approval';?>",
             type: "post",
-            data: { 'user_id': userID, 'observation_id': objId, 'user_type': user_type},
+            data: { 'observation_id': id},
             success: function (obj) {
-                // var objs = $.parseJSON(obj);
-                console.log(obj)
-                if(obj){
-                    
-                    $('#aprroval_btn').html('Sended...')
-                    setTimeout(()=>{
-                    $('#aprroval_btn').html('Send for approval')
-                    },1000)
-                }
-                // $('#activity_select').empty();
-                // $.each(trades, function(key, val){
-                //     $('#activity_select').append(`<option value="${val.trade_id}">${val.trade_name}</option>`)
+            //     var history = $.parseJSON(obj);
+            //    console.log(history)
+            console.log(obj)
+            }
+        })
+       
+    }
+
+    function rejectApproval(id)
+    {
+        console.log(id)
+        $.ajax({
+            url: "<?php echo base_url().'index.php/observations/reject_approval';?>",
+            type: "post",
+            data: { 'observation_id': id},
+            success: function (obj) {
+            console.log(obj)
+            }
+        })
+    }
+
+    function closeObservation(id){
+        console.log(id)
+        $.ajax({
+            url: "<?php echo base_url().'index.php/observations/close_observation';?>",
+            type: "post",
+            data: { 'observation_id': id},
+            success: function (obj) {
+            console.log(obj)
             }
         })
     }

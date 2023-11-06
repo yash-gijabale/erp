@@ -100,6 +100,7 @@ $route['edit-view-observation/(:any)'] = 'observations/edit_view_observation/$1'
 $route['remove-observation/(:any)'] = 'observations/remove_observation/$1';
 $route['delete-image/(:any)/(:any)'] = 'observations/delete_image/$1/$2';
 $route['approval-list'] = 'observations/get_approval_list';
+$route['send-for-approval'] = 'observations/send_for_approval';
 
 
 $route['user-list'] = 'users/user_list';

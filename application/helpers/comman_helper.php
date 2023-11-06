@@ -160,6 +160,32 @@ function get_all_roles(){
         return $table;
     }
 
+    function get_table_combiniation($id)
+    {
+        $tables = array
+        (
+            '1' => array('site_enginner_history', 'reviewer_history'),
+            '2' => array('responsible_history', 'site_enginner_history'),
+            '3' => array('reviewer_history', 'approval_history')
+        );
+        $table = $tables[$id];
+        return $table;
+
+    }
+
+    function get_table_combiniation_for_reject($id)
+    {
+        $tables = array
+        (
+            '1' => array('site_enginner_history', 'responsible_history'),
+            '3' => array('reviewer_history', 'site_enginner_history'),
+            '4' => array('approval_history', 'reviewer_history')
+        );
+        $table = $tables[$id];
+        return $table;
+
+    }
+
     function get_username_by_id($id){
         $CI =& get_instance();
         $user = $CI->Comman_model->get_data_by_id('*','users', array('user_id' => $id));
@@ -169,5 +195,31 @@ function get_all_roles(){
         }else{
             return '';
         }
+    }
+
+    function get_inner_obj_status($id)
+    {
+        $CI =& get_instance();
+        $user_type =  $CI->session->userdata('user_data')->user_type;
+        $table = get_history_table_by_role_id($user_type);
+        $obj = $CI->Comman_model->get_data_by_id('*', $table, array('observation_id'=>$id));
+        $status = array
+        (
+            '0' => 'new',
+            '1' => 'Forwarded',
+            '2' => 'Rejected',
+            '3' => 'Closed'
+        );
+        $color = array
+        (
+            '0' => 'badge-primary',
+            '1' => 'badge-warning',
+            '2' => 'badge-danger',
+            '3' => 'badge-success'
+
+        );
+        $data['status'] = $status[$obj->inner_status];
+        $data['color'] = $color[$obj->inner_status];
+        return $data;
     }
 ?>

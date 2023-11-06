@@ -166,7 +166,7 @@ class Observations extends CI_Controller {
                     'description' => $postData['decsription'],
                     'remark' => $postData['remark'],
                     'status' => '1',
-                    
+
 
                 );
             }
@@ -180,7 +180,6 @@ class Observations extends CI_Controller {
             'role_id' => $postData['role_id'],
             'comment' => $postData['remark'],
           );
-
           $history_id = $this->Comman_model->insert_data('observation_history', $history_param);
           $user_param = array
           (
@@ -189,8 +188,17 @@ class Observations extends CI_Controller {
             'added_by' => $postData['user_id'],
             'assigned_to' => $postData['user_id'],
           );
-          $table = get_history_table_by_role_id($postData['allocated_to']);
-          $user_history = $this->Comman_model->insert_data($table,$user_param);
+          $table = get_history_table_by_role_id($postData['role_id']);
+          $is_exist = $this->Comman_model->get_data_by_id('*',$table,array('observation_id'=>$observation_id));
+          if(empty($is_exist)){
+              $user_history = $this->Comman_model->insert_data($table,$user_param);
+          }else{
+            $user_param = array
+            (
+                'obj_history_id' => $history_id
+            );
+            $user_history = $this->Comman_model->update_data($table,$user_param,array('observation_id'=>$observation_id));
+          }
         }
         // echo'<pre>';print_r('3');exit;
 
@@ -309,22 +317,20 @@ class Observations extends CI_Controller {
     public function get_approval_list()
     {
         $user_data = $this->session->userdata('user_data');
-        $approvals = $this->Comman_model->get_data('*','site_enginner_history',flase,$join=false,$orderclm='history_id', $order='DESC');
-        echo'<pre>';print_r($approvals);exit;
+        $user_type = $this->session->userdata('user_data')->user_type;
+        $table = get_history_table_by_role_id($user_type);
+        $approvals = $this->Comman_model->get_data('*', $table);
+        // echo'<pre>';print_r($approvals);exit;
         
         $all_approval = array();
         foreach($approvals as $approval)
         {
             $obj = $this->Comman_model->get_data_by_id('*', 'observations', array('observation_id' => $approval->observation_id));
-            $history_obj = $this->Comman_model->get_data_by_id('*', 'observation_history', array('obj_history_id' => $approval->obj_history_id));
-            if($obj){
-                $obj->comment = $history_obj->comment;
-                array_push($all_approval, $obj);
-            }    
+            array_push($all_approval, $obj);   
         }
         // echo'<pre>';print_r($all_approval);exit;
-        $data['all_approval'] = $all_approval;
-        $data['_view'] = 'observations/all_approval';
+        $data['all_observations'] = $all_approval;
+        $data['_view'] = 'observations/approvals';
 		$this->load->view('template/view', $data);
     }
 
@@ -345,6 +351,101 @@ class Observations extends CI_Controller {
             array_push($finalData, $history_arr);
         }
         echo json_encode($finalData);
+    }
+
+    public function send_for_approval()
+    {
+        $user_type = $this->session->userdata('user_data')->user_type;
+        $obj_id = $this->input->post('observation_id');
+        $table = get_history_table_by_role_id($user_type);
+        $latest_obj = $this->Comman_model->get_data('*', $table, array('observation_id'=>$obj_id),$join=false,$orderclm='history_id', $order='DESC',$limit=false,$groupby=false);
+        if($latest_obj){
+            // echo json_encode($latest_obj[0]);
+
+            //CHECK FOR EXTING RECORD
+            $tables = get_table_combiniation($user_type);
+            $is_exist = $this->Comman_model->get_data_by_id('*', $tables[1], array('observation_id' => $latest_obj[0]->observation_id));
+            if(empty($is_exist)){
+                $param = array
+                (
+                    'observation_id' => $latest_obj[0]->observation_id,
+                    'obj_history_id' => $latest_obj[0]->obj_history_id,
+                    'added_By' => $latest_obj[0]->added_by,
+                    'assigned_to' => $latest_obj[0]->assigned_to,
+                    'comment' => '',
+                    'is_approved' => '0', 
+                );
+                $res = $this->Comman_model->insert_data($tables[1], $param);
+                $res = $this->Comman_model->update_data($tables[0], array('inner_status' => '1'),array('observation_id' => $latest_obj[0]->observation_id));
+
+            }else{
+                $param = array
+                (
+                    'obj_history_id' => $latest_obj[0]->obj_history_id,
+                    'is_approved' => '0',
+                    'inner_status' => '0'
+                );
+                $res = $this->Comman_model->update_data($tables[1], $param,array('observation_id' => $latest_obj[0]->observation_id));
+                $res = $this->Comman_model->update_data($tables[0], array('inner_status' => '1'),array('observation_id' => $latest_obj[0]->observation_id));
+            }
+        }
+    }
+
+    public function reject_approval()
+    {
+        $user_type = $this->session->userdata('user_data')->user_type;
+        $obj_id = $this->input->post('observation_id');
+        $table = get_history_table_by_role_id($user_type);
+        $latest_obj = $this->Comman_model->get_data('*', $table, array('observation_id'=>$obj_id),$join=false,$orderclm='history_id', $order='DESC',$limit=false,$groupby=false);
+        if($latest_obj){
+            $tables = get_table_combiniation_for_reject($user_type);
+            print_r($tables[1]);
+            $is_exist = $this->Comman_model->get_data_by_id('*', $tables[0], array('observation_id' => $latest_obj[0]->observation_id));
+            if($is_exist){
+                $param = array
+                (
+                    'inner_status' => '2'
+                );
+                $res = $this->Comman_model->update_data($tables[1], $param, array('observation_id' => $latest_obj[0]->observation_id));
+                $res = $this->Comman_model->update_data($tables[0], $param ,array('observation_id' => $latest_obj[0]->observation_id));
+            }
+        }
+    }
+
+    public function close_observation()
+    {
+        $user_type = $this->session->userdata('user_data')->user_type;
+        $obj_id = $this->input->post('observation_id');
+        $is_exist_obj = $this->Comman_model->get_data_by_id('*', 'observations', array('observation_id' => $obj_id));
+        if($is_exist_obj)
+        {
+            $this->Comman_model->update_data('observations', array('status' => '2') ,array('observation_id' => $obj_id));
+        }
+
+        $is_exist_in_site_engeenir = $this->Comman_model->get_data_by_id('*', 'site_enginner_history', array('observation_id' => $obj_id));
+        if($is_exist_in_site_engeenir)
+        {
+            $this->Comman_model->update_data('site_enginner_history', array('inner_status' => '3') ,array('observation_id' => $obj_id));
+        }
+
+        $is_exist_in_responsible = $this->Comman_model->get_data_by_id('*', 'responsible_history', array('observation_id' => $obj_id));
+        if($is_exist_in_responsible)
+        {
+            $this->Comman_model->update_data('responsible_history', array('inner_status' => '3') ,array('observation_id' => $obj_id));
+        }
+
+        $is_exist_in_reviwver = $this->Comman_model->get_data_by_id('*', 'reviewer_history', array('observation_id' => $obj_id));
+        if($is_exist_in_reviwver)
+        {
+            $this->Comman_model->update_data('reviewer_history', array('inner_status' => '3') ,array('observation_id' => $obj_id));
+        }
+
+        $is_exist_in_site_approval = $this->Comman_model->get_data_by_id('*', 'approval_history', array('observation_id' => $obj_id));
+        if($is_exist_in_site_approval)
+        {
+            $this->Comman_model->update_data('approval_history', array('inner_status' => '3') ,array('observation_id' => $obj_id));
+        }
+
     }
 
 }
