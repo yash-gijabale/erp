@@ -171,8 +171,8 @@ class Observations extends CI_Controller {
                 );
             }
             
-            // echo'<pre>';print_r($observation_param);exit;
-          $this->Comman_model->update_data('observations', $observation_param, array('observation_id'=>$observation_id));
+          $update_res = $this->Comman_model->update_data('observations', $observation_param, array('observation_id'=>$observation_id));
+           $data['is_updated'] = $update_res;
           $history_param = array
           (
             'observation_id' => $observation_id,
@@ -207,7 +207,8 @@ class Observations extends CI_Controller {
                 if($postData['user_type'] != '1'){
                     $image_name[] = $_FILES['recommended_image'];
                 }
-                if(!empty($image_name[0]['name'][0])){
+                
+                if(!empty($image_name[0]['name'][0]) || !empty($image_name[1]['name'][1])){
                     // echo'<pre>';print_r($image_name);exit;
                 foreach($image_name as $imgkey=>$imgval)
                 {
@@ -256,8 +257,9 @@ class Observations extends CI_Controller {
                                     }
                                 }
                             
-                }
-            }
+                            }
+            // }
+        }
 
         $data['observation'] = $this->Comman_model->get_data_by_id('*','observations', array('observation_id'=> $observation_id));
         $data['observation_image'] = $this->Comman_model->get_data('*','observation_images', array('observation_id'=> $observation_id, 'image_type'=>'0'));
@@ -350,7 +352,10 @@ class Observations extends CI_Controller {
             
             array_push($finalData, $history_arr);
         }
-        echo json_encode($finalData);
+        // echo'<pre>';print_r($finalData);
+        $data['finalData'] = $finalData;
+		$res = $this->load->view('observations/history_card', $data);
+        echo json_encode($res);
     }
 
     public function send_for_approval()
@@ -378,6 +383,7 @@ class Observations extends CI_Controller {
                 $res = $this->Comman_model->insert_data($tables[1], $param);
                 $res = $this->Comman_model->update_data($tables[0], array('inner_status' => '1'),array('observation_id' => $latest_obj[0]->observation_id));
 
+                
             }else{
                 $param = array
                 (

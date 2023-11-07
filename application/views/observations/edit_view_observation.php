@@ -201,15 +201,17 @@ if($user_type == '1'){
     <input type="hidden" name="allocated_to" value="<?php echo $observation->closed_by ?>">
     <?php if($observation->status != '2') { ?>
     <div class="card-footer">
-        <button type="submit" class="btn btn-success">Update</button>
+        <button type="submit" class="btn btn-success"><?php echo($is_updated == '1' ? '<i class="fa fa-check" aria-hidden="true"></i>' : 'Update') ?></button>
         <?php echo form_close() ?>
 
         <?php if($user_type != $observation->closed_by) { ?>
-            <span type="button" class="btn btn-warning" id="aprroval_btn" onclick="sendForApproval('<?php echo $observation->observation_id ?>')">Forword</span>
+            <span type="button" id="forward-button" class="btn btn-warning" id="aprroval_btn" onclick="sendForApproval('<?php echo $observation->observation_id ?>')">
+                Forward
+            </span>
         <?php } ?>
 
         <?php if($user_type != '2'){ ?>
-            <button type="button" class="btn btn-danger" id="aprroval_btn" onclick="rejectApproval('<?php echo $observation->observation_id ?>')">Reject</button>
+            <button type="button" id="reject-button" class="btn btn-danger" id="aprroval_btn" onclick="rejectApproval('<?php echo $observation->observation_id ?>')">Reject</button>
         <?php } ?>
 
         <?php if($user_type == $observation->closed_by){ ?>
@@ -412,14 +414,20 @@ if($user_type == '1'){
 
     function sendForApproval(id) {
         console.log(id)
+        
+        $('#forward-button').html(`
+                    <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                    </div>`)
         $.ajax({
             url: "<?php echo base_url().'index.php/observations/send_for_approval';?>",
             type: "post",
             data: { 'observation_id': id},
             success: function (obj) {
-            //     var history = $.parseJSON(obj);
-            //    console.log(history)
-            console.log(obj)
+                setTimeout(()=>{
+                    $('#forward-button').html(`
+                    <i class="fa fa-check" aria-hidden="true"></i>`)
+                }, 2000)
             }
         })
        
@@ -428,12 +436,19 @@ if($user_type == '1'){
     function rejectApproval(id)
     {
         console.log(id)
+        $('#reject-button').html(`
+                    <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                    </div>`)
         $.ajax({
             url: "<?php echo base_url().'index.php/observations/reject_approval';?>",
             type: "post",
             data: { 'observation_id': id},
             success: function (obj) {
-            console.log(obj)
+                setTimeout(()=>{
+                    $('#reject-button').html(`
+                    <i class="fa fa-check" aria-hidden="true"></i>`)
+                }, 2000)
             }
         })
     }
@@ -456,25 +471,26 @@ if($user_type == '1'){
             type: "post",
             data: { 'observation_id': id},
             success: function (obj) {
-                var history = $.parseJSON(obj);
-                console.log(history)
+                // var history = $.parseJSON(obj);
+                // console.log(history)
                 $('#history-modal').empty()
+                $('#history-modal').html(obj)
 
-                $.each(history, function (key, val) {
-                    let card = `
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">${val.userName}</h3><sub class="mx-1">${val.role}</sub>
-                                <span class="card-tools">${val.created_date}</span>
-                            </div>
-                            <div class="card-body">
-                            <h3 class="card-title">${val.comment}</h3>
-                            </div>
-                        </div>
+                // $.each(history, function (key, val) {
+                //     let card = `
+                //         <div class="card card-primary">
+                //             <div class="card-header">
+                //                 <h3 class="card-title">${val.userName}</h3><sub class="mx-1">${val.role}</sub>
+                //                 <span class="card-tools">${val.created_date}</span>
+                //             </div>
+                //             <div class="card-body">
+                //             <h3 class="card-title">${val.comment}</h3>
+                //             </div>
+                //         </div>
 
-                    `
-                    $('#history-modal').append(card)
-                })
+                //     `
+                //     $('#history-modal').append(card)
+                // })
 
                 
     
