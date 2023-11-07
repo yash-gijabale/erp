@@ -113,6 +113,8 @@ $route['generate-report'] = 'report/generate_report';
 
 $route['check-list'] = 'checklist/check_list';
 
-
+// CONTRACTOR MANAGEMENT
+$route['add-workers'] = 'contractor/add_workers';
+$route['workers-list'] = 'contractor/workers_list';
 
 $route['test'] = 'welcome/test';

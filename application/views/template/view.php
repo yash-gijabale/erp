@@ -256,6 +256,30 @@
                                     </a>
                         </li>
                         <li class="nav-item">
+                            <a href="#" class="nav-link">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                <p>
+                                    Contractor
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/add-workers'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/all-developers'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>List</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
                                     <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Log Out</p>
@@ -285,6 +309,7 @@
                                         <p>Ckeck List</p>
                                     </a>
                         </li>
+                        
                         <li class="nav-item">
                                     <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
