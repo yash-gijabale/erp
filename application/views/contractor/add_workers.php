@@ -67,6 +67,10 @@
             <label for="exampleInputPassword1">Pan Card:</label>
             <input type="file" name="pan_card" class="form-control" id="exampleInputPassword1">
         </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">User Photo:</label>
+            <input type="file" name="user_image" class="form-control" id="exampleInputPassword1">
+        </div>
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">Submit</button>

@@ -116,5 +116,7 @@ $route['check-list'] = 'checklist/check_list';
 // CONTRACTOR MANAGEMENT
 $route['add-workers'] = 'contractor/add_workers';
 $route['workers-list'] = 'contractor/workers_list';
+$route['add-attendance'] = 'contractor/add_attendence';
+$route['profile/(:any)'] = 'contractor/view_profile/$1';
 
 $route['test'] = 'welcome/test';

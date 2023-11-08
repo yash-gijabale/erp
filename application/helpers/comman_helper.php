@@ -222,4 +222,14 @@ function get_all_roles(){
         $data['color'] = $color[$obj->inner_status];
         return $data;
     }
+
+    function get_presenty_status($status)
+    {
+        $status_array = array
+        (
+            '0' => 'Absent',
+            '1' => 'Present',
+        );
+        return $status_array[$status];
+    }
 ?>

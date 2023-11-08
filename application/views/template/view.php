@@ -271,7 +271,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/all-developers'?>" class="nav-link">
+                                    <a href="<?php echo base_url().'index.php/workers-list'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>List</p>
                                     </a>
