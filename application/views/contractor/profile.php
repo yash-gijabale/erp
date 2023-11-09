@@ -22,17 +22,14 @@
                             <span class="text-muted text-center col-md-12"><?php echo 'Address: '.$user_data->address ?></span>
                         </div>
 
-                        <!-- <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <b>Followers</b> <a class="float-right">1,322</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Following</b> <a class="float-right">543</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Friends</b> <a class="float-right">13,287</a>
-                  </li>
-                </ul> -->
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Monthly Presenty:</b> <span class="float-right">80%</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Total Absenty:</b> <span class="float-right">2</span>
+                            </li>
+                        </ul>
                     </div>
                     <!-- /.card-body -->
                 </div>

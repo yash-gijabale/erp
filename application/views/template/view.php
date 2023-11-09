@@ -279,6 +279,43 @@
 
                             </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                            <i class="fa fa-cubes" aria-hidden="true"></i>
+                                <p>
+                                    Material Management
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/material-configuration'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Configuration</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/add-material'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Materials</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/material-list'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Materials List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/supply-material'?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Supplpy</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
                         <li class="nav-item">
                                     <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>

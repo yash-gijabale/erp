@@ -232,4 +232,26 @@ function get_all_roles(){
         );
         return $status_array[$status];
     }
+
+    function get_material_unit($id)
+    {
+        $CI =& get_instance();
+        $unit = $CI->Comman_model->get_data_by_id('*', 'material_measures', array('measure_id'=>$id));
+        if($unit)
+        {
+            return $unit->measure_name;
+        }
+
+    }
+    function get_material_name($id)
+    {
+        $CI =& get_instance();
+        $unit = $CI->Comman_model->get_data_by_id('*', 'total_material', array('material_id'=>$id));
+        if($unit)
+        {
+            return $unit->material_name;
+        }
+
+    }
+
 ?>

@@ -119,4 +119,19 @@ $route['workers-list'] = 'contractor/workers_list';
 $route['add-attendance'] = 'contractor/add_attendence';
 $route['profile/(:any)'] = 'contractor/view_profile/$1';
 
+
+// MATERIAL MANAGEMENT
+$route['material-configuration'] = 'materialManegement/add_configuration';
+$route['add-measurement'] = 'materialManegement/add_measurement';
+$route['add-material'] = 'materialManegement/add_material';
+$route['material-list'] = 'materialManegement/material_list';
+$route['supply-material'] = 'materialManegement/supply_material';
+$route['supply-list'] = 'materialManegement/supply_list';
+
+
+
+
+
+
+
 $route['test'] = 'welcome/test';
