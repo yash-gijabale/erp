@@ -54,9 +54,9 @@ class Welcome extends CI_Controller {
 			// array_push($projects, $project->project_name);
 			// echo'<pre>';print_r($statuswise_data);exit;
 
-			$open_count = $statuswise_data['0'] ? $statuswise_data['0'] : '0';
-			$inprogress_count = $statuswise_data['1'] ? $statuswise_data['1'] : '0';
-			$close_count = $statuswise_data['2'] ? $statuswise_data['2'] : '0';
+			$open_count = $statuswise_data['0'] ? $statuswise_data['0'] : 0;
+			$inprogress_count = $statuswise_data['1'] ? $statuswise_data['1'] : 0;
+			$close_count = $statuswise_data['2'] ? $statuswise_data['2'] : 0;
 			array_push($open_nc, $open_count);
 			array_push($inprogress_nc, $inprogress_count);
 			array_push($close_nc, $close_count);
@@ -67,8 +67,8 @@ class Welcome extends CI_Controller {
 		$data['open_nc'] = $open_nc;
 		$data['progress_nc'] = $inprogress_nc;
 		$data['close_nc'] = $close_nc;
-
-		return($data);
+		$json_data = json_encode($data);
+		return($json_data);
 	}
 
 	public function login(){

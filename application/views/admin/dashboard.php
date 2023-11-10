@@ -63,44 +63,48 @@
         </div>
 
         <div>
-  <canvas id="myChart"></canvas>
+  <canvas id="myChart" class="mt-5"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
+  var graph_data = JSON.parse('<?php echo $graph_data ?>')
+  console.log(graph_data);
+
   const ctx = document.getElementById('myChart');
   var myContext = document.getElementById( 
             "myChart").getContext('2d'); 
         var myChart = new Chart(myContext, { 
             type: 'bar', 
             data: { 
-                labels: ["bike", "car", "scooter",  
-                    "truck", "auto", "Bus"], 
+                labels: graph_data.project_list, 
                 datasets: [{ 
-                    label: 'worst', 
-                    backgroundColor: "blue", 
-                    data: [17, 16, 4, 11, 8, 9], 
+                    label: 'Open', 
+                    backgroundColor: "#4bc0c0", 
+                    data: graph_data.open_nc, 
                 }, { 
-                    label: 'Okay', 
-                    backgroundColor: "green", 
-                    data: [14, 2, 10, 6, 12, 16], 
+                    label: 'In Progress', 
+                    backgroundColor: "#ff9f40", 
+                    data: graph_data.progress_nc, 
                 }, { 
-                    label: 'bad', 
-                    backgroundColor: "red", 
-                    data: [2, 21, 13, 3, 24, 7], 
+                    label: 'Close', 
+                    backgroundColor: "#ff6384", 
+                    data: graph_data.close_nc, 
                 }], 
             }, 
             options: { 
                 plugins: { 
                     title: { 
                         display: true, 
-                        text: 'Stacked Bar chart for pollution status' 
+                        text: 'Stacked Bar chart For Observation' 
                     }, 
                 }, 
                 scales: { 
                     x: { 
                         stacked: true, 
+                        // barThickness: 1
                     }, 
                     y: { 
                         stacked: true 
