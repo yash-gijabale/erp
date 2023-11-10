@@ -48,7 +48,7 @@ class Checklist extends CI_Controller {
             $data['pre_data'] = $postData;
             $data['question_list'] = $this->Comman_model->get_data('*', 'questions', array('subgroup_id' => $postData['subgroup_id'], 'is_check' => '0'));
             $data['checked_question_list'] = $this->Comman_model->get_data('*', 'questions', array('subgroup_id' => $postData['subgroup_id'], 'is_check' => '1'));
-            
+            // echo'<pre>';print_r(json_encode($data['question_list']));exit;
         }
 
         $data['tradegroup'] = $this->Comman_model->get_data('*', 'trade_gruop');

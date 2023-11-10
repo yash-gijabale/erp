@@ -24,10 +24,10 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Monthly Presenty:</b> <span class="float-right">80%</span>
+                                <b>Monthly Presenty:</b> <span class="float-right text-primary"><b><?php echo $att_data['att_details']['presenty_percentage'].'%' ?></b></span>
                             </li>
                             <li class="list-group-item">
-                                <b>Total Absenty:</b> <span class="float-right">2</span>
+                                <b>Total Absenty:</b> <span class="float-right text-primary"><b><?php echo $att_data['att_details']['total_absenty']?></b></span>
                             </li>
                         </ul>
                     </div>
@@ -68,7 +68,7 @@
                                             <tr>
                                                 <th scope="row"><?php echo $srno ?></th>
                                                 <td><?php echo date('d-m-Y', strtotime($att['date'])) ?></td>
-                                                <td><?php echo get_presenty_status($att['presenty_status']); ?></td>
+                                                <td class="<?php echo($att['presenty_status']=='1'? 'text-primary':'text-danger'); ?>"><?php echo get_presenty_status($att['presenty_status']); ?></td>
                                             </tr>
                                             <?php $srno++; } ?>
                                         </tbody>
@@ -78,19 +78,18 @@
 
                             <div class="tab-pane" id="docs">
                                 <div class="row">
-                                <div class="col-md-6">
-                                <span class="card-title">Adhar card</span>
-                                <img src="<?php echo base_url().$user_data->adhaar_card ?>" class="border" width="100%" alt="" srcset="">
-                            </div>
-                            <div class="col-md-6">
-                                <span class="card-title">Pan card</span>
-                                <img src="<?php echo base_url().$user_data->pan_card ?>" class="border" width="100%" alt="" srcset="">
-                            </div>
+                                    <?php foreach($user_documents as $doc){ ?>
+                                        <div class="col-md-6 border border-dark">
+                                            <span class="card-title"><b><?php echo $doc->document_name ?> :</b></span>
+                                            <img src="<?php echo base_url().$doc->document_path ?>" class="border" width="100%" alt="" srcset="">
+                                        </div>
+                                    <?php } ?>
+
                                 </div>
                             </div>
 
                             <div class="tab-pane" id="settings">
-                                <form class="form-horizontal">
+                                <?php echo form_open('profile/'.$user_data->worker_id) ?>
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                                         <div class="col-sm-10">
@@ -101,7 +100,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail" class="col-sm-2 col-form-label">Contact no</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputEmail"
+                                            <input type="text" name='contact' class="form-control" id="inputEmail"
                                                 placeholder="Contact no."
                                                 value="<?php echo $user_data->contact_number ?>">
                                         </div>
@@ -132,7 +131,7 @@
                                             <button type="submit" class="btn btn-success">Submit</button>
                                         </div>
                                     </div>
-                                </form>
+                                <?php echo form_close() ?>
                             </div>
                             <!-- /.tab-pane -->
                         </div>

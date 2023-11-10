@@ -23,13 +23,13 @@ class Contractor extends CI_Controller
 
         $postData = $this->input->post();
         if ($postData) {
-            $image_name[] = $_FILES['adhaar_card'];
-            $image_name[] = $_FILES['pan_card'];
             $image_name[] = $_FILES['user_image'];
+            $docs = $_FILES['doc_file'];
             // echo '<pre>';
-            // print_r($image_name);
+            // print_r($postData);
+            // print_r($docs);
             // exit;
-            $image_param = array();
+            //Add user image to worker table
             foreach ($image_name as $imgkey => $imgval) {
                     if (($imgval['size']!= 0) || ($imgval['size']!= '')) {
                         $pdata = array();
@@ -53,7 +53,7 @@ class Contractor extends CI_Controller
 
                         }
                         if ($filenm != '') {
-                            $image_param [] = $filenm;
+                            $user_image_path = $filenm;
                             // $this->Comman_model->insert_data('observation_images', $image_param);
                         }
                 }
@@ -69,15 +69,61 @@ class Contractor extends CI_Controller
                 'address' => $postData['address'],
                 'birth_date' => $postData['birth_date'],
                 'age' => $postData['age'],
-                'adhaar_card' => $image_param[0],
-                'pan_card' => $image_param[1],
-                'user_image' => $image_param[2]
+                'user_image' => $user_image_path
             );
-            $this->Comman_model->insert_data('workers', $param);
+            $worker_id = $this->Comman_model->insert_data('workers', $param);
+            if($worker_id)
+            {
+                $this->add_worker_docs($postData, $docs, $worker_id);
+            }
         }
         $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
         $data['_view'] = 'contractor/add_workers';
         $this->load->view('template/view', $data);
+    }
+
+    public function add_worker_docs($postData, $docs, $worker_id)
+    {
+        // echo '<pre>';
+        // print_r($postData);
+        // print_r($docs);
+        // print_r($worker_id);
+        // exit;
+        $doc_names = $postData['doc_name'];
+        foreach($doc_names as $dockey => $doc)
+        {
+            if (($docs['size'][$dockey]!= 0) || ($docs['size'][$dockey]!= '')) {
+                $pdata = array();
+                $filenm = '';
+                $config['upload_path'] = UPLOAD_OBSERVATION;
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
+                $this->upload->initialize($config);
+                $newName = 'worker' . '_' . str_replace(' ', '', $docs['name'][$dockey]);
+                // echo $newName;exit;
+                $_FILES['userfile']['name'] = $newName;
+                $_FILES['userfile']['type'] = $docs['type'][$dockey];
+                $_FILES['userfile']['tmp_name'] = $docs['tmp_name'][$dockey];
+                $_FILES['userfile']['error'] = $docs['error'][$dockey];
+                $_FILES['userfile']['size'] = $docs['size'][$dockey];
+                if (!$this->upload->do_upload('userfile')) {
+                    $filenm = '';
+
+                } else {
+                    $fname = $this->upload->data();
+                    $filenm = UPLOAD_OBSERVATION . $fname['file_name'];
+
+                }
+                if ($filenm != '') {
+                    $param = array
+                    (
+                        'worker_id' => $worker_id,
+                        'document_name' => $doc,
+                        'document_path' => $filenm
+                    );
+                    $this->Comman_model->insert_data('worker_documents', $param);
+                }
+        }
+        }
     }
 
 
@@ -136,6 +182,21 @@ class Contractor extends CI_Controller
 
     public function view_profile($id)
     {
+        $postData = $this->input->post();
+        if($postData)
+        {
+            // echo'<pre>';print_r($postData);exit;
+            $param = array
+            (
+                'worker_name' => $postData['name'],
+                'contact_number' => $postData['contact'],
+                'address' => $postData['address'],
+                'birth_date' => $postData['birth_date'],
+                'age' => $postData['age'],
+            );
+            $this->Comman_model->update_data('workers',$param, array('worker_id' => $id));
+
+        }
         $current_month = date('m');
         $current_year = date('Y');
         $days=cal_days_in_month(CAL_GREGORIAN,$current_month,$current_year);
@@ -152,10 +213,26 @@ class Contractor extends CI_Controller
 
         }
         // echo'<pre>';print_r($att_array);exit;
+        $att_array['att_details'] = $this->calculate_att_details($att_array, $days);
         $data['att_data'] = $att_array;
+        // echo'<pre>';print_r($att_array);exit;
+
         $data['user_data'] = $this->Comman_model->get_data_by_id('*', 'workers', array('worker_id' => $id));
+        $data['user_documents'] = $this->Comman_model->get_data('*', 'worker_documents', array('worker_id' => $id));
+        // echo'<pre>';print_r($data['user_documents']);exit;
+        
         $data['_view'] = 'contractor/profile';
         $this->load->view('template/view', $data);
+    }
+
+    public function calculate_att_details($att_array, $days)
+    {
+        $arr_data = array_column($att_array, 'presenty_status'); 
+        $presenty_data = array_count_values($arr_data);
+        $percentage = $presenty_data[1] / $days * 100;
+        $data['presenty_percentage'] = number_format($percentage, 2, '.', '');
+        $data['total_absenty'] = $presenty_data[0];
+        return $data;
     }
 }
 

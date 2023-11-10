@@ -28,13 +28,47 @@ class Welcome extends CI_Controller {
 
 	public function dashboard()
 	{
+		$data['graph_data'] = $this->get_graph_data();
 		$data['total_developers'] = count($this->Comman_model->get_data('*','developer'));
 		$data['total_projects'] = count($this->Comman_model->get_data('*','project'));
 		$data['total_structurs'] = count($this->Comman_model->get_data('*','structure'));
 		$data['total_observations'] = count($this->Comman_model->get_data('*','observations'));
-		// print_r($data);exit;
+		// echo'<pre>';print_r($data);exit;
 		$data['_view'] = 'admin/dashboard';
 		$this->load->view('template/view', $data);
+	}
+
+	public function get_graph_data()
+	{
+		$project_data = $this->Comman_model->get_data('*','project');
+		$data = array();
+		$projects = array();
+		$open_nc = array();
+		$inprogress_nc = array();
+		$close_nc = array();
+		foreach($project_data as $project)
+		{
+			$obj_data = $this->Comman_model->get_data('status','observations',array('project_id'=>$project->project_id));
+			$obj_array = json_decode(json_encode($obj_data), true);
+			$statuswise_data = array_count_values(array_column($obj_array, 'status'));
+			// array_push($projects, $project->project_name);
+			// echo'<pre>';print_r($statuswise_data);exit;
+
+			$open_count = $statuswise_data['0'] ? $statuswise_data['0'] : '0';
+			$inprogress_count = $statuswise_data['1'] ? $statuswise_data['1'] : '0';
+			$close_count = $statuswise_data['2'] ? $statuswise_data['2'] : '0';
+			array_push($open_nc, $open_count);
+			array_push($inprogress_nc, $inprogress_count);
+			array_push($close_nc, $close_count);
+			array_push($projects, $project->project_name);
+			// echo'<pre>';print_r($array);print_r($statuswise_data['3']);exit;
+		}
+		$data['project_list'] = $projects;
+		$data['open_nc'] = $open_nc;
+		$data['progress_nc'] = $inprogress_nc;
+		$data['close_nc'] = $close_nc;
+
+		return($data);
 	}
 
 	public function login(){

@@ -61,3 +61,51 @@
           </div>
           <!-- ./col -->
         </div>
+
+        <div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  var myContext = document.getElementById( 
+            "myChart").getContext('2d'); 
+        var myChart = new Chart(myContext, { 
+            type: 'bar', 
+            data: { 
+                labels: ["bike", "car", "scooter",  
+                    "truck", "auto", "Bus"], 
+                datasets: [{ 
+                    label: 'worst', 
+                    backgroundColor: "blue", 
+                    data: [17, 16, 4, 11, 8, 9], 
+                }, { 
+                    label: 'Okay', 
+                    backgroundColor: "green", 
+                    data: [14, 2, 10, 6, 12, 16], 
+                }, { 
+                    label: 'bad', 
+                    backgroundColor: "red", 
+                    data: [2, 21, 13, 3, 24, 7], 
+                }], 
+            }, 
+            options: { 
+                plugins: { 
+                    title: { 
+                        display: true, 
+                        text: 'Stacked Bar chart for pollution status' 
+                    }, 
+                }, 
+                scales: { 
+                    x: { 
+                        stacked: true, 
+                    }, 
+                    y: { 
+                        stacked: true 
+                    } 
+                } 
+            } 
+        }); 
+</script>

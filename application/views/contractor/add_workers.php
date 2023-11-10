@@ -60,6 +60,18 @@
             <input type="text" name="age" class="form-control" id="exampleInputPassword1" placeholder="Enter age">
         </div>
         <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">User Photo:</label>
+            <input type="file" name="user_image" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="row m-1 mt-5">
+            <div>
+                <button type="button" class="btn btn-primary btn-sm" onclick="add_doc_filed()">Add Documents</button>
+            </div>
+            <div class="col-md-12" id="doc-container">
+
+            </div>
+        </div>
+        <!-- <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Adhaar Card:</label>
             <input type="file" name="adhaar_card" class="form-control" id="exampleInputPassword1">
         </div>
@@ -70,10 +82,11 @@
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">User Photo:</label>
             <input type="file" name="user_image" class="form-control" id="exampleInputPassword1">
-        </div>
+        </div> -->
+        
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-success">Submit</button>
     </div>
     <?php echo form_close() ?>
 </div>
@@ -99,4 +112,33 @@ $("#developer_select").change(function(){
         })
     
     });
+
+
+var ind = 0;
+function add_doc_filed()
+{
+    console.log(ind)
+    $('#doc-container').append(`
+        <div class="row" id='filed-${ind}'>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Document Name</label>
+            <input type="text" name="doc_name[]" class="form-control" id="exampleInputPassword1" placeholder="Enter Doc Name">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Choose File:</label>
+            <input type="file" name="doc_file[]" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group col-md-4">
+        <a href="#"><i class="fa fa-times" aria-hidden="true" onclick="remove_filed('${ind}')"></i></a>
+        </div>
+        </div>
+    `)
+    ind++;
+}
+
+function remove_filed(inx)
+{
+    console.log(inx)
+    $(`#filed-${inx}`).remove()
+}
 </script>
