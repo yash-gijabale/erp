@@ -168,6 +168,12 @@
                         <?php } ?>
 
                         <li class="nav-item">
+                            <a href="<?php echo base_url().'index.php/checklist-group-master'?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                    <p>CheckList group master</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                     <p>Log Out</p>

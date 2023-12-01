@@ -108,11 +108,14 @@ $route['new-user'] = 'users/create_user';
 $route['edit-user/(:any)'] = 'users/edit_user/$1';
 $route['delete-user/(:any)'] = 'users/delete_user/$1';
 $route['user_access/(:any)'] = 'users/user_access_control/$1';
+$route['remove-user-access/(:any)'] = 'users/remove_user_access/$1';
+$route['assing-project'] = 'users/assing_project';
 
 
 $route['generate-report'] = 'report/generate_report';
 
 $route['check-list'] = 'checklist/check_list';
+$route['checklist-group-master'] = 'checklist/checklist_group_master';
 
 // CONTRACTOR MANAGEMENT
 $route['add-workers'] = 'contractor/add_workers';

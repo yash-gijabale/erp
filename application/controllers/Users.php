@@ -18,7 +18,7 @@ class Users extends CI_Controller {
 	function user_list(){
 
         $data['users'] = $this->Comman_model->get_data('*','users');
-
+        $data['projects'] = $this->Comman_model->get_data('*', 'project');
         $data['_view'] = 'users/user_list';
         $this->load->view('template/view', $data);
     }
@@ -59,6 +59,7 @@ class Users extends CI_Controller {
                 );
                 $res = $this->Comman_model->update_data('users', $params, array('user_id' => $user_id));
             }
+           
             $data['user'] = $this->Comman_model->get_data_by_id('*', 'users', array('user_id'=>$user_id));
             $data['_view'] = 'users/edit_user';
             $this->load->view('template/view', $data);
@@ -190,6 +191,23 @@ class Users extends CI_Controller {
         }
         
         return $data;
+    }
+
+
+    public function remove_user_access($user_id)
+    {
+        $this->Comman_model->permanant_delete('permission', array('user_id'=> $user_id));
+        redirect('user_access/'.$user_id);
+    }
+
+
+    public function assing_project()
+    {
+        $postData = $this->input->post();
+        if($postData)
+        {
+            echo'<pre>';print_r($postData);exit;
+        }
     }
 
 }

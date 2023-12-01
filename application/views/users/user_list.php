@@ -53,7 +53,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo base_url().'index.php/user_access/'.$user->user_id ?>">Module Access</a></li>
-                            <li><a class="dropdown-item" href="#">Project Access</a></li>
+                            <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onClick = "adduser('<?php echo $user->user_id ?>')">Project Access</a></li>
                         </ul>
                     </td>
 
@@ -66,6 +66,36 @@
         </table>
 
     </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php echo form_open('assing-project') ?>
+      <div class="modal-body">
+            <select class="form-control" name='project_ids[]' multiple>
+                <?php foreach($projects as $project){ ?>
+                    <option value="<?php echo $project->project_id ?>"><?php echo $project->project_name ?></option>
+                <?php } ?>
+            </select>
+            <input type="hidden" id='user_id' name="user_id">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      <?php echo form_close() ?>
+
+    </div>
+  </div>
 </div>
 
 <script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
@@ -86,5 +116,11 @@
         if (yes) {
             window.location.href = "<?php echo base_url().'index.php/delete-user/'?>" + id
         }
+    }
+
+    function adduser(id)
+    {
+        let filed = document.getElementById('user_id')
+        filed.value = id;
     }
 </script>

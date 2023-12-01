@@ -57,4 +57,24 @@ class Checklist extends CI_Controller {
 		$this->load->view('template/view', $data);
     }
 	
+
+    public function checklist_group_master()
+    {
+        $postData = $this->input->post();
+        if($postData)
+        {
+            // echo'<pre>';print_r($postData);exit;
+            $param = array(
+                'checklist_group_name' => $postData['group_name'],
+                'sequence' => $postData['sequence'],
+                'persentage_cost' => $postData['persentage'],
+            );
+
+            $res = $this->Comman_model->insert_data('checklist_group', $param);
+
+        }
+        $data['checklist_group'] = $this->Comman_model->get_data('*','checklist_group');
+        $data['_view'] = 'checklist/checklist_group_master';
+		$this->load->view('template/view', $data);
+    }
 }
