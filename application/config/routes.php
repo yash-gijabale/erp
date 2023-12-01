@@ -107,6 +107,7 @@ $route['user-list'] = 'users/user_list';
 $route['new-user'] = 'users/create_user';
 $route['edit-user/(:any)'] = 'users/edit_user/$1';
 $route['delete-user/(:any)'] = 'users/delete_user/$1';
+$route['user_access/(:any)'] = 'users/user_access_control/$1';
 
 
 $route['generate-report'] = 'report/generate_report';
@@ -130,6 +131,16 @@ $route['supply-list'] = 'materialManegement/supply_list';
 
 
 
+
+//WEB API
+//logIn
+$route['api/login'] = 'api/Login_api/login';
+
+
+//Project module
+$route['api/getProjects'] = 'api/project_api/project_list';
+$route['api/addProject'] = 'api/project_api/add_project';
+$route['api/editProject/(:any)'] = 'api/project_api/edit_project';
 
 
 

@@ -46,6 +46,18 @@
     <!-- /Data Table -->
 
 </head>
+<style>
+.sticky-nav{
+    position: sticky;
+    width: 100%;
+    /* margin-bottom: 15rem;  */
+    top: 0; 
+    background-color: rgb(202, 204, 206);
+    z-index: 200;
+    padding: 5px;
+
+}
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -54,7 +66,20 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div> -->
+            
+                     <?php 
+                    // $user_type = $this->session->userdata('user_data')->user_type; 
+                    // $user_id = $this->session->userdata('user_data')->user_id;
+                    // if($user_type == '1')
+                    // {
+                    //     $menuGroup = side_menu_for_admin();
+                    // echo'<pre>';print_r($menuGroup);exit;
 
+                    // }else{
+
+                    //     $menuGroup = get_sidebar_menu($user_id);
+                    // }
+                    ?> 
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -69,15 +94,28 @@
                     </div>
                     <div class="info">
                     <?php $role_name = (get_role_of_user($this->session->userdata('user_data')->user_type)); ?>
-                        <a href="#" class="d-block">EPR</a>
+                        <a href="#" class="d-block">EPRt</a>
                         <span class="text-light"><?php echo $role_name; ?></span>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <?php $user_type = $this->session->userdata('user_data')->user_type; 
-                    if($user_type == '1') { ?>
+                    <?php 
+                    $user_type = $this->session->userdata('user_data')->user_type; 
+                    $user_id = $this->session->userdata('user_data')->user_id;
+
+                    if($user_type == '1')
+                    {
+                        $menuGroup = side_menu_for_admin();
+                    // echo'<pre>';print_r($menuGroup);exit;
+
+                    }else{
+
+                        $menuGroup = get_sidebar_menu($user_id);
+                    }
+                    // echo'<pre>';print_r($menuGroup);exit;
+                    ?>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
@@ -92,269 +130,51 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                <p>
-                                    Developers
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/add-developers'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/all-developers'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                            <i class="fa fa-microchip" aria-hidden="true"></i>
-                                <p>
-                                    Projects
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/add-projects'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/all-projects'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fa fa-building" aria-hidden="true"></i>
-                                <p>
-                                    WBS
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/view-structure'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
+                        <?php 
+                        foreach($menuGroup as $menu)
+                        { ?>
+                            <li class="nav-item">
+                                <?php if(!empty($menu['module']->slug)){ ?>
+                                    <a href="<?php echo base_url().'index.php/'.$menu['module']->slug?>" class="nav-link">
+                                <?php } else{ ?>
                                     <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
 
-                            </ul>
-                        </li>
+                                <?php } ?>
+                                <i class="<?php echo $menu['module']->icon ?>" aria-hidden="true"></i>
+                                    <p>
+                                        <?php echo $menu['module']->module_name ?>
+                                        
+                                        <?php if(empty($menu['module']->slug)) { ?>
+                                        <i class="fas fa-angle-left right"></i>
+                                        <?php } ?>
+                                    </p>
+                                </a>
+
+                                <?php 
+                                    if(!empty($menu['submodules'])){
+                                        foreach($menu['submodules'] as $submodule){
+                                ?>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?php echo base_url().'index.php/'.$submodule->slug ?>" class="nav-link">
+                                                <i class="<?php echo $submodule->icon ?>"></i>
+                                                <p><?php echo $submodule->submodule_name?></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                <?php } } ?>
+                            </li>
+                            
+                        <?php } ?>
+
                         <li class="nav-item">
-                            <a href="<?php echo base_url().'index.php/trade-activity'?>" class="nav-link">
-                            <i class="fa fa-cube" aria-hidden="true"></i>
-                                <p>
-                                    Trade Activity
-                                </p>
+                            <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                    <p>Log Out</p>
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="<?php echo base_url().'index.php/all-trade-activity'?>" class="nav-link">
-                            <i class="fa fa-cubes" aria-hidden="true"></i>
-
-                                <p>
-                                    All Trade Activity
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fa fa-tags" aria-hidden="true"></i>
-                                <p>
-                                    Observations
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/new-observation'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/observation-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/approval-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Approvals</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fas fa-users"></i>
-                                <p>
-                                    Manage Users
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/user-list'?>" class="nav-link">
-                                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                        <p>User</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/observation-list'?>" class="nav-link">
-                                    <i class="fa fa-address-book" aria-hidden="true"></i>
-                                        <p>Roles</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="<?php echo base_url().'index.php/generate-report'?>" class="nav-link">
-                            <i class="fa fa-id-card" aria-hidden="true"></i>
-                                <p>
-                                    Report
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/check-list'?>" class="nav-link">
-                                    <i class="fa fa-list-ul" aria-hidden="true"></i>
-                                        <p>Ckeck List</p>
-                                    </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                <p>
-                                    Contractor
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/add-workers'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/workers-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="fa fa-cubes" aria-hidden="true"></i>
-                                <p>
-                                    Material Management
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/material-configuration'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Configuration</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/add-material'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add Materials</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/material-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Materials List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/supply-material'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Supplpy</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Log Out</p>
-                                    </a>
-                        </li>
+                       
                     </ul>
-                    <?php }else{ ?>
-                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">  
-                        <li class="nav-item">
-                            <a href="<?php echo base_url().'index.php/generate-report'?>" class="nav-link">
-                            <i class="fa fa-id-card" aria-hidden="true"></i>
-                                <p>
-                                    Report
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/observation-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                        </li>
-                        <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/check-list'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Ckeck List</p>
-                                    </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                                    <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Log Out</p>
-                                    </a>
-                        </li>
-                    </ul>
-                    <?php } ?>
                 </nav>
             </div>
             <!-- /.sidebar -->
@@ -363,7 +183,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
+            <div class="content-header sticky-nav">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6 breadcrumb">
@@ -385,7 +205,14 @@
 
                 <?php
 
-                $this->load->view($_view);
+                if($this->session->has_userdata('user_data')){
+                    $this->load->view($_view);
+
+                }else{
+
+                    redirect('welcome/index');
+                }
+
 
                 ?>
             </div>

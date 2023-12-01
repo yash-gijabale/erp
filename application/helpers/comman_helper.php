@@ -254,4 +254,96 @@ function get_all_roles(){
 
     }
 
+    function get_sidebar_menu($user_id)
+    {
+        $CI =& get_instance();
+        $moduleRes = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $user_id),$join=false,$orderclm=false, $order=false,$limit=false,$groupby='module_id');
+        
+        $moduleArr = array();
+        foreach($moduleRes as $module)
+        {
+            array_push($moduleArr, $module->module_id);
+
+        }
+
+        $sideBarMenuArray = array();
+
+        foreach($moduleArr as $moduleId)
+        {
+            $subArr = array();
+            $submoduleRes = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $user_id, 'module_id' => $moduleId, 'submodule_id >' => 0));
+            $module = $CI->Comman_model->get_data_by_id('*', 'modules', array('module_id' => $moduleId));
+            $subArr['module'] = $module;
+
+            if(!empty($submoduleRes))
+            {
+                $arr = array();
+                foreach($submoduleRes as $submode)
+                {
+                    $subModule = $CI->Comman_model->get_data_by_id('*', 'submodule', array('submodule_id' => $submode->submodule_id));
+                    $arr[] = $subModule;
+                }
+                $subArr['submodules'] = $arr;
+            }else{
+                $subArr['submodules'] = array();
+
+            }
+
+
+            array_push($sideBarMenuArray, $subArr);
+        }
+
+        return $sideBarMenuArray;
+    }
+
+
+    function side_menu_for_admin()
+    {
+        $CI =& get_instance();
+        $modules = $CI->Comman_model->get_data('*', 'modules');
+
+        $sideBarMenuArray = array();
+        foreach($modules as $module)
+        {
+            $arr = array();
+            $arr['module'] = $module;
+            $submodule = $CI->Comman_model->get_data('*', 'submodule', array('module_id' => $module->module_id));
+            if($submodule)
+            {
+                $arr['submodules'] = $submodule;
+            }else{
+                $arr['submodules'] = array();
+
+            }
+            array_push($sideBarMenuArray, $arr);
+
+        }
+        return ($sideBarMenuArray);
+    }
+
+    function checkHasUerModuleAccees($userId, $moduleId)
+    {
+        $CI =& get_instance();
+        $res = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $userId, 'module_id' => $moduleId));
+        if($res)
+        {
+            return TRUE;
+        }else
+        {
+            return FALSE;
+        }
+    }
+
+    function checkHasUerSubmoduleAccees($userId, $moduleId, $submoduleId)
+    {
+        $CI =& get_instance();
+        $res = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $userId, 'module_id' => $moduleId, 'submodule_id' => $submoduleId));
+        if($res)
+        {
+            return TRUE;
+        }else
+        {
+            return FALSE;
+        }
+    }
 ?>

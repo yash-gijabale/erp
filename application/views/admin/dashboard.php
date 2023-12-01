@@ -1,4 +1,14 @@
+<style>
+  /* .chart-container{
+    width: 600px !important;
+  } */
+  canvas{
 
+width:50vw !important;
+height:60vh !important;
+
+}
+</style>
 <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -63,7 +73,7 @@
         </div>
 
         <div>
-  <canvas id="myChart" class="mt-5"></canvas>
+  <canvas id="myChart" class="mt-5 chart-container"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -95,6 +105,8 @@
                 }], 
             }, 
             options: { 
+              maintainAspectRatio: true,
+              responsive: true,
                 plugins: { 
                     title: { 
                         display: true, 
