@@ -8,15 +8,15 @@
 
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Check List</h3>
+        <h3 class="card-title"><a href="<?php echo base_url('index.php/checklist-master') ?>"><i class="fa fa-chevron-left" aria-hidden="true"></i></a> Check List</h3>
     </div>
     <div class="card-body row">
 
         <?php 
           $attributes = array('id' => 'checklist_form');
-         echo form_open('check-list', $attributes) ?>
+         echo form_open('check-list/'.$checklist_id, $attributes) ?>
         <div class="check-list-form row">
-                <div class="form-group col-md-3">
+                <!-- <div class="form-group col-md-3">
                     <label for="exampleInputEmail1">Select Trade group:</label>
                     <select name="trade_group" id="tradegroup_select" class="form-select" required  >
                         <option value="<?php echo($pre_data['trade_group'] ? $pre_data['trade_group'] : '') ?>" selected><?php echo($pre_data['trade_group'] ? get_tradegroup_by_id($pre_data['trade_group']) : 'Select Trade group') ?></option>
@@ -30,12 +30,15 @@
                     <select name="trade_id" id="trade_select" class="form-select" required>
                             <option value="<?php echo($pre_data['trade_id'] ? $pre_data['trade_id'] : '') ?>" selected><?php echo($pre_data['trade_id'] ? get_trade_by_id($pre_data['trade_id']) : 'Select group first') ?></option>
                     </select>
-                </div>
+                </div> -->
                 <div class="form-group col-md-3">
                     <label for="exampleInputEmail1">Select Subgroup:</label>
                     <select name="subgroup_id" id="subgroup_select" class="form-select" required <?php echo $readonly ?> >
-                    <option value="<?php echo($pre_data['subgroup_id'] ? $pre_data['subgroup_id'] : '') ?>" selected ><?php echo($pre_data['subgroup_id'] ? get_subgroup_by_id($pre_data['subgroup_id']) : 'Select trade first') ?></option>
-                    
+                    <option value="<?php echo($pre_data['subgroup_id'] ? $pre_data['subgroup_id'] : '') ?>" selected ><?php echo($pre_data['subgroup_id'] ? get_subgroup_by_id($pre_data['subgroup_id']) : 'Select Subgroup') ?></option>
+                    <?php foreach($subgroups as $group){ ?>
+                    <option value="<?php echo($group->subgroup_id) ?>"><?php echo(get_subgroup_by_id($group->subgroup_id)) ?></option>
+
+                    <?php } ?>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -57,7 +60,7 @@
                         <div class="card-body kamban-card-body" id="all_structure">
                             <?php 
                             $attributes = array('id' => 'check_question_form');
-                            echo form_open('check-list', $attributes);
+                            echo form_open('check-list/'.$checklist_id, $attributes);
                              ?>
                             <?php if($question_list){ 
                                 foreach($question_list as $question){
@@ -106,13 +109,13 @@
                     <div class="card card-row card-success p-0">
                         <div class="card-header">
                             <h3 class="card-title">
-                                Checked Questions
+                                CheckList Questions
                             </h3>
                         </div>
                         <div class="card-body kamban-card-body" id="all_stages">
                         <?php 
                             $attributes = array('id' => 'uncheck_question_form');
-                            echo form_open('check-list', $attributes);
+                            echo form_open('check-list/'.$checklist_id, $attributes);
                              ?>
                             <?php if($checked_question_list){ 
                                 foreach($checked_question_list as $question){
@@ -162,46 +165,46 @@
 <script>
 
 
-    $("#tradegroup_select").change(function(){   
-        var tradegroup = $(this).val();
-        // $('#structure_select').empty();
-        // $('#structure_select').append(`<option value="" selected>Select project first</option>`)
+    // $("#tradegroup_select").change(function(){   
+    //     var tradegroup = $(this).val();
+    //     // $('#structure_select').empty();
+    //     // $('#structure_select').append(`<option value="" selected>Select project first</option>`)
 
-        $.ajax({
-            url: "<?php echo base_url().'index.php/trade/get_trade_by_tradegroup';?>",
-            type: "post",
-            data: { 'tradegroup_id': tradegroup },
-            success: function (obj) {
-                var trades = $.parseJSON(obj);
-                // console.log(tradegroup)
-                $('#trade_select').empty();
-                $('#trade_select').append(`<option value="" selected>Select Trade</option>`)
-                $.each(trades, function(key, val){
-                    // console.log(val.project_name);
-                    $('#trade_select').append(`<option value="${val.trade_id}">${val.trade_name}</option>`)
-                })
-            }
-        })
+    //     $.ajax({
+    //         url: "<?php echo base_url().'index.php/trade/get_trade_by_tradegroup';?>",
+    //         type: "post",
+    //         data: { 'tradegroup_id': tradegroup },
+    //         success: function (obj) {
+    //             var trades = $.parseJSON(obj);
+    //             // console.log(tradegroup)
+    //             $('#trade_select').empty();
+    //             $('#trade_select').append(`<option value="" selected>Select Trade</option>`)
+    //             $.each(trades, function(key, val){
+    //                 // console.log(val.project_name);
+    //                 $('#trade_select').append(`<option value="${val.trade_id}">${val.trade_name}</option>`)
+    //             })
+    //         }
+    //     })
     
-    });
+    // });
 
-    $("#trade_select").change(function(){   
-        var tradeid = $(this).val();
-        $.ajax({
-            url: "<?php echo base_url().'index.php/trade/get_subgruop_by_trade';?>",
-            type: "post",
-            data: { 'trade_id': tradeid },
-            success: function (obj) {
-                var subgroups = $.parseJSON(obj);
-                $('#subgroup_select').empty();
-                $('#subgroup_select').append(`<option value="" selected>Select Trade</option>`)
-                $.each(subgroups, function(key, val){
-                    $('#subgroup_select').append(`<option value="${val.subgroup_id}">${val.subgroup_name}</option>`)
-                })
-            }
-        })
+    // $("#trade_select").change(function(){   
+    //     var tradeid = $(this).val();
+    //     $.ajax({
+    //         url: "<?php echo base_url().'index.php/trade/get_subgruop_by_trade';?>",
+    //         type: "post",
+    //         data: { 'trade_id': tradeid },
+    //         success: function (obj) {
+    //             var subgroups = $.parseJSON(obj);
+    //             $('#subgroup_select').empty();
+    //             $('#subgroup_select').append(`<option value="" selected>Select Trade</option>`)
+    //             $.each(subgroups, function(key, val){
+    //                 $('#subgroup_select').append(`<option value="${val.subgroup_id}">${val.subgroup_name}</option>`)
+    //             })
+    //         }
+    //     })
     
-    });
+    // });
 
 
     function check_question_submit(){

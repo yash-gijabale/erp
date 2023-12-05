@@ -114,8 +114,17 @@ $route['assing-project'] = 'users/assing_project';
 
 $route['generate-report'] = 'report/generate_report';
 
-$route['check-list'] = 'checklist/check_list';
+$route['check-list/(:any)'] = 'checklist/check_list/$1';
 $route['checklist-group-master'] = 'checklist/checklist_group_master';
+$route['edit-checklist-group'] = 'checklist/edit_checklist_group';
+$route['remove-checklist-group/(:any)'] = 'checklist/remove_checklist_group/$1';
+$route['checklist-master'] = 'checklist/checklist_master';
+$route['edit-checklist-master'] = 'checklist/edit_checklist_master';
+$route['remove-checklist/(:any)'] = 'checklist/remove_checklist/$1';
+$route['add-checklist-subgroup'] = 'checklist/add_subgroup_to_checklist';
+
+$route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
+
 
 // CONTRACTOR MANAGEMENT
 $route['add-workers'] = 'contractor/add_workers';
@@ -131,7 +140,6 @@ $route['add-material'] = 'materialManegement/add_material';
 $route['material-list'] = 'materialManegement/material_list';
 $route['supply-material'] = 'materialManegement/supply_material';
 $route['supply-list'] = 'materialManegement/supply_list';
-
 
 
 

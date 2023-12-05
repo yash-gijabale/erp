@@ -346,4 +346,18 @@ function get_all_roles(){
             return FALSE;
         }
     }
+
+    function getChecklistGroupName($id)
+    {
+        $CI =& get_instance();
+        $res = $CI->Comman_model->get_data_by_id('*', 'checklist_group', array('checklist_group_id' => $id));
+        if($res)
+        {
+            return $res->checklist_group_name;
+        }else{
+            return '';
+
+        }
+        
+    }
 ?>

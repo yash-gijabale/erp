@@ -206,8 +206,48 @@ class Users extends CI_Controller {
         $postData = $this->input->post();
         if($postData)
         {
-            echo'<pre>';print_r($postData);exit;
+
+            //Check if project is already assign if yes then delete all
+            $res = $this->Comman_model->get_data('*','user_project_access', array('user_id'=>$postData['user_id']));
+            if(!empty($res))
+            {
+                $this->Comman_model->permanant_delete('user_project_access', array('user_id'=>$postData['user_id']));
+
+            }
+
+            //insert new data to table
+            foreach($postData['project_ids'] as $id)
+            {
+                $param = array(
+                    'user_id' => $postData['user_id'],
+                    'project_id' => $id
+                );
+                $this->Comman_model->insert_data('user_project_access', $param);
+            }
+            redirect('user-list');
         }
+    }
+
+    public function get_all_projects()
+    {
+        $id = $this->input->post('user_id');
+        $projects = $this->Comman_model->get_data('*', 'project');
+        $projectArr = array();
+
+        foreach($projects as $project)
+        {
+            $res = $this->Comman_model->get_data_by_id('*','user_project_access', array('user_id' => $id, 'project_id'=> $project->project_id));
+            if(!empty($res))
+            {
+                $project->assigned = TRUE;
+                array_push($projectArr, $project);
+            }else{
+                $project->assigned = FALSE;
+                array_push($projectArr, $project);
+
+            }
+        }
+        echo json_encode($projectArr);
     }
 
 }

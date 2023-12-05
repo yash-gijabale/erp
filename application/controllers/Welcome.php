@@ -40,7 +40,15 @@ class Welcome extends CI_Controller {
 
 	public function get_graph_data()
 	{
-		$project_data = $this->Comman_model->get_data('*','project');
+		$user = $this->session->userdata('user_data');
+		if($user->user_type == '1')
+		{
+			$project_data = $this->Comman_model->get_data('*','project');
+		}else{
+			$join = array($this->db->join('user_project_access b','b.project_id=a.project_id'));			
+			$project_data = $this->Comman_model->get_data('a.*, b.*','project a', array('b.user_id' => $user->user_id));
+
+		}
 		$data = array();
 		$projects = array();
 		$open_nc = array();

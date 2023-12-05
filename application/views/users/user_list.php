@@ -1,3 +1,9 @@
+<?php
+
+$user_projects = array();
+
+?>
+
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">User List</h3>
@@ -81,10 +87,10 @@
       </div>
       <?php echo form_open('assing-project') ?>
       <div class="modal-body">
-            <select class="form-control" name='project_ids[]' multiple>
-                <?php foreach($projects as $project){ ?>
+            <select class="form-control" name='project_ids[]' id="projects" multiple>
+                <!-- <?php foreach($projects as $project){ ?>
                     <option value="<?php echo $project->project_id ?>"><?php echo $project->project_name ?></option>
-                <?php } ?>
+                <?php } ?> -->
             </select>
             <input type="hidden" id='user_id' name="user_id">
       </div>
@@ -122,5 +128,25 @@
     {
         let filed = document.getElementById('user_id')
         filed.value = id;
+        $.ajax({
+            url: "<?php echo base_url().'index.php/Users/get_all_projects';?>",
+            type: "post",
+            data: { 'user_id': id },
+            success: function (obj) {
+                var projects = $.parseJSON(obj);
+                console.log(projects)
+                $('#projects').empty();
+                $.each(projects, function(key, val){
+                    if(val.assigned)
+                    {
+                    $('#projects').append(`<option value="${val.project_id}" selected>${val.project_name}</option>`)
+
+                    }else{
+
+                        $('#projects').append(`<option value="${val.project_id}">${val.project_name}</option>`)
+                    }
+                })
+            }
+        })
     }
 </script>
