@@ -26,6 +26,10 @@ class Developers extends CI_Controller {
                 'mr_name' => $postData['mr_name'],
                 'email_id' => $postData['email'],
                 'contact_number' => $postData['contact_number'],
+                'address' => $postData['address'],
+                'owner_name' => $postData['owner_name'],
+                'owner_number' => $postData['owner_number'],
+                'region' => $postData['region'],
             );
             $res = $this->Comman_model->insert_data('developer', $params);
             if($res){
@@ -62,10 +66,13 @@ class Developers extends CI_Controller {
             if($postData['developer_id']){
                 $param = array(
                     'developer_name' => $postData['developer_name'],
-                    'gst_number' => $postData['developer_gst'],
                     'mr_name' => $postData['mr_name'],
                     'email_id' => $postData['email'],
                     'contact_number' => $postData['contact_number'],
+                    'address' => $postData['address'],
+                    'owner_name' => $postData['owner_name'],
+                    'owner_number' => $postData['owner_number'],
+                    'region' => $postData['region'],
                 );
                 
                 $res = $this->Comman_model->update_data('developer', $param, array('developer_id' => $postData['developer_id']));

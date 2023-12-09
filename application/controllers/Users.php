@@ -27,7 +27,10 @@ class Users extends CI_Controller {
 
         $postData = $this->input->post();
         if($postData){
+            // echo'<pre>';print_r($postData);exite;
             $params = array(
+                'developer_id' => $postData['developer_id'],
+                'project_id' => $postData['project_id'],
                 'first_name' => $postData['first_name'],
                 'last_name' => $postData['last_name'],
                 'password' => base64_encode($postData['password']),
@@ -41,6 +44,7 @@ class Users extends CI_Controller {
             }
         }
 
+        $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
         $data['_view'] = 'users/new_user';
         $this->load->view('template/view', $data);
     }
@@ -51,6 +55,8 @@ class Users extends CI_Controller {
             $postData = $this->input->post();
             if($postData){
                 $params = array(
+                    'developer_id' => $postData['developer_id'],
+                    'project_id' => $postData['project_id'],
                     'first_name' => $postData['first_name'],
                     'last_name' => $postData['last_name'],
                     'contact' => $postData['contact_number'],
@@ -59,7 +65,7 @@ class Users extends CI_Controller {
                 );
                 $res = $this->Comman_model->update_data('users', $params, array('user_id' => $user_id));
             }
-           
+            $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
             $data['user'] = $this->Comman_model->get_data_by_id('*', 'users', array('user_id'=>$user_id));
             $data['_view'] = 'users/edit_user';
             $this->load->view('template/view', $data);
@@ -87,11 +93,13 @@ class Users extends CI_Controller {
         $postData = $this->input->post();
         if($postData)
         {
+
             //check for is user already has permisson, if yes then delete all permission
-            $isAlready = $this->Comman_model->get_data('*', 'permission', array('user_id'=> $user_id));
+            $isAlready = $this->Comman_model->get_data_by_id('*', 'permission', array('user_id'=> $user_id));
             if($isAlready)
             {
                 $this->Comman_model->permanant_delete('permission', array('user_id'=> $user_id));
+
             }
 
             $modules = array();
@@ -106,7 +114,7 @@ class Users extends CI_Controller {
                 }
             }
             // echo '<pre>';print_r($modules);
-            // echo '<pre>';print_r($submodules);
+            // echo '<pre>';print_r($submodules);exit;
 
             $finalarr = array();
             foreach($modules as $key=>$value)

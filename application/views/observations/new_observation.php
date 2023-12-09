@@ -25,7 +25,7 @@
     <?php echo form_open_multipart('new-observation') ?>
     <div class="card-body row">
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Developer:</label>
+            <label for="exampleInputEmail1">Select Developer: <span class="text-danger">*</span></label>
             <select name="developer_id" id="developer_select" class="form-select" required>
                 <option value="" selected>Select Developer</option>
                 <?php foreach($all_developers as $developer){ ?>
@@ -34,28 +34,28 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Project:</label>
+            <label for="exampleInputEmail1">Select Project: <span class="text-danger">*</span></label>
             <select name="project_id" id="project_select" class="form-select project_select" required>
                 <option value="" selected class="text-danger">Select Developer First</option>
                
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Structure:</label>
+            <label for="exampleInputEmail1">Select Structure: <span class="text-danger">*</span></label>
             <select name="structure_id" id="structure_select" class="form-select" required>
                 <option value="" selected class="text-danger">Select Project First</option>
                
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Stage:</label>
+            <label for="exampleInputEmail1">Select Stage: <span class="text-danger">*</span></label>
             <select name="stages_id[]" id="stage_select" class="form-select"  multiple="multiple" required>
                 <option value="">Select Stage</option>
                
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Trade Group:</label>
+            <label for="exampleInputEmail1">Select Trade Group: <span class="text-danger">*</span></label>
             <select name="trade_group" id="tradegroup_select" class="form-select" required>
                 <option value="" selected>Select Trade group</option>
                 <?php foreach($all_tradesgroup as $tradegroup){ ?>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Select Activity:</label>
+            <label for="exampleInputEmail1">Select Activity: <span class="text-danger">*</span></label>
             <select name="activity_id" id="activity_select" class="form-select" required>
                 <option value="" selected>Select Trade Group First</option>
                 
@@ -76,10 +76,10 @@
         <div class="form-group col-md-4">
             <?php $no = mt_rand(1000,99999); ?>
             <label for="exampleInputPassword1">Observation Number</label>
-            <input type="text" name="observation_number" class="form-control" id="exampleInputPassword1" value="<?php echo $no ?>" required>
+            <input type="text" name="observation_number" class="form-control" id="exampleInputPassword1" value="<?php echo $no ?>" readonly required>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Observation Category:</label>
+            <label for="exampleInputEmail1">Observation Category: <span class="text-danger">*</span></label>
             <select name="category_id" class="form-select" required>
                 <option value="" selected>Select Category</option>
                 <?php foreach($observation_category as $category){ ?>
@@ -88,7 +88,7 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Observation Type:</label>
+            <label for="exampleInputEmail1">Observation Type: <span class="text-danger">*</span></label>
             <select name="observation_Type_id" class="form-select" required>
                 <option value="" selected class="text-danger">Select Type</option>
                 <?php foreach($observation_type as $type){ ?>
@@ -97,7 +97,7 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Location:</label>
+            <label for="exampleInputPassword1">Location: <span class="text-danger">*</span></label>
             <input type="text" name="location" class="form-control" id="exampleInputPassword1" placeholder="Location" required>
         </div>
         <div class="form-group col-md-4">
@@ -105,23 +105,23 @@
             <textarea name="decsription" class="form-control"></textarea>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Remark:</label>
+            <label for="exampleInputPassword1">Remark: <span class="text-danger">*</span></label>
             <input type="text" name="remark" class="form-control" id="exampleInputPassword1" placeholder="Remark" required>
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Reference:</label>
-            <input type="text" name="reference" class="form-control" id="exampleInputPassword1" placeholder="Remark" required>
+            <input type="text" name="reference" class="form-control" id="exampleInputPassword1" placeholder="Remark">
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Obvservation Image:</label>
+            <label for="exampleInputPassword1">Obvservation Image: <span class="text-danger">*</span></label>
             <input type="file" name="observation_image[]" class="form-control" id="exampleInputPassword1" multiple required>
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Recommended Image:</label>
-            <input type="file" name="recommended_image[]" class="form-control" id="exampleInputPassword1" multiple required>
+            <input type="file" name="recommended_image[]" class="form-control" id="exampleInputPassword1" multiple>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Observation Severity:</label>
+            <label for="exampleInputEmail1">Observation Severity: <span class="text-danger">*</span></label>
             <select name="severity_id" class="form-select" required>
                 <option value="" selected>Select Severity</option>
                 <?php foreach($observation_severity as $severity){ ?>
@@ -130,10 +130,8 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Site Representative:</label>
-            <select name="site_representative" id="site_representative_select" class="form-select" required>
-                <option value="" selected class="text-danger">Select Severity</option>
-            </select>
+            <label for="exampleInputEmail1">Site Representative: <span class="text-danger">*</span></label>
+            <input type="text" name="site_representative" class="form-control" id="exampleInputPassword1" required>
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Observation Status:</label>
@@ -144,7 +142,7 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Allocate To:</label>
+            <label for="exampleInputPassword1">Allocate To: <span class="text-danger">*</span></label>
             <?php $roles = get_all_roles(); ?>
             <select name="allocate_to" class="form-select" require>
                 <option value="" selected>Select Type</option>
@@ -154,11 +152,11 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Attempt Date:</label>
+            <label for="exampleInputPassword1">Observation Date: <span class="text-danger">*</span></label>
             <input type="date" name="observation_date" class="form-control" id="exampleInputPassword1" required>
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Target Date:</label>
+            <label for="exampleInputPassword1">Target Date For Closure: <span class="text-danger">*</span></label>
             <input type="date" name="target_date" class="form-control" id="exampleInputPassword1" required>
         </div>
 

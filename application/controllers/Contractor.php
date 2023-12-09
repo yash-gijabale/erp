@@ -18,6 +18,27 @@ class Contractor extends CI_Controller
     }
 
 
+    public function contractor()
+    {
+        $postData = $this->input->post();
+        if($postData)
+        {
+            // echo'<pre>';print_r($postData);exit;
+            $param = array(
+                'contractor_name' => $postData['name'],
+                'contractor_number' => $postData['number'],
+                'email' => $postData['email'],
+                'address' => $postData['adress'],
+                'status' => $postData['status'],
+            );
+            $res = $this->Comman_model->insert_data('contractor', $param);
+        }
+        $data['_view'] = 'contractor/contractors';
+        $this->load->view('template/view', $data);
+
+    }
+
+
     public function add_workers()
     {
 

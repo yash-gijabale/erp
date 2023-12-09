@@ -1,3 +1,9 @@
+<style>
+    thead input {
+        width: 100%;
+    }
+</style>
+
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Developer List</h3>
@@ -12,10 +18,13 @@
                 <tr>
                     <th>Sr no</th>
                     <th>Developer Name</th>
-                    <th>GST number</th>
+                    <th>Owner Name</th>
+                    <th>Owner Number</th>
                     <th>MR name</th>
                     <th>Email</th>
                     <th>Contact</th>
+                    <th>Region</th>
+                    <th>Address</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -25,10 +34,13 @@
                     <tr>
                         <td><?php echo $sr_no ?></td>
                         <td><?php echo $developer->developer_name ?></td>
-                        <td><?php echo $developer->gst_number ?></td>
+                        <td><?php echo $developer->owner_name ?></td>
+                        <td><?php echo $developer->owner_number ?></td>
                         <td><?php echo $developer->mr_name ?></td>
                         <td><?php echo $developer->email_id ?></td>
                         <td><?php echo $developer->contact_number ?></td>
+                        <td><?php echo $developer->region ?></td>
+                        <td><?php echo $developer->address ?></td>
                         <td>
                         <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit-dev-Modal" onclick="edit_developer('<?php echo $developer->developer_id ?>')">Edit</button>
                         <button type="button" class="btn btn-danger btn-sm" onclick="remove_developer('<?php echo $developer->developer_id ?>')">Delete</button>
@@ -60,10 +72,7 @@
             <label for="exampleInputEmail1">Developer Name:</label>
             <input type="text" name="developer_name" id="developer_name" class="form-control" id="exampleInputEmail1" placeholder="Developer">
         </div>
-        <div class="form-group col-md-12">
-            <label for="exampleInputPassword1">GST Number:</label>
-            <input type="text" name="developer_gst" id="developer_gst" class="form-control" id="exampleInputPassword1" placeholder="GST">
-        </div>
+
         <div class="form-group col-md-12">
             <label for="exampleInputPassword1">Management Representative:</label>
             <input type="text" name="mr_name" class="form-control" id="mr_name" placeholder="Management Representative">
@@ -73,8 +82,30 @@
             <input type="email" name="email" class="form-control" id="email" placeholder="Email">
         </div>
         <div class="form-group col-md-12">
-            <label for="exampleInputPassword1">Contact Number:</label>
+            <label for="exampleInputPassword1">Office Number:</label>
             <input type="text" name="contact_number" class="form-control" id="contact_number" placeholder="Contact">
+        </div>
+
+        <div class="form-group col-md-12">
+            <label for="exampleInputPassword1">Owner Name:</label>
+            <input type="text" name="owner_name" class="form-control" id="owner_name" placeholder="Name">
+        </div>
+        <div class="form-group col-md-12">
+            <label for="exampleInputPassword1">Owner Number:</label>
+            <input type="text" name="owner_number" class="form-control" id="owner_number" placeholder="Number">
+        </div>
+        <div class="form-group col-md-12">
+            <label for="exampleInputPassword1">Select Region:</label>
+            <select class="form-select" aria-label="Default select example" name="region" id="region">
+                <option value="" selected>All Regions</option>
+                <?php foreach(all_city_data() as $city){ ?>
+                <option value="<?php echo $city ?>"><?php echo $city ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-12">
+            <label for="exampleInputPassword1">Address:</label>
+            <textarea  class="form-control" name="address" id="address"></textarea>
         </div>
         <input type="hidden" name="developer_id" id="developer_id" value="">
       </div>
@@ -114,11 +145,15 @@
                 developer = $.parseJSON(obj)
                 if(developer){
                     $('#developer_name').val(developer.developer_name);
-                    $('#developer_gst').val(developer.gst_number);
                     $('#mr_name').val(developer.mr_name);
                     $('#email').val(developer.email_id);
                     $('#contact_number').val(developer.contact_number);
                     $('#developer_id').val(developer.developer_id);
+                    $('#owner_name').val(developer.owner_name);
+                    $('#owner_number').val(developer.owner_number);
+                    $('#address').val(developer.address);
+                    $(`select[id^="region"] option[value="${developer.region}"]`).attr("selected","selected");
+
                 }
             }
 
@@ -133,4 +168,69 @@
             }
         }
     }
+
+
+//     $(document).ready(function () {
+//     // Setup - add a text input to each footer cell
+//     $('#example1 thead tr')
+//         .clone(true)
+//         .addClass('filters')
+//         .appendTo('#example1 thead');
+ 
+//     var table = $('#example1').DataTable({
+//         "responsive": true, "lengthChange": false, "autoWidth": false,
+//         "buttons": ["excel", "pdf", "print"],
+//         orderCellsTop: true,
+//         fixedHeader: true,
+//         initComplete: function () {
+//             var api = this.api();
+ 
+//             // For each column
+//             api
+//                 .columns()
+//                 .eq(0)
+//                 .each(function (colIdx) {
+//                     // Set the header cell to contain the input element
+//                     var cell = $('.filters th').eq(
+//                         $(api.column(colIdx).header()).index()
+//                     );
+//                     var title = $(cell).text();
+//                     $(cell).html('<input type="text" placeholder="' + title + '" />');
+ 
+//                     // On every keypress in this input
+//                     $(
+//                         'input',
+//                         $('.filters th').eq($(api.column(colIdx).header()).index())
+//                     )
+//                         .off('keyup change')
+//                         .on('change', function (e) {
+//                             // Get the search value
+//                             $(this).attr('title', $(this).val());
+//                             var regexr = '({search})'; //$(this).parents('th').find('select').val();
+ 
+//                             var cursorPosition = this.selectionStart;
+//                             // Search the column for that value
+//                             api
+//                                 .column(colIdx)
+//                                 .search(
+//                                     this.value != ''
+//                                         ? regexr.replace('{search}', '(((' + this.value + ')))')
+//                                         : '',
+//                                     this.value != '',
+//                                     this.value == ''
+//                                 )
+//                                 .draw();
+//                         })
+//                         .on('keyup', function (e) {
+//                             e.stopPropagation();
+ 
+//                             $(this).trigger('change');
+//                             $(this)
+//                                 .focus()[0]
+//                                 .setSelectionRange(cursorPosition, cursorPosition);
+//                         });
+//                 });
+//         },
+//     });
+// });
 </script>

@@ -3,7 +3,7 @@
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Observation List</h3>
-        <a class="card-tools" href="<?php echo base_url() ?>index.php/approval-list"><button class="btn btn-success">Approval</button></a>
+        <!-- <a class="card-tools" href="<?php echo base_url() ?>index.php/approval-list"><button class="btn btn-success">Approval</button></a> -->
         <?php if($user_type != '2') { ?>
         <?php } ?>
     </div>
@@ -19,8 +19,8 @@
                     <th>Observation Number</th>
                     <th>Client Name</th>
                     <th>Project Name</th>
-                    <th>Strucute Name</th>
                     <th>Location</th>
+                    <th>Remark</th>
                     <th>Status</th>
                     <th>Attempt Date</th>
                     <th>Target Date</th>
@@ -36,9 +36,14 @@
                         <td><?php echo $observation->observation_number ?></td>
                         <td><?php echo get_developer_by_id($observation->client_id) ?></td>
                         <td><?php echo get_projectname_by_id($observation->project_id) ?></td>
-                        <td><?php echo structurename_by_id($observation->structure_id) ?></td>
                         <td><?php echo $observation->location ?></td>
-                        <td><span class="badge <?php echo get_opbservation_status($observation->status)['color'] ?>"><?php echo get_opbservation_status($observation->status)['status'] ?></span></td>
+                        <td><?php echo $observation->remark ?></td>
+                        <?php if($user_type == '1'){ ?>
+                            <td><span class="badge <?php echo get_opbservation_status($observation->status)['color'] ?>"><?php echo get_opbservation_status($observation->status)['status'] ?></span></td>
+                            <?php }else{ ?>
+                        <td><span class="badge <?php echo get_inner_obj_status($observation->observation_id)['color']?>"><?php echo get_inner_obj_status($observation->observation_id)['status'] ?></span></td>
+
+                                <?php } ?>
                         <td><?php echo date('d-m-Y',strtotime($observation->observation_date)) ?></td>
                         <td><?php echo date('d-m-Y',strtotime($observation->target_date)) ?></td>
                 

@@ -35,13 +35,10 @@
             <label for="exampleInputPassword1">Project Name:</label>
             <input type="text" name="project_name" class="form-control" id="exampleInputPassword1" placeholder="Project name" required>
         </div>
+        
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Enter Location:</label>
-            <input type="text" name="project_location" class="form-control" id="exampleInputPassword1" placeholder="Location" required>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Enter configuration:</label>
-            <input type="text" name="project_configuration" class="form-control" id="exampleInputPassword1" placeholder="Configuration" required>
+            <label for="exampleInputPassword1">GST Number:</label>
+            <input type="text" name="gst_number" class="form-control" id="exampleInputPassword1" placeholder="GST number" required>
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Select Type:</label>
@@ -63,6 +60,32 @@
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Contact Number:</label>
             <input type="text" name="contact_number" class="form-control" id="exampleInputPassword1" placeholder="Contact" required>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Start Date:</label>
+            <input type="date" name="start_date" class="form-control" id="exampleInputPassword1"required>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">End Date:</label>
+            <input type="date" name="end_date" class="form-control" id="exampleInputPassword1" required>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Project Status:</label>
+            <input type="text" name="status" class="form-control" id="exampleInputPassword1" placeholder="Status" required>
+        </div>
+        
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Select Region:</label>
+            <select class="form-select" aria-label="Default select example" name="region">
+                <option value="" selected>All Regions</option>
+                <?php foreach(all_city_data() as $city){ ?>
+                <option value="<?php echo $city ?>"><?php echo $city ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Address:</label>
+            <textarea  class="form-control" name="address"></textarea>
         </div>
     </div>
     <div class="card-footer">

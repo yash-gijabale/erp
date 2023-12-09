@@ -5,6 +5,24 @@
 
     <?php echo form_open('edit-user/'.$user->user_id) ?>
     <div class="card-body row">
+    <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Select Developer: <span class="text-danger">*</span></label>
+            <select name="developer_id" id="developer_select" class="form-select" required>
+                <option value="" selected>Select Developer</option>
+                <?php foreach($all_developers as $developer){ ?>
+                <option value="<?php echo($developer->developer_id) ?>" <?php echo ($developer->developer_id == $user->developer_id ? 'selected' : '') ?>>
+                    <?php echo($developer->developer_name) ?>
+                </option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Select Project: <span class="text-danger">*</span></label>
+            <select name="project_id" id="project_select" class="form-select project_select" required>
+                <option value="<?php echo $user->project_id ?>" selected class="text-danger"><?php echo get_projectname_by_id($user->project_id) ?></option>
+
+            </select>
+        </div>
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">First Name:</label>
             <input type="text" name="first_name" class="form-control" id="exampleInputPassword1" placeholder="First name" value="<?php echo $user->first_name ?>" required>
@@ -37,3 +55,26 @@
     </div>
     <?php echo form_close() ?>
 </div>
+
+<script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    $("#developer_select").change(function () {
+        var developer_id = $(this).val();
+        $.ajax({
+            url: "<?php echo base_url().'index.php/projects/get_projects_by_dev_id';?>",
+            type: "post",
+            data: { 'developer_id': developer_id },
+            success: function (obj) {
+                var projects = $.parseJSON(obj);
+                $('#project_select').empty();
+                $('#project_select').append(`<option value="" selected>Select Project</option>`)
+                $.each(projects, function (key, val) {
+                    // console.log(val.project_name);
+                    $('#project_select').append(`<option value="${val.project_id}">${val.project_name}</option>`)
+                })
+            }
+        })
+
+    });
+</script>

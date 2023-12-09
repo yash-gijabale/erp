@@ -27,10 +27,6 @@
             <input type="text" name="developer_name" class="form-control" id="exampleInputEmail1" placeholder="Developer">
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">GST Number:</label>
-            <input type="text" name="developer_gst" class="form-control" id="exampleInputPassword1" placeholder="GST">
-        </div>
-        <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Management Representative:</label>
             <input type="text" name="mr_name" class="form-control" id="exampleInputPassword1" placeholder="Management Representative">
         </div>
@@ -39,8 +35,29 @@
             <input type="email" name="email" class="form-control" id="exampleInputPassword1" placeholder="Email">
         </div>
         <div class="form-group col-md-4">
-            <label for="exampleInputPassword1">Contact Number:</label>
+            <label for="exampleInputPassword1">Office Number:</label>
             <input type="text" name="contact_number" class="form-control" id="exampleInputPassword1" placeholder="Contact">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Owner Name:</label>
+            <input type="text" name="owner_name" class="form-control" id="exampleInputPassword1" placeholder="Name">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Owner Number:</label>
+            <input type="text" name="owner_number" class="form-control" id="exampleInputPassword1" placeholder="Number">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Select Region:</label>
+            <select class="form-select" aria-label="Default select example" name="region">
+                <option value="" selected>All Regions</option>
+                <?php foreach(all_city_data() as $city){ ?>
+                <option value="<?php echo $city ?>"><?php echo $city ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputPassword1">Address:</label>
+            <textarea  class="form-control" name="address"></textarea>
         </div>
     </div>
     <div class="card-footer">

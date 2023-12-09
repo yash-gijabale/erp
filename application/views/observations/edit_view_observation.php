@@ -2,7 +2,7 @@
  $user_id = $this->session->userdata('user_data')->user_id;
 
 // print_r($user_type);exit;
-if($user_type == '1'){
+if($user_type == '1' || $user_type == '2' ){
     $readonly = '';
 }else{
     $readonly = 'disabled';
@@ -53,11 +53,10 @@ if($user_type == '1'){
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Stage:</label>
             <?php $ob_floors = json_decode($observation->floors); ?>
-            <select name="stages_id[]" id="stage_select" class="form-select" multiple="multiple" required <?php echo
+            <select name="stages_id[]" id="stage_select" class="form-select" multiple required <?php echo
                 $readonly ?>>
                 <?php foreach($floors as $key=>$floor){ ?>
-                <option value="<?php echo $floor->stage_id ?>" <?php echo($floor->stage_id == $ob_floors[$key] ?
-                    'selected' : '') ?>>
+                <option value="<?php echo $floor->stage_id ?>" <?php echo($floor->stage_id == $ob_floors[$key] ? 'selected' : '') ?>>
                     <?php echo $floor->stage_name ?>
                 </option>
                 <?php } ?>
@@ -181,7 +180,7 @@ if($user_type == '1'){
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Target Date:</label>
             <input type="date" name="target_date" class="form-control" id="exampleInputPassword1"
-                value="<?php echo date('Y-m-d', strtotime($observation->taregt_date)) ?>" required <?php echo $readonly
+                value="<?php echo date('Y-m-d', strtotime($observation->target_date)) ?>" required <?php echo $readonly
                 ?>>
         </div>
         <div class="form-group col-md-12">
@@ -210,7 +209,7 @@ if($user_type == '1'){
             </span>
         <?php } ?>
 
-        <?php if($user_type != '2'){ ?>
+        <?php if($user_type != '3'){ ?>
             <button type="button" id="reject-button" class="btn btn-danger" id="aprroval_btn" onclick="rejectApproval('<?php echo $observation->observation_id ?>')">Reject</button>
         <?php } ?>
 

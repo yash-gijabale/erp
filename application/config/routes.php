@@ -127,6 +127,7 @@ $route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
 
 
 // CONTRACTOR MANAGEMENT
+$route['contractors'] = 'contractor/contractor';
 $route['add-workers'] = 'contractor/add_workers';
 $route['workers-list'] = 'contractor/workers_list';
 $route['add-attendance'] = 'contractor/add_attendence';
@@ -144,14 +145,43 @@ $route['supply-list'] = 'materialManegement/supply_list';
 
 
 //WEB API
+
 //logIn
 $route['api/login'] = 'api/Login_api/login';
+$route['api/logout'] = 'api/Login_api/logout';
 
 
 //Project module
-$route['api/getProjects'] = 'api/project_api/project_list';
-$route['api/addProject'] = 'api/project_api/add_project';
-$route['api/editProject/(:any)'] = 'api/project_api/edit_project';
+$route['api/getProjects'] = 'api/Project_api/projectList';
+$route['api/addProject'] = 'api/Project_api/add_project';
+$route['api/editProject/(:any)'] = 'api/Project_api/edit_project';
+$route['api/getStructure'] = 'api/Project_api/get_structures_by_project_id';
+$route['api/getStages'] = 'api/Project_api/get_stages_by_structure_id';
+$route['api/getUnits'] = 'api/Project_api/get_units_by_stage_id';
+
+
+//Observation
+$route['api/getObservations'] = 'api/Observation_api/getObservationList';
+$route['api/addObservation'] = 'api/Observation_api/newobservation';
+
+
+
+//Trade Activity
+$route['api/getTradeGroups'] = 'api/Trade_api/allTradeGroup';
+$route['api/getTrades'] = 'api/Trade_api/allTrades';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

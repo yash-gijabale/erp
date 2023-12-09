@@ -19,15 +19,21 @@ class Projects extends CI_Controller
     {
         $postData = $this->input->post();
         if ($postData) {
+            // echo'<pre>';print_r($postData);exit;
+
             $pramas = array(
                 'project_name' => $postData['project_name'],
                 'developer_id' => $postData['developer_id'],
-                'project_location' => $postData['project_location'],
-                'configuration' => $postData['project_configuration'],
+                'project_location' => $postData['region'],
+                'gst_number' => $postData['gst_number'],
                 'project_type' => $postData['project_type'],
                 'mr_name' => $postData['mr_name'],
                 'email_id' => $postData['email'],
-                'contact_number' => $postData['contact_number']
+                'contact_number' => $postData['contact_number'],
+                'start_date' => $postData['start_date'],
+                'end_date' => $postData['end_date'],
+                'address' => $postData['address'],
+                'status' => $postData['status']
             );
 
             // echo'<pre>';print_r($pramas);exit;
@@ -64,12 +70,16 @@ class Projects extends CI_Controller
                 $pramas = array(
                     'developer_id' => $postData['developer_id'],
                     'project_name' => $postData['project_name'],
-                    'project_location' => $postData['project_location'],
-                    'configuration' => $postData['project_configuration'],
+                    'project_location' => $postData['region'],
+                    'gst_number' => $postData['gst_number'],
                     'project_type' => $postData['project_type'],
                     'mr_name' => $postData['mr_name'],
                     'email_id' => $postData['email'],
-                    'contact_number' => $postData['contact_number']
+                    'contact_number' => $postData['contact_number'],
+                    'start_date' => $postData['start_date'],
+                    'end_date' => $postData['end_date'],
+                    'address' => $postData['address'],
+                    'status' => $postData['status']
                 );
                 $this->Comman_model->update_Data('project', $pramas, array('project_id' => $project_id));
             }
@@ -141,10 +151,17 @@ class Projects extends CI_Controller
 
     public function get_projects_by_dev_id()
     {
+        $user = $this->session->userdata('user_data');
         $change_developer = $this->input->post('developer_id');
         if ($change_developer) {
-            $all_projects = $this->Comman_model->get_data('*', 'project', array('developer_id' => $change_developer));
-            echo json_encode($all_projects);
+            if($user->user_type == '1'){
+                $all_projects = $this->Comman_model->get_data('*', 'project', array('developer_id' => $change_developer));
+                echo json_encode($all_projects);
+            }else{
+                $join = array($this->db->join('user_project_access b', 'a.project_id=b.project_id'));
+                $all_projects = $this->Comman_model->get_data('a.*, b.*', 'project a', array('a.developer_id' => $change_developer, 'b.user_id' => $user->user_id));
+                echo json_encode($all_projects);
+            }
         }
     }
 

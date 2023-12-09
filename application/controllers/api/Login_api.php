@@ -23,13 +23,14 @@ class Login_api extends RestController{
     public function login_post($postData=array()){
 		$postData = $this->post();
 			$password = base64_encode($postData['password']);
-			$user = $this->Comman_model->get_data('*','users', array('contact' => $postData['number'], 'password'=>$password));
+			$user = $this->Comman_model->get_data_by_id('*','users', array('contact' => $postData['number'], 'password'=>$password));
             if($user)
             {
                 $res = array(
                     'success' => TRUE,
                     'message' => 'succes'
                 );
+				$this->session->set_userdata('user_data', $user);
                 $this->response($res, RestController::HTTP_OK);
             }else{
                 $res = array(
@@ -41,6 +42,16 @@ class Login_api extends RestController{
             }
 
     }
+
+    public function logout_get(){
+		$this->session->unset_userdata('user_data');
+        $res = array(
+            'success' => TRUE,
+            'message' => 'Logged Out'
+        );
+        $this->response($res, RestController::HTTP_OK);
+
+	}
 
 }
 

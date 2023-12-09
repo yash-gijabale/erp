@@ -151,10 +151,19 @@
     $("#subgroup").change(function () {
         var subgroup_id = $(this).val();
         var checklist_id = $('#checklist_select').val();
+        var developer_id = $('#developer_id').val();
+        var project_id = $('#project_select').val();
+        var structure_id = $('#structure_select').val();
         $.ajax({
             url: "<?php echo base_url().'index.php/checklistAllocation/get_checklist_questions_by_checklist_subgroup';?>",
             type: "post",
-            data: { 'checklist_id': checklist_id, 'subgroup_id': subgroup_id },
+            data: { 
+                'checklist_id': checklist_id, 
+                'subgroup_id': subgroup_id,
+                'developer_id' : developer_id,
+                'project_id' : project_id,
+                'structure_id': structure_id
+            },
             success: function (obj) {
                 var questions = $.parseJSON(obj);
                 console.log(questions)
@@ -164,7 +173,7 @@
                     $('#questionList').append(`
                     <div class="card card-success card-outline col-md-5 my-1 p-2">
                         <div class="mx-4">
-                        <input class="form-check-input" type="checkbox" value="${val.question_id}" name='questions[]'>
+                        <input class="form-check-input" type="checkbox" value="${val.question_id}" name='questions[]' ${val.isAllocated ? 'checked': ''}>
                             <label class="form-check-label" for="flexCheckDefault">
                             ${val.question_title}
                             </label>
