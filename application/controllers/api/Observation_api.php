@@ -22,12 +22,14 @@ class Observation_api extends RestController
     }
 
 
-    public function getObservationList_get()
+    public function getObservationList_get($user_id)
     {
-        $user_session = $this->session->userdata('user_data');
-            if(!empty($user_session)){
-            $user_type = $this->session->userdata('user_data')->user_type;
-            $user_id = $this->session->userdata('user_data')->user_id;
+        // $user_session = $this->session->userdata('user_data');
+            $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
+
+            if(!empty($user)){
+            $user_type = $user->user_type;
+            $user_id = $user->user_id;
             if ($user_type == '1') {
                 $observations= $this->Comman_model->get_data('*', 'observations');
 
@@ -51,7 +53,7 @@ class Observation_api extends RestController
         }else{
             $res = array(
                 'success' => FALSE,
-                'message' => 'Login to access this resourse'
+                'message' => 'Login to access this resourse OR invalid user ID'
             );
             $this->response($res, RestController::HTTP_OK);
         }

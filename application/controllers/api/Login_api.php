@@ -28,9 +28,9 @@ class Login_api extends RestController{
             {
                 $res = array(
                     'success' => TRUE,
-                    'message' => 'succes'
+                    'user' => $user
                 );
-				$this->session->set_userdata('user_data', $user);
+				// $this->session->set_userdata('user_data', $user);
                 $this->response($res, RestController::HTTP_OK);
             }else{
                 $res = array(
@@ -44,7 +44,7 @@ class Login_api extends RestController{
     }
 
     public function logout_get(){
-		$this->session->unset_userdata('user_data');
+		// $this->session->unset_userdata('user_data');
         $res = array(
             'success' => TRUE,
             'message' => 'Logged Out'

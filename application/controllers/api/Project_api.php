@@ -22,23 +22,90 @@ class Project_api extends RestController
     }
 
 
-    public function projectList_get()
+    public function projectList_get($user_id)
     {
-        $user_session = $this->session->userdata('user_data');
-        if(!empty($user_session)){
-            if($user_session->user_type == '1'){
+        // $user_session = $this->session->userdata('user_data');
+        $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
+        // $this->response($user, RestController::HTTP_OK);
+
+        if(!empty($user)){
+            if($user->user_type == '1'){
                 $project_data = $this->Comman_model->get_data('*','project');
+                $mainArray = array();
+                foreach($project_data as $project)
+                {
+                    $structure_data = $this->Comman_model->get_data('*', 'structure', array('project_id' => $project->project_id));
+                    $structureArr = array();
+                    foreach($structure_data as $structure)
+                    {
+                        $stage_data = $this->Comman_model->get_data('*', 'stages', array('structure_id' => $structure->structure_id));
+                        
+                        $stagesArr = array();
+                        foreach($stage_data as $stage)
+                        {
+                            $unit_data = $this->Comman_model->get_data('*', 'units', array('stage_id' => $stage->stage_id));
+                            $unitArr = array();
+                            foreach($unit_data as $unit)
+                            {
+                                $subunit_data = $this->Comman_model->get_data('*', 'subunit', array('unit_id' => $unit->unit_id));
+                                $unit->subunit = $subunit_data;
+                                $unitArr[] = $unit;
+                            }
+                            $stage->units = $unitArr;
+                            $stagesArr[] = $stage;
+                        }
+                        $structure->stages = $stagesArr;
+                        $structureArr[] = $structure;
+
+                    }
+
+                    $project->structure = $structureArr;
+                    array_push($mainArray, $project);
+                }
+            $this->response($mainArray, RestController::HTTP_OK);
+                
 
             }else{
 
                 $join = array($this->db->join('user_project_access b','b.project_id=a.project_id'));			
-                $project_data = $this->Comman_model->get_data('a.*, b.*','project a', array('b.user_id' => $user_session->user_id));
+                $project_data = $this->Comman_model->get_data('a.*, b.*','project a', array('b.user_id' => $user->user_id));
+                $mainArray = array();
+                foreach($project_data as $project)
+                {
+                    $structure_data = $this->Comman_model->get_data('*', 'structure', array('project_id' => $project->project_id));
+                    $structureArr = array();
+                    foreach($structure_data as $structure)
+                    {
+                        $stage_data = $this->Comman_model->get_data('*', 'stages', array('structure_id' => $structure->structure_id));
+                        
+                        $stagesArr = array();
+                        foreach($stage_data as $stage)
+                        {
+                            $unit_data = $this->Comman_model->get_data('*', 'units', array('stage_id' => $stage->stage_id));
+                            $unitArr = array();
+                            foreach($unit_data as $unit)
+                            {
+                                $subunit_data = $this->Comman_model->get_data('*', 'subunit', array('unit_id' => $unit->unit_id));
+                                $unit->subunit = $subunit_data;
+                                $unitArr[] = $unit;
+                            }
+                            $stage->units = $unitArr;
+                            $stagesArr[] = $stage;
+                        }
+                        $structure->stages = $stagesArr;
+                        $structureArr[] = $structure;
+
+                    }
+
+                    $project->structure = $structureArr;
+                    array_push($mainArray, $project);
+                }
             }
-            $this->response($project_data, RestController::HTTP_OK);
+            $this->response($mainArray, RestController::HTTP_OK);
          }else{
             $res = array(
                 'success' => FALSE,
-                'message' => 'Login to access this resourse'
+                'message' => 'Login to access this resourse OR Invalid user Id'
             );
             $this->response($res, RestController::HTTP_OK);
 

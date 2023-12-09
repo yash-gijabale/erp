@@ -18,6 +18,7 @@ class Trade extends CI_Controller {
 	public function trade_activity()
 	{
 
+        $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
         $data['trade_groups'] = $this->Comman_model->get_data('*','trade_gruop');
         $data['trades'] = $this->Comman_model->get_data('*','trade');
         $data['subgroups'] = $this->Comman_model->get_data('*','subgroup');
@@ -29,7 +30,8 @@ class Trade extends CI_Controller {
         $postData = $this->input->post();
         if($postData){
             $params = array(
-                'tradegroup_name' => $postData['tradegroup_name']
+                'tradegroup_name' => $postData['tradegroup_name'],
+                'project_id' => $postData['project_id']
             );
             $res = $this->Comman_model->insert_data('trade_gruop',$params);
             if($res){

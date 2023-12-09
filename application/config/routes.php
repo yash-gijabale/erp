@@ -152,17 +152,17 @@ $route['api/logout'] = 'api/Login_api/logout';
 
 
 //Project module
-$route['api/getProjects'] = 'api/Project_api/projectList';
-$route['api/addProject'] = 'api/Project_api/add_project';
-$route['api/editProject/(:any)'] = 'api/Project_api/edit_project';
-$route['api/getStructure'] = 'api/Project_api/get_structures_by_project_id';
-$route['api/getStages'] = 'api/Project_api/get_stages_by_structure_id';
-$route['api/getUnits'] = 'api/Project_api/get_units_by_stage_id';
+$route['api/getProjects/(:any)'] = 'api/Project_api/projectList/$1';
+// $route['api/addProject'] = 'api/Project_api/add_project';
+// $route['api/editProject/(:any)'] = 'api/Project_api/edit_project';
+// $route['api/getStructure'] = 'api/Project_api/get_structures_by_project_id';
+// $route['api/getStages'] = 'api/Project_api/get_stages_by_structure_id';
+// $route['api/getUnits'] = 'api/Project_api/get_units_by_stage_id';
 
 
 //Observation
-$route['api/getObservations'] = 'api/Observation_api/getObservationList';
-$route['api/addObservation'] = 'api/Observation_api/newobservation';
+$route['api/getObservations/(:any)'] = 'api/Observation_api/getObservationList/$1';
+// $route['api/addObservation'] = 'api/Observation_api/newobservation';
 
 
 

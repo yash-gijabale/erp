@@ -107,35 +107,54 @@ class Projects extends CI_Controller
         // $res = $this->Comman_model->get_data('*','structure');
         //     echo'<pre>';print_r($res);exit;
 
-        $postData = $this->input->post();
-        if ($postData) {
+        // $postData = $this->input->post();
+        // if ($postData) {
+        //     $pramas = array(
+        //         'project_id' => $postData['project_id'],
+        //         'structure_name' => $postData['structure_name'],
+        //         'structure_area' => $postData['structure_area'],
+        //     );
+        //     // echo'<pre>';print_r($postData);exit;
+        //     $res = $this->Comman_model->insert_data('structure', $pramas);
+        //     if ($res) {
+        //         redirect('view-structure');
+        //     }
+        // }
+
+        $structure_name = $this->input->post('structure_name');
+        $structure_area = $this->input->post('structure_area');
+        $project_id = $this->input->post('project_id');
+                // echo json_encode($structure_name);
+
+        // if ($structure_name != '') {
             $pramas = array(
-                'project_id' => $postData['project_id'],
-                'structure_name' => $postData['structure_name'],
-                'structure_area' => $postData['structure_area'],
+                'project_id' => $project_id,
+                'structure_name' => $structure_name,
+                'structure_area' => $structure_area,
             );
             // echo'<pre>';print_r($postData);exit;
             $res = $this->Comman_model->insert_data('structure', $pramas);
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($pramas);
             }
-        }
+        // }
 
     }
 
     public function edit_structure()
     {
-        $postData = $this->input->post();
-        if ($postData) {
+        $structure_name = $this->input->post('structure_name');
+        $structure_area = $this->input->post('structure_area');
+        $structure_id = $this->input->post('structure_id');
+        if ($structure_id) {
             // echo'<pre>';print_r($postData);exit;
             $pramas = array(
-                'project_id' => $postData['project_id'],
-                'structure_name' => $postData['structure_name'],
-                'structure_area' => $postData['structure_area'],
+                'structure_name' => $structure_name,
+                'structure_area' => $structure_area,
             );
-            $res = $this->Comman_model->update_data('structure', $pramas, array('structure_id' => $postData['structure_id']));
+            $res = $this->Comman_model->update_data('structure', $pramas, array('structure_id' => $structure_id));
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($pramas);
             }
         }
     }
@@ -186,32 +205,34 @@ class Projects extends CI_Controller
 
     public function add_stage()
     {
-        $postData = $this->input->post();
-        if ($postData) {
+        $stage_name = $this->input->post('stage_name');
+        $structure_id = $this->input->post('structure_id');
+        if ($structure_id) {
             $pramas = array(
-                'structure_id' => $postData['structure_id'],
-                'stage_name' => $postData['stage_name'],
+                'structure_id' => $structure_id,
+                'stage_name' => $stage_name
                 // 'structure_area' => $postData['structure_area'],
             );
             // echo'<pre>';print_r($pramas);exit;
             $res = $this->Comman_model->insert_data('stages', $pramas);
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($pramas);
             }
         }
     }
 
     public function edit_stage()
     {
-        $postData = $this->input->post();
-        if ($postData) {
+        $stage_id = $this->input->post('stage_id');
+        $stage_name = $this->input->post('stage_name');
+        if ($stage_id) {
             // echo'<pre>';print_r($postData);exit;
             $pramas = array(
-                'stage_name' => $postData['stage_name'],
+                'stage_name' => $stage_name,
             );
-            $res = $this->Comman_model->update_data('stages', $pramas, array('stage_id' => $postData['stage_id']));
+            $res = $this->Comman_model->update_data('stages', $pramas, array('stage_id' => $stage_id));
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($pramas);
             }
         }
     }
@@ -236,19 +257,22 @@ class Projects extends CI_Controller
 
     public function add_unit()
     {
-        $postData = $this->input->post();
-        if ($postData) {
+        $stage_id = $this->input->post('stage_id');
+        $unit_number = $this->input->post('unit_number');
+        $unit_type = $this->input->post('unit_type');
+        $unit_area = $this->input->post('unit_area');
+        if ($stage_id) {
             $pramas = array(
-                'stage_id' => $postData['stage_id'],
-                'unit_type' => $postData['unit_type'],
-                'unit_area' => $postData['unit_area'],
-                'unit_code' => $postData['unit_code']
+                'stage_id' => $stage_id,
+                'unit_type' => $unit_type,
+                'unit_area' => $unit_area,
+                'unit_code' => $unit_number
                 // 'structure_area' => $postData['structure_area'],
             );
             // echo'<pre>';print_r($pramas);exit;
             $res = $this->Comman_model->insert_data('units', $pramas);
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($pramas);
             }
         }
     }
@@ -264,17 +288,21 @@ class Projects extends CI_Controller
 
     public function edit_unit()
     {
-        $postData = $this->input->post();
-        if ($postData) {
+        $unit_id = $this->input->post('unit_id');
+        $unit_number = $this->input->post('unit_number');
+        $unit_area = $this->input->post('unit_area');
+        $unit_type = $this->input->post('unit_type');
+        if ($unit_id) {
             // echo'<pre>';print_r($postData);exit;
             $pramas = array(
-                'unit_type' => $postData['unit_type'],
-                'unit_area' => $postData['unit_area'],
-                'unit_code' => $postData['unit_code']
+                'unit_type' => $unit_type,
+                'unit_area' => $unit_area,
+                'unit_code' => $unit_number
             );
-            $res = $this->Comman_model->update_data('units', $pramas, array('unit_id' => $postData['unit_id']));
+            $res = $this->Comman_model->update_data('units', $pramas, array('unit_id' => $unit_id));
             if ($res) {
-                redirect('view-structure');
+                echo json_encode($res);
+
             }
         }
     }
