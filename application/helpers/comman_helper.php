@@ -425,4 +425,58 @@ function get_all_roles(){
             );
         }
     }
+
+    function get_menus_for_mobile($user_id)
+    {
+        $CI =& get_instance();
+        $moduleRes = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $user_id),$join=false,$orderclm=false, $order=false,$limit=false,$groupby='module_id');
+        
+        $moduleArr = array();
+        foreach($moduleRes as $module)
+        {
+            array_push($moduleArr, $module->module_id);
+
+        }
+
+        $sideBarMenuArray = array();
+
+        foreach($moduleArr as $moduleId)
+        {
+            $subArr = array();
+            $submoduleRes = $CI->Comman_model->get_data('*', 'permission', array('user_id' => $user_id, 'module_id' => $moduleId, 'submodule_id >' => 0));
+            $module = $CI->Comman_model->get_data_by_id('module_id, module_name', 'modules', array('module_id' => $moduleId));
+            $subArr['module'] = $module;
+
+            if(!empty($submoduleRes))
+            {
+                $arr = array();
+                foreach($submoduleRes as $submode)
+                {
+                    $subModule = $CI->Comman_model->get_data_by_id('submodule_id, submodule_name', 'submodule', array('submodule_id' => $submode->submodule_id));
+                    $arr[] = $subModule;
+                }
+                $subArr['submodules'] = $arr;
+            }else{
+                $subArr['submodules'] = array();
+
+            }
+
+
+            array_push($sideBarMenuArray, $subArr);
+        }
+
+        return $sideBarMenuArray;
+    }
+
+    function getObservationData()
+    {
+        $CI =& get_instance();
+        $data = array();
+        $data['trade_group'] = $CI->Comman_model->get_data('*','trade_gruop');
+        $data['observation_type'] = $CI->Comman_model->get_data('*', 'observation_type');
+        $data['observation_severity'] = $CI->Comman_model->get_data('*', 'observation_severity');
+        $data['observation_category'] = $CI->Comman_model->get_data('*', 'categories');
+        return $data;
+        
+    }
 ?>

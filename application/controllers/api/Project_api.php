@@ -62,7 +62,12 @@ class Project_api extends RestController
                     $project->structure = $structureArr;
                     array_push($mainArray, $project);
                 }
-            $this->response($mainArray, RestController::HTTP_OK);
+                $res = array(
+                    'success' => TRUE,
+                    'message' => 'response available',
+                    'result' => $mainArray
+                );
+                $this->response($res, RestController::HTTP_OK);
                 
 
             }else{
@@ -101,13 +106,19 @@ class Project_api extends RestController
                     array_push($mainArray, $project);
                 }
             }
-            $this->response($mainArray, RestController::HTTP_OK);
+            $res = array(
+                'success' => TRUE,
+                'message' => 'response available',
+                'result' => $mainArray
+            );
+            $this->response($res, RestController::HTTP_OK);
          }else{
             $res = array(
                 'success' => FALSE,
-                'message' => 'Login to access this resourse OR Invalid user Id'
+                'message' => 'Login to access this resourse OR Invalid user Id',
+                'result' => []
             );
-            $this->response($res, RestController::HTTP_OK);
+            $this->response($res, RestController::HTTP_BAD_REQUEST);
 
          }
     }

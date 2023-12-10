@@ -49,11 +49,18 @@ class Observation_api extends RestController
                 }
                 $observations = array_merge(...$objects);
             }
-            $this->response($observations, RestController::HTTP_OK);
+            $res = array(
+                'success' => FALSE,
+                'message' => 'response available',
+                'result' => $observations
+            );
+            $this->response($res, RestController::HTTP_OK);
         }else{
             $res = array(
                 'success' => FALSE,
-                'message' => 'Login to access this resourse OR invalid user ID'
+                'message' => 'Login to access this resourse OR invalid user ID',
+                'result' => []
+
             );
             $this->response($res, RestController::HTTP_OK);
         }

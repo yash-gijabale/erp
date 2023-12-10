@@ -25,17 +25,27 @@ class Login_api extends RestController{
 			$password = base64_encode($postData['password']);
 			$user = $this->Comman_model->get_data_by_id('*','users', array('contact' => $postData['number'], 'password'=>$password));
             if($user)
+
             {
+                $menus = get_menus_for_mobile($user->user_id);
+                $observationData = getObservationData();
+                $result = array(
+                    'user' => $user,
+                    'menus' => $menus,
+                    'observationData' => $observationData
+                );
                 $res = array(
                     'success' => TRUE,
-                    'user' => $user
+                    'message' => 'response available',
+                    'result' => $result
                 );
 				// $this->session->set_userdata('user_data', $user);
                 $this->response($res, RestController::HTTP_OK);
             }else{
                 $res = array(
                     'success' => FALSE,
-                    'message' => 'Invalid Credintial'
+                    'message' => 'Invalid Credintial',
+                    'result' => []
                 );
                 $this->response($res, RestController::HTTP_OK);
 

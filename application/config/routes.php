@@ -165,13 +165,17 @@ $route['api/getObservations/(:any)'] = 'api/Observation_api/getObservationList/$
 // $route['api/addObservation'] = 'api/Observation_api/newobservation';
 
 
-
 //Trade Activity
 $route['api/getTradeGroups'] = 'api/Trade_api/allTradeGroup';
 $route['api/getTrades'] = 'api/Trade_api/allTrades';
 
 
+//USERS
+$route['api/userList/(:any)'] = 'api/User_api/userList/$1';
 
+
+//CONTRACTOR
+$route['api/workerList/(:any)'] = 'api/Contractor_api/getProjectWorkerList/$1';
 
 
 
