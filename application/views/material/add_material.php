@@ -5,6 +5,22 @@
     </div>
     <?php echo form_open('add-material') ?>
     <div class="card-body row">
+    <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Select Developer: <span class="text-danger">*</span></label>
+            <select name="developer_id" id="developer_select" class="form-select" required>
+                <option value="" selected>Select Developer</option>
+                <?php foreach($all_developers as $developer){ ?>
+                    <option value="<?php echo($developer->developer_id) ?>"><?php echo($developer->developer_name) ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Select Project: <span class="text-danger">*</span></label>
+            <select name="project_id" id="project_select" class="form-select project_select" required>
+                <option value="" selected class="text-danger">Select Developer First</option>
+               
+            </select>
+        </div>
         <div class="form-group col-md-4">
             <label for="exampleInputPassword1">Material Name:</label>
             <input type="text" name="material_name" class="form-control" id="exampleInputPassword1" placeholder="Material name" required>
@@ -67,4 +83,25 @@ $('#unit_price').on('input', ()=>{
     }
 })
 
+$("#developer_select").change(function(){   
+        var developer_id = $(this).val();
+        $('#structure_select').empty();
+        $('#structure_select').append(`<option value="" selected>Select project first</option>`)
+
+        $.ajax({
+            url: "<?php echo base_url().'index.php/projects/get_projects_by_dev_id';?>",
+            type: "post",
+            data: { 'developer_id': developer_id },
+            success: function (obj) {
+                var projects = $.parseJSON(obj);
+                $('.project_select').empty();
+                $('.project_select').append(`<option value="" selected>Select Project</option>`)
+                $.each(projects, function(key, val){
+                    // console.log(val.project_name);
+                    $('.project_select').append(`<option value="${val.project_id}">${val.project_name}</option>`)
+                })
+            }
+        })
+    
+    });
 </script>

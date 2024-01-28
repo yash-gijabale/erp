@@ -74,7 +74,7 @@
         </div>
 
         <div class="form-group col-md-4">
-            <?php $no = mt_rand(1000,99999); ?>
+            <?php $no = mt_rand(1000,9999999); ?>
             <label for="exampleInputPassword1">Observation Number</label>
             <input type="text" name="observation_number" class="form-control" id="exampleInputPassword1" value="<?php echo $no ?>" readonly required>
         </div>

@@ -41,11 +41,20 @@ class Projects extends CI_Controller
             if ($res) {
                 $data['submit_status'] = TRUE;
                 $data['submit_msg'] = 'Project Added successfully';
+                foreach($postData['trade_id'] as $tradegroup_id)
+                {
+                    $pramas2 = array(
+                        'project_id' => $res,
+                        'tradegroup_id' => $tradegroup_id
+                    );
+                    $this->Comman_model->insert_data('project_tradegroup_allocation',$pramas2);
+                }
             } else {
                 $data['submit_status'] = FALSE;
                 $data['submit_msg'] = 'Somthing is wrong, please try again!';
             }
         }
+        $data['tradeGroups'] = $this->Comman_model->get_data('*','trade_gruop');
         $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
         // echo'<pre>';print_r($data['all_developers']);exit;
         $data['_view'] = 'project/add_project';
@@ -82,12 +91,26 @@ class Projects extends CI_Controller
                     'status' => $postData['status']
                 );
                 $this->Comman_model->update_Data('project', $pramas, array('project_id' => $project_id));
+
+                $is_tradegroup = $this->Comman_model->get_data_by_id('*','project_tradegroup_allocation', array('project_id' => $project_id));
+                if(!empty($is_tradegroup))
+                {
+                    $this->Comman_model->permanant_delete('project_tradegroup_allocation', array('project_id'=>$project_id));
+                }
+                foreach($postData['trade_id'] as $tradegroup_id)
+                {
+                    $pramas2 = array(
+                        'project_id' => $project_id,
+                        'tradegroup_id' => $tradegroup_id
+                    );
+                    $this->Comman_model->insert_data('project_tradegroup_allocation',$pramas2);
+                }
             }
 
             $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
             $data['project'] = $this->Comman_model->get_data_by_id('*', 'project', array('project_id' => $project_id));
             // echo'<pre>';print_r($data['project']);exit;
-
+            $data['tradeGroups'] = $this->Comman_model->get_data('*','trade_gruop');
             $data['_view'] = 'project/edit_project';
             $this->load->view('template/view', $data);
         } else {
@@ -418,6 +441,57 @@ class Projects extends CI_Controller
 
         }
 
+    }
+
+
+    public function getAllocatedUserByProject()
+    {
+        $project_id = $this->input->post('project_id');
+        $roles = $this->Comman_model->get_data('*', 'roles', array('role_access'=> 0));
+        $data = array();
+        foreach($roles as $role)
+        {
+            $join = array($this->db->join('user_project_access b', 'a.user_id=b.user_id'));
+            $data[str_replace(' ','',$role->role_title)] = $this->Comman_model->get_data('a.user_id,a.first_name, a.last_name', 'users a', array('b.project_id' => $project_id, 'a.user_type'=> $role->role_id));
+        }
+        // $userList['responsibles'] = $this->Comman_model->get_data('a.user_id,a.first_name, a.last_name', 'users a', array('b.project_id' => $project_id, 'a.user_type'=> 3));
+        // $userList['reviewvers'] = $this->Comman_model->get_data('a.user_id,a.first_name, a.last_name', 'users a', array('b.project_id' => $project_id, 'a.user_type'=> 4));
+        // $userList['approvals'] = $this->Comman_model->get_data('a.user_id,a.first_name, a.last_name', 'users a', array('b.project_id' => $project_id, 'a.user_type'=> 5));
+        $data['tradeGroups'] = $this->getAllocatedTradegroupByProject($project_id);
+        echo json_encode($data);
+    }
+
+
+    public function getAllocatedTradegroupByProject($project_id)
+    {
+        $join = array($this->db->join('project_tradegroup_allocation b', 'a.tradegroup_id=b.tradegroup_id'));
+        $tradeGroups = $this->Comman_model->get_data('a.*, b.*', 'trade_gruop a', array('b.project_id' => $project_id), $join);
+        return $tradeGroups;
+    }
+
+
+    public function allocateWBS()
+    {
+        $postData = $this->input->post();
+        if($postData)
+        {
+            // echo'<pre>';print_r($postData);exit;
+            foreach($postData['userlist'] as $user_id)
+            {
+                $pramas = array(
+                    'developer_id' => $postData['developer_id'],
+                    'project_id' => $postData['project_id'],
+                    'structure_id' => $postData['structure_ckeck'] ? $postData['structure_ckeck'] : '',
+                    'stage_id' => $postData['stage_ckeck'] ? $postData['stage_ckeck'] : '',
+                    'tradegroup_id' => $postData['tradegroup_id'],
+                    'trade_id' => $postData['trade_id'],
+                    'allocated_user' => $user_id,
+                );
+                $this->Comman_model->insert_data('wbs_user_allocation', $pramas);
+            }
+
+            redirect('view-structure');
+        }
     }
 
 

@@ -28,11 +28,11 @@ class Login_api extends RestController{
 
             {
                 $menus = get_menus_for_mobile($user->user_id);
-                $observationData = getObservationData();
+                // $observationData = getObservationData();
                 $result = array(
                     'user' => $user,
-                    'menus' => $menus,
-                    'observationData' => $observationData
+                    'menus' => $menus
+                    // 'observationData' => $observationData
                 );
                 $res = array(
                     'success' => TRUE,

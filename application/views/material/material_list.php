@@ -3,7 +3,22 @@
         <h3 class="card-title">Material List</h3>
     </div>
     <div class="card-body">
-
+    <div class="form row my-2">
+            <?Php echo form_open('material-list') ?>
+            <div class="col-md-6 d-flex">
+                <select name="project_id" class="form-select col-md-6">
+                    <option value="" selected>select project</option>
+                    <?php foreach(get_all_projects() as $project){ ?>
+                    <option value="<?php echo $project->project_id ?>" <?php echo($selected_project==$project->project_id
+                        ? 'selected' : '') ?> >
+                        <?php echo $project->project_name ?>
+                    </option>
+                    <?php } ?>
+                </select>
+                <button type="submit" class="btn btn-sm btn-success col-md-2 mx-2">Get List</button>
+            </div>
+            <?php echo form_close()?>
+        </div>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
                 <tr>

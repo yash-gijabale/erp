@@ -77,7 +77,7 @@ $route['add-unit'] = 'projects/add_unit';
 $route['edit-unit'] = 'projects/edit_unit';
 $route['add-subunit'] = 'projects/add_subunit';
 $route['edit-subunit'] = 'projects/edit_subunit';
-
+$route['wbs-allocation'] = 'projects/allocateWBS';
 
 $route['trade-activity'] = 'trade/trade_activity';
 $route['all-trade-activity'] = 'trade/all_trade_activity';
@@ -92,6 +92,10 @@ $route['edit-subgroup'] = 'trade/edit_subgroup';
 $route['remove-subgroup/(:any)'] = 'trade/remove_subgroup/$1';
 $route['add-questions'] = 'trade/add_question';
 $route['edit-question/(:any)'] = 'trade/edit_question/$1';
+
+//test import
+$route['import-questions'] = 'trade/import_question';
+
 
 
 $route['new-observation'] = 'observations/new_observation';
@@ -162,7 +166,7 @@ $route['api/getProjects/(:any)'] = 'api/Project_api/projectList/$1';
 
 //Observation
 $route['api/getObservations/(:any)'] = 'api/Observation_api/getObservationList/$1';
-// $route['api/addObservation'] = 'api/Observation_api/newobservation';
+$route['api/addObservation/(:any)'] = 'api/Observation_api/newobservation/$1';
 
 
 //Trade Activity
@@ -176,6 +180,7 @@ $route['api/userList/(:any)'] = 'api/User_api/userList/$1';
 
 //CONTRACTOR
 $route['api/workerList/(:any)'] = 'api/Contractor_api/getProjectWorkerList/$1';
+$route['api/materialList/(:any)'] = 'api/Contractor_api/getProjectMaterialList/$1';
 
 
 

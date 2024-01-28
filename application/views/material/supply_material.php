@@ -20,7 +20,7 @@
 
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Project:</label>
-            <select name="project_id" id="project_select" class="form-control">
+            <select name="project_id" id="project_select" class="form-select">
                 <option value="" selected>Select Project</option>
             </select>
         </div>
@@ -28,11 +28,11 @@
             <label for="exampleInputEmail1">Select Material:</label>
             <select name="material_id" id="material_select" class="form-select" required>
                 <option value="" selected>Select Material</option>
-                <?php foreach($material_list as $material){ ?>
+                <!-- <?php foreach($material_list as $material){ ?>
                 <option value="<?php echo($material->material_id) ?>">
                     <?php echo($material->material_name) ?>
                 </option>
-                <?php } ?>
+                <?php } ?> -->
             </select>
         </div>
         <div class="form-group col-md-4">
@@ -88,9 +88,31 @@
             success: function (obj) {
                 var projects = $.parseJSON(obj);
                 $('#project_select').empty();
+                $('#project_select').append(`<option selected>Select Projects</option>`)
                 $.each(projects, function (key, val) {
                     // console.log(val.project_name);
                     $('#project_select').append(`<option value="${val.project_id}">${val.project_name}</option>`)
+                })
+            }
+        })
+
+    });
+
+    $("#project_select").change(function () {
+        var projectId = $(this).val();
+        var developerId = $('#developer_select').val()
+        $.ajax({
+            url: "<?php echo base_url().'index.php/materialManegement/get_material_by_dev_and_project_id';?>",
+            type: "post",
+            data: { 'developer_id': developerId, 'project_id':projectId },
+            success: function (obj) {
+                var materials = $.parseJSON(obj);
+                console.log(materials);
+                $('#material_select').empty();
+                $('#material_select').append(`<option selected>Select Material</option>`)
+                $.each(materials, function (key, val) {
+                    // console.log(val.project_name);
+                    $('#material_select').append(`<option value="${val.material_id}">${val.material_name}</option>`)
                 })
             }
         })

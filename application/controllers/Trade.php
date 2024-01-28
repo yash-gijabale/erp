@@ -13,6 +13,9 @@ class Trade extends CI_Controller {
 
         ini_set('display_errors', 0);
 		$this->load->model('Comman_model');
+		$this->load->library('Csvimport');
+        $this->load->helper('file');
+
     }
 	
 	public function trade_activity()
@@ -31,7 +34,6 @@ class Trade extends CI_Controller {
         if($postData){
             $params = array(
                 'tradegroup_name' => $postData['tradegroup_name'],
-                'project_id' => $postData['project_id']
             );
             $res = $this->Comman_model->insert_data('trade_gruop',$params);
             if($res){
@@ -222,5 +224,18 @@ class Trade extends CI_Controller {
         $data['question'] = $this->Comman_model->get_data_by_id('*', 'questions', array('question_id' => $id));
         $data['_view'] = 'trade/edit_question';
 		$this->load->view('template/view', $data);
+    }
+
+
+    public function  import_question()
+    {
+		$file_data = $this->csvimport->get_array($_FILES["importfile"]["tmp_name"]);
+        echo'<pre>';print_r($file_data);
+        if(!empty($file_data))
+        {
+            
+        }
+        
+        exit;
     }
 }

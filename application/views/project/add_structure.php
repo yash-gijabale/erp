@@ -4,6 +4,11 @@
         overflow-y: auto;
         overflow-x: hidden;
     }
+    .role-kamban-card-body{
+        height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 </style>
 
 <div class="card card-primary">
@@ -11,7 +16,7 @@
         <h3 class="card-title">Add Developer</h3>
     </div>
 
-    <!-- <?php echo form_open('add-developers') ?> -->
+    <?php echo form_open('wbs-allocation') ?>
     <div class="card-body row">
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Developer:</label>
@@ -154,15 +159,15 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="exampleInputEmail1">Select TradeGroup:</label>
-                <select name="project_id" id="project_id" class="form-select project_select" required>
-                    <option value="" selected class="text-danger">Select Developer First</option>
+                <select name="tradegroup_id" id="tradegroup_id" class="form-select" required>
+                <option value="" selected class="text-danger">Select trade group</option>
 
                 </select>
             </div>
             <div class="form-group col-md-4">
                 <label for="exampleInputEmail1">Select Trade:</label>
-                <select name="project_id" id="project_id" class="form-select project_select" required>
-                    <option value="" selected class="text-danger">Select Developer First</option>
+                <select name="trade_id" id="trade_id" class="form-select" required>
+                    <option value="" selected class="text-danger">Select trade</option>
 
                 </select>
             </div>
@@ -176,7 +181,7 @@
                                 Site Enginners
                             </h3>
                         </div>
-                        <div class="card-body kamban-card-body" id="all_units">
+                        <div class="card-body role-kamban-card-body" id="site-enginner-list">
 
                         </div>
                     </div>
@@ -190,7 +195,7 @@
                                 Responsible
                             </h3>
                         </div>
-                        <div class="card-body kamban-card-body" id="all_units">
+                        <div class="card-body role-kamban-card-body" id="responsible-list">
 
                         </div>
                     </div>
@@ -204,7 +209,7 @@
                                 Reviewers
                             </h3>
                         </div>
-                        <div class="card-body kamban-card-body" id="all_units">
+                        <div class="card-body role-kamban-card-body" id="reviewer-list">
 
                         </div>
                     </div>
@@ -218,15 +223,18 @@
                                 Approvals
                             </h3>
                         </div>
-                        <div class="card-body kamban-card-body" id="all_units">
+                        <div class="card-body role-kamban-card-body" id="approval-list">
 
                         </div>
                     </div>
                 </div>
             </section>
         </div>
+
+        <button type="submit" class="btn btn-sm btn-success col-md-2 mb-4">Save</button>
     </div>
 </div>
+    <?php echo form_close() ?>
 
 
 
@@ -1034,7 +1042,91 @@
     }
 
 
-    function handle_add_subunit() {
+    $("#project_id").change(function () {
+        var project_id = $(this).val();
+        $.ajax({
+            url: "<?php echo base_url().'index.php/projects/getAllocatedUserByProject';?>",
+            type: "post",
+            data: { 'project_id': project_id },
+            success: function (obj) {
+                userlist = JSON.parse(obj)
+                console.log(userlist)
+                $('#site-enginner-list').empty()
+                $('#responsible-list').empty()
+                $('#reviewer-list').empty()
+                $('#approval-list').empty()
+                $('#tradegroup_id').empty()
+                $('#trade_id').empty()
 
-    }
+                var siteEnginners = userlist.SiteEngineer;
+                var responsibles = userlist.Responsible;
+                var reviewers = userlist.Reviewer;
+                var approvals = userlist.Approvar;
+                var tradegroups = userlist.tradeGroups;
+                $.each(siteEnginners, function(key, val){
+                    $('#site-enginner-list').append(`
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="userlist[]" value="${val.user_id}" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        ${val.first_name} ${val.last_name}
+                    </label>
+                    </div>`)
+                })
+
+                $.each(responsibles, function(key, val){
+                    $('#responsible-list').append(`
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="userlist[]" value="${val.user_id}" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        ${val.first_name} ${val.last_name}
+                    </label>
+                    </div>`)
+                })
+
+                $.each(reviewers, function(key, val){
+                    $('#reviewer-list').append(`
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="userlist[]" value="${val.user_id}" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        ${val.first_name} ${val.last_name}
+                    </label>
+                    </div>`)
+                })
+
+                $.each(approvals, function(key, val){
+                    $('#approval-list').append(`
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="userlist[]" value="${val.user_id}" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        ${val.first_name} ${val.last_name}
+                    </label>
+                    </div>`)
+                })
+
+                $.each(tradegroups, function(key, val){
+                    $('#tradegroup_id').append(`
+                        <option value="${val.tradegroup_id}">${val.tradegroup_name}</option>
+                    `)
+                })
+            }
+        })
+
+    });
+
+    $("#tradegroup_id").change(function(){   
+        var tradegroup_id = $(this).val();
+        $.ajax({
+            url: "<?php echo base_url().'index.php/trade/get_trade_by_tradegroup';?>",
+            type: "post",
+            data: { 'tradegroup_id': tradegroup_id },
+            success: function (obj) {
+                var trades = $.parseJSON(obj);
+                $('#trade_id').empty();
+                $.each(trades, function(key, val){
+                    $('#trade_id').append(`<option value="${val.trade_id}">${val.trade_name}</option>`)
+                })
+            }
+        })
+    
+    });
 </script>

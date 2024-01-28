@@ -25,8 +25,8 @@ class Contractor_api extends RestController{
         $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
             if($user)
             {
-                $join = array($this->db->join('user_project_access b','b.project_id=a.project_id'));			
-                $project_data = $this->Comman_model->get_data('a.project_id, a.project_name','project a', array('b.user_id' => $user->user_id));
+    
+                $project_data = getAllUserProjects($user->user_id);
                
                 foreach($project_data as $project)
                 {
@@ -49,6 +49,37 @@ class Contractor_api extends RestController{
                 $this->response($res, RestController::HTTP_OK);
 
             }
+    }
+
+    function getProjectMaterialList_get($user_id)
+    {
+        $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
+        if($user)
+        {
+
+            $project_data = getAllUserProjects($user->user_id);
+           
+            foreach($project_data as $project)
+            {
+                $materialList = $this->Comman_model->get_data('*', 'total_material', array('project_id' => $project->project_id));
+                $project->material_list = $materialList;
+            }
+            // $this->session->set_userdata('user_data', $user);
+            $res = array(
+                'success' => TRUE,
+                'message' => 'response available',
+                'result' => $project_data
+            );
+            $this->response($res, RestController::HTTP_OK);
+        }else{
+            $res = array(
+                'success' => FALSE,
+                'message' => 'Login to access this resourse OR Invalid user Id',
+                'result' => []
+            );
+            $this->response($res, RestController::HTTP_OK);
+
+        }
     }
 
 

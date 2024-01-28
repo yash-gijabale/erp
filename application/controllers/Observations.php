@@ -140,12 +140,14 @@ class Observations extends CI_Controller
         } else {
             $table = get_history_table_by_role_id($user_type);
             $allow_projects = $this->Comman_model->get_data('*', 'user_project_access', array('user_id' => $user_id));
-            // echo'<pre>';print_r($allow_projects);exit;
-
+            $wbs_allocation = $this->Comman_model->get_data_by_id('*','wbs_user_allocation',array('allocated_user'=>$user_id));
+            // echo'<pre>';print_r($wbs_allocation);exit;
             $objects = array();
             foreach ($allow_projects as $userAccess) {
                 $join = array($this->db->join($table . ' b', 'a.observation_id=b.observation_id'));
-                $obj = $this->Comman_model->get_data('a.*,b.*', 'observations a', array('a.project_id' => $userAccess->project_id), $join);
+                $obj = $this->Comman_model->get_data('a.*,b.*', 'observations a', 
+                array('a.project_id' => $userAccess->project_id, 'a.structure_id'=>$wbs_allocation->structure_id), 
+                $join);
                 if ($obj) {
                     array_push($objects, $obj);
                 }

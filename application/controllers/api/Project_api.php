@@ -62,10 +62,14 @@ class Project_api extends RestController
                     $project->structure = $structureArr;
                     array_push($mainArray, $project);
                 }
+                $observationData = getObservationData();
                 $res = array(
                     'success' => TRUE,
                     'message' => 'response available',
-                    'result' => $mainArray
+                    'result' => array(
+                        'project_data' => $mainArray,
+                        'observation_data' => $observationData
+                    )
                 );
                 $this->response($res, RestController::HTTP_OK);
                 
@@ -106,10 +110,14 @@ class Project_api extends RestController
                     array_push($mainArray, $project);
                 }
             }
+            $observationData = getObservationData();
             $res = array(
                 'success' => TRUE,
                 'message' => 'response available',
-                'result' => $mainArray
+                'result' => array(
+                    'project_data' => $mainArray,
+                    'observation_data' => $observationData
+                )
             );
             $this->response($res, RestController::HTTP_OK);
          }else{

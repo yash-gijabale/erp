@@ -51,6 +51,8 @@ class MaterialManegement extends CI_Controller
             // echo'<pre>';print_r($postData);exit;
             $param = array
             (
+                'developer_id' => $postData['developer_id'],
+                'project_id' => $postData['project_id'],
                 'material_name'=> $postData['material_name'],
                 'material_quantity' => $postData['material_qty'],
                 'material_price' => $postData['unit_price'],
@@ -61,6 +63,7 @@ class MaterialManegement extends CI_Controller
             $res = $this->Comman_model->insert_data('total_material', $param);
 
         }
+        $data['all_developers'] = $this->Comman_model->get_data('*','developer');
         $data['measures'] = $this->Comman_model->get_data('*', 'material_measures');
         $data['_view'] = 'material/add_material';
         $this->load->view('template/view', $data);
@@ -69,7 +72,18 @@ class MaterialManegement extends CI_Controller
 
     public function material_list()
     {
-        $data['material_list'] = $this->Comman_model->get_data('*', 'total_material');
+        $postData = $this->input->post();
+        if($postData)
+        {
+            $data['material_list'] = $this->Comman_model->get_data('*', 'total_material', array('project_id' => $postData['project_id']));
+            $data['selected_project'] = $postData['project_id'];
+
+        }else{
+
+            $data['material_list'] = $this->Comman_model->get_data('*', 'total_material');
+            $data['selected_project'] = $postData['project_id'];
+        }
+
         $data['_view'] = 'material/material_list';
         $this->load->view('template/view', $data);
     }
@@ -119,6 +133,15 @@ class MaterialManegement extends CI_Controller
         $data['supply_list'] = $this->Comman_model->get_data('*', 'supplied_material');
         $data['_view'] = 'material/supply_list';
         $this->load->view('template/view', $data);
+    }
+
+    public function get_material_by_dev_and_project_id()
+    {
+        $project_id = $this->input->post('project_id');
+        $developer_id = $this->input->post('developer_id');
+        $materials = $this->Comman_model->get_data('*', 'total_material', array('developer_id'=> $developer_id, 'project_id' => $project_id));
+        echo json_encode($materials);
+
     }
     
 }

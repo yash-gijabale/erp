@@ -86,6 +86,15 @@
             <label for="exampleInputPassword1">Address:</label>
             <textarea  class="form-control" name="address"><?php echo $project->address ?></textarea>
         </div>
+        <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Select TradeGroups:</label>
+            <select name="trade_id[]" class="form-select" multiple required>
+                <!-- <option value="" selected>Select Developer</option> -->
+                <?php foreach($tradeGroups as $tradeGroup){ ?>
+                    <option value="<?php echo($tradeGroup->tradegroup_id) ?>" <?php echo(checkIsTradeGroupAllocatedToProject($project->project_id, $tradeGroup->tradegroup_id) ? 'selected' : '') ?>><?php echo($tradeGroup->tradegroup_name) ?></option>
+                <?php } ?>
+            </select>
+        </div>
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-success">Update</button>
