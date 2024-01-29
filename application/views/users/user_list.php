@@ -60,6 +60,7 @@ $user_projects = array();
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo base_url().'index.php/user_access/'.$user->user_id ?>">Module Access</a></li>
                             <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onClick = "adduser('<?php echo $user->user_id ?>')">Project Access</a></li>
+                            <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#checklist" onClick = "addchecklist('<?php echo $user->user_id ?>')" >User List</a></li>
                         </ul>
                     </td>
 
@@ -104,6 +105,36 @@ $user_projects = array();
   </div>
 </div>
 
+
+
+<!-- Modal1 -->
+<div class="modal fade" id="checklist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal checklist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php echo form_open('assing-checklist') ?>
+      <div class="modal-body">
+            <select class="form-control" name='checklist_id[]' id="checklists" multiple>
+            </select>
+            <input type="hidden" id='checklist_user_id' name="user_id">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      <?php echo form_close() ?>
+
+    </div>
+  </div>
+</div>
+
+
+
 <script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -146,6 +177,30 @@ $user_projects = array();
                         $('#projects').append(`<option value="${val.project_id}">${val.project_name}</option>`)
                     }
                 })
+            }
+        })
+    }
+
+    function addchecklist(id)
+    {
+        let filed = document.getElementById('checklist_user_id')
+        filed.value = id;
+        $.ajax({
+            url: "<?php echo base_url().'index.php/Checklist/get_all_checklistdata'; ?>",
+            type: "post",
+            data: { 'user_id': id },
+            success:function(obj){
+                var checklist = $.parseJSON(obj);
+                console.log(checklist)
+                $('#checklists').empty();
+                $.each(checklist, function(key,val){
+                    if(val.assigned)
+                    {
+                        $('#checklists').append(`<option value="${val.checklist_id}" selected>${val.checklist_name}</option>`)
+                    }else{
+                        $('#checklists').append(`<option value="${val.checklist_id}">${val.checklist_name}</option>`)
+                    }
+                }) 
             }
         })
     }

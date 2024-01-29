@@ -150,6 +150,8 @@ $route['add-material'] = 'materialManegement/add_material';
 $route['material-list'] = 'materialManegement/material_list';
 $route['supply-material'] = 'materialManegement/supply_material';
 $route['supply-list'] = 'materialManegement/supply_list';
+$route['edit-material/(:any)'] = 'materialManegement/edit_material/$1';
+$route['remove-material/(:any)'] = 'materialManegement/remove_material/$1';
 
 
 
