@@ -129,6 +129,11 @@ $route['add-checklist-subgroup'] = 'checklist/add_subgroup_to_checklist';
 
 $route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
 
+//TOOLBOX
+$route['daily-toolbox'] = 'welcome/daily_toolbox';
+$route['daily-toolbox-list'] = 'welcome/daily_toolbox_list';
+$route['present-workers'] = 'welcome/present_workers';
+
 
 // CONTRACTOR MANAGEMENT
 $route['contractors'] = 'contractor/contractor';
