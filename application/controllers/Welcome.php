@@ -105,4 +105,77 @@ class Welcome extends CI_Controller {
 		$data['_view'] = 'admin/test';
 		$this->load->view('template/view', $data);
 	}
+
+
+	public function daily_toolbox(){
+		$postData = $this->input->post();
+        // echo'<pre>';print_r($postData);exit;
+        if ($postData) {
+
+            $pramas = array(
+                'work_details' => $postData['work_details'],
+                'work_order_no' => $postData['work_order_no'],
+                'work_location' => $postData['work_location'],
+                'date' => $postData['date'],
+                'contractor_name' => $postData['contractor_name'],
+                'aeml_name' => $postData['aeml_name'],
+                'outage' => $postData['outage'],
+                'ptw' => $postData['ptw'],
+                'work' => $postData['work'],
+                'caution' => $postData['caution'],
+                'ptw_no' => $postData['ptw_no'],
+                'hira_number' => $postData['hira_number'],
+                'ier_number' => $postData['ier_number'],
+                'job_details' => $postData['job_details'],
+                'jsa' => $postData['jsa'],
+                'hazards' => $postData['hazards'],
+            );
+
+            $res = $this->Comman_model->insert_data('daily_toolbox', $pramas);
+            if ($res) {
+				$data['submit_status'] = TRUE;
+                $data['submit_msg'] = 'Form Submited Successfully!';
+            } else {
+				$data['submit_status'] = FALSE;
+                $data['submit_msg'] = 'Somthing is wrong, please try again!';
+            }
+			
+
+			$table_data = array();
+			foreach ($postData['name'] as $index => $name) {
+				$table_data = array(
+					'name' => $name,
+					'signature' => $postData['signature'][$index],
+					'form_id' => $res
+				);
+			$t = $this->Comman_model->insert_data('daily_toolbox_table', $table_data);
+			}
+			//echo'<pre>';print_r($table_data);exit;
+	}
+	$data['_view'] = 'daily-toolbox/daily_toolbox';
+	$this->load->view('template/view', $data);
+   }
+
+
+
+   public function daily_toolbox_list(){
+		$data['daily_toolbox_list'] = $this->Comman_model->get_data('*', 'daily_toolbox');
+		//echo'<pre>';print_r($data['daily_toolbox_list']);exit;
+		$data['_view'] = 'daily-toolbox/daily_toolbox_list';
+		$this->load->view('template/view', $data);
+
+		
+   }
+   
+   
+   public function present_workers(){
+	    $data['present_workers'] = $this->Comman_model->get_data('*', 'daily_toolbox_table');
+		//echo'<pre>';print_r($data['daily_toolbox_list']);exit;
+		$data['_view'] = 'daily-toolbox/present_workers';
+		$this->load->view('template/view', $data);
+
+   }
+
 }
+
+
