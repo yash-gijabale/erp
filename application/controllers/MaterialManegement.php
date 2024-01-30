@@ -143,6 +143,52 @@ class MaterialManegement extends CI_Controller
         echo json_encode($materials);
 
     }
+
+
+    public function edit_material($material_id)
+    {
+        if($material_id){
+
+            $postData = $this->input->post();
+            // echo'<pre>';print_r($postData);exit;
+            if ($postData){
+                $param = array(
+
+                'developer_id' => $postData['developer_id'],
+                'project_id' => $postData['project_id'],
+                'material_name'=> $postData['material_name'],
+                'material_quantity' => $postData['material_qty'],
+                'material_price' => $postData['unit_price'],
+                'total_amount' => $postData['total_amount'],
+                'material_type' => $postData['material_type'],
+                'material_unit' => $postData['material_unit'],
+
+                );
+                $this->Comman_model->update_Data('total_material', $pramas, array('material_id' => $material_id));
+                // redirect('material-list');
+            }
+            $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
+            $data['material'] = $this->Comman_model->get_data_by_id('*', 'total_material', array('material_id'=>$material_id));
+            // echo'<pre>';print_r($data['material'] );exit;
+
+            $data['_view'] = 'material/edit_material';
+            $this->load->view('template/view', $data);
+            }else{
+
+                redirect('material-list');
+             }
+
+
+    }
+
+
+    public function remove_material($material_id)
+    {
+        if ($material_id) {
+            $this->Comman_model->permanant_delete('total_material', array('material_id' => $material_id));
+            redirect('material-list');
+        }
+    }
     
 }
 

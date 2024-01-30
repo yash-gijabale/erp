@@ -44,8 +44,8 @@
                         <td><?php echo date('d-M-Y',strtotime($material->added_at)) ?></td>
                         
                         <td>
-                            <a href="#" class="btn btn-sm btn-success">Edit</a>
-                            <a  onclick="remove_project()" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="<?php echo base_url().'index.php/edit-material/'.$material->material_id?>" class="btn btn-sm btn-success">Edit</a>
+                            <a  onclick="remove_material()" class="btn btn-sm btn-danger">Delete</a>
                         </td>
                        
                     </tr>
@@ -70,12 +70,12 @@
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 
-    function remove_project(id){
-        if(id){
-            console.log(id)
-            is_remove = confirm('Are you sure want to delete this project ?')
+    function remove_material(material_id){
+        if(material_id){
+            console.log(material_id)
+            is_remove = confirm('Are you sure want to delete this Material ?')
             if(is_remove){
-                window.location.href = "<?php echo base_url().'index.php/remove-project/' ?>" + id
+                window.location.href = "<?php echo base_url().'index.php/remove-material/' ?>" + material_id
 
             }
         }

@@ -130,6 +130,11 @@ $route['add-checklist-subgroup'] = 'checklist/add_subgroup_to_checklist';
 
 $route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
 
+//TOOLBOX
+$route['daily-toolbox'] = 'welcome/daily_toolbox';
+$route['daily-toolbox-list'] = 'welcome/daily_toolbox_list';
+$route['present-workers'] = 'welcome/present_workers';
+
 
 // CONTRACTOR MANAGEMENT
 $route['contractors'] = 'contractor/contractor';
@@ -146,6 +151,8 @@ $route['add-material'] = 'materialManegement/add_material';
 $route['material-list'] = 'materialManegement/material_list';
 $route['supply-material'] = 'materialManegement/supply_material';
 $route['supply-list'] = 'materialManegement/supply_list';
+$route['edit-material/(:any)'] = 'materialManegement/edit_material/$1';
+$route['remove-material/(:any)'] = 'materialManegement/remove_material/$1';
 
 
 
