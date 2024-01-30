@@ -140,21 +140,46 @@ class Observations extends CI_Controller
         } else {
             $table = get_history_table_by_role_id($user_type);
             $allow_projects = $this->Comman_model->get_data('*', 'user_project_access', array('user_id' => $user_id));
-            $wbs_allocation = $this->Comman_model->get_data_by_id('*','wbs_user_allocation',array('allocated_user'=>$user_id));
-            // echo'<pre>';print_r($wbs_allocation);exit;
-            $objects = array();
-            foreach ($allow_projects as $userAccess) {
-                $join = array($this->db->join($table . ' b', 'a.observation_id=b.observation_id'));
-                $obj = $this->Comman_model->get_data('a.*,b.*', 'observations a', 
-                array('a.project_id' => $userAccess->project_id, 'a.structure_id'=>$wbs_allocation->structure_id), 
-                $join);
-                if ($obj) {
-                    array_push($objects, $obj);
+            // echo'<pre>';print_r($allow_projects);exit; 
+
+            // $wbs_allocation = $this->Comman_model->get_data('*','wbs_user_allocation',array('allocated_user'=>$user_id));
+            $wbs_allocation = array();
+            foreach($allow_projects as $project){
+                $wbs = $this->Comman_model->get_data_by_id('*', 'wbs_user_allocation', array('project_id'=>$project->project_id,'allocated_user'=>$user_id));
+                array_push($wbs_allocation, $wbs);
+
+            }
+            // echo'<pre>';print_r($allow_projects);
+            // echo'<pre>';print_r($wbs_allocation);exit; 
+            $objects1 = array();
+            $objects2 = array();
+            foreach ($wbs_allocation as $userAccess) {
+                // echo(json_decode($userAccess->stage_id));
+                $allocated_stages = json_decode($userAccess->stage_id); 
+                if($allocated_stages){
+                    foreach($allocated_stages as $stage){
+                        $join = array($this->db->join($table . ' b', 'a.observation_id=b.observation_id'));
+                        $obj = $this->Comman_model->get_data('a.*,b.*', 'observations a',  array('a.project_id' => $userAccess->project_id, 'a.structure_id'=> $userAccess->structure_id, 'a.floors' => $stage), $join);
+                        if ($obj) {
+                            array_push($objects1, ...$obj);
+                        }
+                    }
+
+                }else{
+                    $join2 = array($this->db->join($table . ' b', 'a.observation_id=b.observation_id'));
+                    $obj = $this->Comman_model->get_data('a.*,b.*', 'observations a',  array('a.project_id' => $userAccess->project_id, 'a.structure_id'=> $userAccess->structure_id), $join2);
+                    if ($obj) {
+                        array_push($objects2, ...$obj);
+                    }
                 }
             }
-            $data['all_observations'] = array_merge(...$objects);
+
+            
+            // echo'<pre>';print_r($objects1);
+            // echo'<pre>';print_r($objects2);exit; 
+            $data['all_observations'] = array_merge($objects1, $objects2);
         }
-        // echo'<pre>';print_r(array_merge(...$objects));exit;
+        // echo'<pre>';print_r(array_merge($data['all_observations']));exit;
         $data['_view'] = 'observations/observation_list';
         $this->load->view('template/view', $data);
     }

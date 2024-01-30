@@ -40,7 +40,6 @@
 
     </div>
 
-    <!-- <?php echo form_close() ?> -->
 
 
     <div class="wrapper kanban row">

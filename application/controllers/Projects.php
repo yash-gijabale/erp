@@ -475,8 +475,8 @@ class Projects extends CI_Controller
         $postData = $this->input->post();
         if($postData)
         {
-            // echo'<pre>';print_r($postData);exit;
-            foreach($postData['userlist'] as $user_id)
+            // echo'<pre>';print_r($postData); exit;
+             foreach($postData['userlist'] as $user_id)
             {
                 $pramas = array(
                     'developer_id' => $postData['developer_id'],

@@ -32,12 +32,12 @@ class Observation_api extends RestController
             $user_id = $user->user_id;
             if ($user_type == '1') {
                 $observations= $this->Comman_model->get_data('*', 'observations');
-                foreach ($observations as $obj) {
-                    $obj->floors = json_decode($obj->floors);
-                    foreach($obj->floors as $key=>$value){
-                        $obj->floors[$key] = (int)$value;
-                    }
-                }
+                // foreach ($observations as $obj) {
+                //     $obj->floors = json_decode($obj->floors);
+                //     foreach($obj->floors as $key=>$value){
+                //         $obj->floors[$key] = (int)$value;
+                //     }
+                // }
 
             } else {
                 $table = get_history_table_by_role_id($user_type);
@@ -51,12 +51,12 @@ class Observation_api extends RestController
 
                 }
 
-                foreach ($objects as $obj) {
-                    $obj->floors = json_decode($obj->floors);
-                    foreach($obj->floors as $key=>$value){
-                        $obj->floors[$key] = (int)$value;
-                    }
-                }
+                // foreach ($objects as $obj) {
+                //     $obj->floors = json_decode($obj->floors);
+                //     foreach($obj->floors as $key=>$value){
+                //         $obj->floors[$key] = (int)$value;
+                //     }
+                // }
 
                 $observations = $objects;
             }
@@ -205,11 +205,11 @@ class Observation_api extends RestController
                 // exit;
                 if($history_id){
                     $Newobservation = $this->Comman_model->get_data_by_id('*', 'observations', array('observation_id' => $observation_id));
-                    
-                    $Newobservation->floors = json_decode($Newobservation->floors);
-                    foreach($Newobservation->floors as $key=>$value){
-                        $Newobservation->floors[$key] = (int)$value;
-                    }
+                    $Newobservation->history_id = $history_id;
+                    // $Newobservation->floors = json_decode($Newobservation->floors);
+                    // foreach($Newobservation->floors as $key=>$value){
+                    //     $Newobservation->floors[$key] = (int)$value;
+                    // }
                     
 
                     $res = array(
@@ -234,6 +234,74 @@ class Observation_api extends RestController
             );
             $this->response($res, RestController::HTTP_BAD_REQUEST);
         }
+
+    }
+
+
+    public function image_upload_for_observation_post($user){
+
+        $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
+        if($user){
+
+            $postData = $this->post();
+            $observation_id = $postData['observation_id'];
+            if ($observation_id) {
+                $image_name[] = $_FILES['observation_image'];
+                $image_name[] = $_FILES['recommended_image'];
+                // echo'<pre>';print_r($image_name);exit;
+                foreach ($image_name as $imgkey => $imgval) {
+                    $pcount = $this->Comman_model->get_data('*','temp_img_name', array('obsercation_id' => $observation_id));
+
+                    foreach ($pcount as $temp_img) {
+                        if (($imgval['size'][$i] != 0) || ($imgval['size'][$i] != '')) {
+                            $pdata = array();
+                            $filenm = '';
+                            $config['upload_path'] = UPLOAD_OBSERVATION;
+                            $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
+                            $this->upload->initialize($config);
+                            //echo $_FILES[$image_name]['name'][$i];
+                            $newName = $temp_img->image_name;
+                            // echo'<pre>';print_r($newName);exit;
+                            $_FILES['userfile']['name'] = $newName;
+                            $_FILES['userfile']['type'] = $imgval['type'][$i];
+                            $_FILES['userfile']['tmp_name'] = $imgval['tmp_name'][$i];
+                            $_FILES['userfile']['error'] = $imgval['error'][$i];
+                            $_FILES['userfile']['size'] = $imgval['size'][$i];
+                            if (!$this->upload->do_upload('userfile')) {
+                                $filenm = '';
+
+                            } else {
+                                $fname = $this->upload->data();
+                                $filenm = UPLOAD_OBSERVATION . $fname['file_name'];
+
+                            }
+                            if ($filenm != '') {
+                                $image_param = array(
+                                    'observation_id' => $observation_id,
+                                    'image_path' => $filenm,
+                                    'obj_history_id' => $history_id,
+                                    'image_type' => $imgkey
+                                );
+                                $this->Comman_model->insert_data('observation_images', $image_param);
+
+                            }
+
+                        }
+                    }
+
+
+                }
+            }
+        }else{
+            $res = array(
+                'success' => FALSE,
+                'message' => 'Login to access this resourse OR invalid user ID',
+                'result' => []
+
+            );
+            $this->response($res, RestController::HTTP_BAD_REQUEST);
+        }
+
 
     }
 

@@ -258,4 +258,31 @@ class Users extends CI_Controller {
         echo json_encode($projectArr);
     }
 
+
+    public function wbs_allocation(){
+        $postData = $this->input->post();
+        if($postData){
+
+
+            foreach($postData['userlist'] as $user_id)
+            {
+                $pramas = array(
+                    'developer_id' => $postData['developer_id'],
+                    'project_id' => $postData['project_id'],
+                    'structure_id' => $postData['structure_ckeck'] ? $postData['structure_ckeck'] : '',
+                    'stage_id' => $postData['stage_ckeck'] ? json_encode($postData['stage_ckeck']) : '',
+                    'tradegroup_id' => $postData['tradegroup_id'],
+                    'trade_id' => $postData['trade_id'],
+                    'allocated_user' => $user_id,
+                );
+            // echo'<pre>';print_r($pramas);exit;
+
+                $this->Comman_model->insert_data('wbs_user_allocation', $pramas);
+            }
+        }
+        $data['all_developers'] = $this->Comman_model->get_data('*', 'developer');
+        $data['_view'] = 'project/wbs_user_allocation';
+        $this->load->view('template/view', $data);  
+    }
+
 }

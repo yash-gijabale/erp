@@ -114,6 +114,7 @@ $route['delete-user/(:any)'] = 'users/delete_user/$1';
 $route['user_access/(:any)'] = 'users/user_access_control/$1';
 $route['remove-user-access/(:any)'] = 'users/remove_user_access/$1';
 $route['assing-project'] = 'users/assing_project';
+$route['wbs-user-allocation'] = 'users/wbs_allocation';
 
 
 $route['generate-report'] = 'report/generate_report';
