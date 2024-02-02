@@ -230,12 +230,34 @@ class Trade extends CI_Controller {
     public function  import_question()
     {
 		$file_data = $this->csvimport->get_array($_FILES["importfile"]["tmp_name"]);
-        echo'<pre>';print_r($file_data);
+        // echo'<pre>';print_r($file_data);exit;
+
         if(!empty($file_data))
         {
             
+            foreach($file_data as $data){
+                $subgroup_id = get_subgroupId_by_name($data['subgroup_name']);
+                $question_type = get_question_type($data['question_type']);
+                $question_impact = get_question_impact($data['question_impact']);
+
+                $param = array(
+                    'subgroup_id' => $subgroup_id,
+                    'question_title' => $data['question_title'],
+                    'description' => $data['description'],
+                    'question_type' => $question_type,
+                    'question_impact' => $question_impact
+                );
+
+                $this->Comman_model->insert_data('questions', $param);
+        
+                // echo'<pre>';print_r($data['question_type']);
+                // echo'<pre>';print_r($question_type);
+
+            }
+            
+            redirect('trade-activity');
+        
         }
         
-        exit;
     }
 }

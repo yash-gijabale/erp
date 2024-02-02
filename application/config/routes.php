@@ -175,6 +175,7 @@ $route['api/getProjects/(:any)'] = 'api/Project_api/projectList/$1';
 //Observation
 $route['api/getObservations/(:any)'] = 'api/Observation_api/getObservationList/$1';
 $route['api/addObservation/(:any)'] = 'api/Observation_api/newobservation/$1';
+$route['api/uploadImage/(:any)'] = 'api/Observation_api/image_upload_for_observation/$1';
 
 
 //Trade Activity

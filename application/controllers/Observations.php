@@ -26,7 +26,7 @@ class Observations extends CI_Controller
                 'client_id' => $postData['developer_id'],
                 'project_id' => $postData['project_id'],
                 'structure_id' => $postData['structure_id'],
-                'floors' => json_encode($postData['stages_id']),
+                'floors' => $postData['stages_id'],
                 'tradegroup_id' => $postData['trade_group'],
                 'activity_id' => $postData['activity_id'],
                 'observation_number' => $postData['observation_number'],
@@ -150,7 +150,7 @@ class Observations extends CI_Controller
 
             }
             // echo'<pre>';print_r($allow_projects);
-            // echo'<pre>';print_r($wbs_allocation);exit; 
+            // echo'<pre>';print_r($wbs_allocation);
             $objects1 = array();
             $objects2 = array();
             foreach ($wbs_allocation as $userAccess) {
@@ -176,8 +176,8 @@ class Observations extends CI_Controller
 
             
             // echo'<pre>';print_r($objects1);
-            // echo'<pre>';print_r($objects2);exit; 
             $data['all_observations'] = array_merge($objects1, $objects2);
+              // echo'<pre>';print_r($data['all_observations']);exit; 
         }
         // echo'<pre>';print_r(array_merge($data['all_observations']));exit;
         $data['_view'] = 'observations/observation_list';
@@ -197,7 +197,7 @@ class Observations extends CI_Controller
                     'client_id' => $postData['developer_id'],
                     'project_id' => $postData['project_id'],
                     'structure_id' => $postData['structure_id'],
-                    'floors' => json_encode($postData['stages_id']),
+                    'floors' => $postData['stages_id'],
                     'tradegroup_id' => $postData['trade_group'],
                     'activity_id' => $postData['activity_id'],
                     'observation_category' => $postData['category_id'],

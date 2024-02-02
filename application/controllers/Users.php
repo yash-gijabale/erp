@@ -263,9 +263,20 @@ class Users extends CI_Controller {
         $postData = $this->input->post();
         if($postData){
 
-
+            // echo'<pre>';print_r($postData);exit;
             foreach($postData['userlist'] as $user_id)
             {
+                //Check is allocation is already exit
+                $where = array(
+                    'project_id' => $postData['project_id'],
+                    'structure_id' => $postData['structure_ckeck'],
+                    'allocated_user' => $user_id
+                );
+                $isExist = $this->Comman_model->get_data('*', 'wbs_user_allocation', $where);
+                if($isExist){
+                    // echo'<pre>';print_r($isExist);exit;
+                    $this->Comman_model->permanant_delete('wbs_user_allocation', $where);
+                }
                 $pramas = array(
                     'developer_id' => $postData['developer_id'],
                     'project_id' => $postData['project_id'],

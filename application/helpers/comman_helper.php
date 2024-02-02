@@ -400,6 +400,40 @@ function get_all_roles(){
     }
 
 
+    function get_subgroupId_by_name($name){
+        $CI =& get_instance();
+        $res = $CI->Comman_model->get_data_by_id('*', 'subgroup', array('subgroup_name' => $name));
+        return $res->subgroup_id;
+
+    }
+
+    function get_question_type($type_name){
+        // $type = trim($type_name, " ");
+        $typeLower = strtolower($type_name);
+        // print_r($typeLower);
+        $typeData = array(
+            'mandatory' => 1,
+            'non mandatory' => 2
+        );
+
+        return $typeData[$typeLower];
+    }
+
+    function get_question_impact($type_name){
+        // $type = trim($type_name, " ");
+        $typeLower = strtolower($type_name);
+        // print_r($typeLower);
+        $typeData = array(
+            'minor' => 1,
+            'major' => 2,
+            'critical' => 3
+        );
+
+        return $typeData[$typeLower];
+    }
+
+
+    
 
 
 
