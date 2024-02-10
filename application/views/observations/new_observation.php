@@ -49,7 +49,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Stage: <span class="text-danger">*</span></label>
-            <select name="stages_id[]" id="stage_select" class="form-select"  multiple="multiple" required>
+            <select name="stages_id" id="stage_select" class="form-select" required>
                 <option value="">Select Stage</option>
                
             </select>

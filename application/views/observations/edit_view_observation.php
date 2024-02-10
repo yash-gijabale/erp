@@ -52,11 +52,10 @@ if($user_type == '1' || $user_type == '2' ){
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Stage:</label>
-            <?php $ob_floors = json_decode($observation->floors); ?>
-            <select name="stages_id[]" id="stage_select" class="form-select" multiple required <?php echo
+            <select name="stages_id" id="stage_select" class="form-select" required <?php echo
                 $readonly ?>>
                 <?php foreach($floors as $key=>$floor){ ?>
-                <option value="<?php echo $floor->stage_id ?>" <?php echo($floor->stage_id == $ob_floors[$key] ? 'selected' : '') ?>>
+                <option value="<?php echo $floor->stage_id ?>" <?php echo($floor->stage_id == $observation->floors? 'selected' : '') ?>>
                     <?php echo $floor->stage_name ?>
                 </option>
                 <?php } ?>

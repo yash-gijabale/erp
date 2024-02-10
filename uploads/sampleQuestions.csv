@@ -1,0 +1,5 @@
+sr_no,subgroup_name,question_title,description,question_type,question_impact
+1,Refermishing,What is refermishing,Empower your teams. Take your project management.,Mandatory,Minor
+2,fromwork,what is from work,Empower your teams. Take your project management skills to the next level. Concept to...,Mandatory,Major
+3,After Work,what is after work,Empower your teams. Take your project management skills to the next level. Concept to...,Non mandatory,Major
+4,refermishing,Is refermishing important,Empower your teams. Take your project management skills to the next level. Concept to...,Mandatory,Critical

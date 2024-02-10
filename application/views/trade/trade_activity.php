@@ -121,7 +121,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title text-dark" id="exampleModalLabel">Import Questions</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -129,11 +129,11 @@
             <div class="modal-body">
             <?php echo form_open_multipart('import-questions') ?>
                 <input type="file" name="importfile" class="form-control" id="importfile" required accept=".csv">
-                <input type="file" name="image" class="form-control">
                 <input type="hidden" value="testbhsjdhs" name="test">
 
             </div>
             <div class="modal-footer">
+                <a href="<?php echo base_url() ?>/uploads/sampleQuestions.csv" class="text-dark">Download sample</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>

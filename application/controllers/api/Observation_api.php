@@ -18,6 +18,8 @@ class Observation_api extends RestController
 
         // ini_set('display_errors', 0);
         $this->load->model('Comman_model');
+        $this->load->library('upload');
+
 
     }
 
@@ -61,7 +63,7 @@ class Observation_api extends RestController
                 $observations = $objects;
             }
             $res = array(
-                'success' => FALSE,
+                'success' => TRUE,
                 'message' => 'response available',
                 'result' => $observations
             );
@@ -89,9 +91,19 @@ class Observation_api extends RestController
 
                 $no = mt_rand(1000,9999999);
                 // print_r($no);exit;
-                // $isObjNumberExist = $this->Comman_model->
+                $isTempObjNumberExist = $this->Comman_model->get_data_by_id('*', 'observations', array('temp_observation_number' => $postData['temp_observation_number']));
+                if($isTempObjNumberExist){
+                    $res = array(
+                        'success' => FALSE,
+                        'message' => 'Observation Number is already exit',
+                        'result' => []
+        
+                    );
+                    $this->response($res, RestController::HTTP_OK);
+                    return;
+                }
                 $observation_param = array(
-                    'client_id' => $postData['client_id'],
+                    'client_id' => isset($postData['client_id']) ? $postData['client_id'] : '',
                     'project_id' => $postData['project_id'],
                     'structure_id' => $postData['structure_id'],
                     'floors' => $postData['floors'],
@@ -154,64 +166,12 @@ class Observation_api extends RestController
                 $ress = $this->Comman_model->insert_data('responsible_history', $paramRview);
                 $resss = $this->Comman_model->insert_data('site_enginner_history', $paramRview);
 
-                // if ($observation_id) {
-                //     $image_name[] = $_FILES['observation_image'];
-                //     $image_name[] = $_FILES['recommended_image'];
-                //     // echo'<pre>';print_r($image_name);exit;
-                //     foreach ($image_name as $imgkey => $imgval) {
-                //         $pcount = count($imgval['name']);
-
-                //         for ($i = 0; $i < $pcount; $i++) {
-                //             if (($imgval['size'][$i] != 0) || ($imgval['size'][$i] != '')) {
-                //                 $pdata = array();
-                //                 $filenm = '';
-                //                 $config['upload_path'] = UPLOAD_OBSERVATION;
-                //                 $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
-                //                 $this->upload->initialize($config);
-                //                 //echo $_FILES[$image_name]['name'][$i];
-                //                 $newName = 'observation' . '_' . str_replace(' ', '', $imgval['name'][$i]);
-                //                 // echo'<pre>';print_r($newName);exit;
-                //                 $_FILES['userfile']['name'] = $newName;
-                //                 $_FILES['userfile']['type'] = $imgval['type'][$i];
-                //                 $_FILES['userfile']['tmp_name'] = $imgval['tmp_name'][$i];
-                //                 $_FILES['userfile']['error'] = $imgval['error'][$i];
-                //                 $_FILES['userfile']['size'] = $imgval['size'][$i];
-                //                 if (!$this->upload->do_upload('userfile')) {
-                //                     $filenm = '';
-
-                //                 } else {
-                //                     $fname = $this->upload->data();
-                //                     $filenm = UPLOAD_OBSERVATION . $fname['file_name'];
-
-                //                 }
-                //                 if ($filenm != '') {
-                //                     $image_param = array(
-                //                         'observation_id' => $observation_id,
-                //                         'image_path' => $filenm,
-                //                         'obj_history_id' => $history_id,
-                //                         'image_type' => $imgkey
-                //                     );
-                //                     $this->Comman_model->insert_data('observation_images', $image_param);
-
-                //                 }
-
-                //             }
-                //         }
-
-
-                //     }
-                // }
-
+                
                 // exit;
                 if($history_id){
                     $Newobservation = $this->Comman_model->get_data_by_id('*', 'observations', array('observation_id' => $observation_id));
                     $Newobservation->history_id = $history_id;
-                    // $Newobservation->floors = json_decode($Newobservation->floors);
-                    // foreach($Newobservation->floors as $key=>$value){
-                    //     $Newobservation->floors[$key] = (int)$value;
-                    // }
-                    
-
+                  
                     $res = array(
                         'success' => TRUE,
                         'message' => 'Observation Created',
@@ -238,60 +198,85 @@ class Observation_api extends RestController
     }
 
 
-    public function image_upload_for_observation_post($user){
+    public function image_upload_for_observation_post($user_id){
 
         $user = $this->Comman_model->get_data_by_id('*', 'users', array('user_id' => $user_id));
         if($user){
-
             $postData = $this->post();
-            $observation_id = $postData['observation_id'];
-            if ($observation_id) {
-                $image_name[] = $_FILES['observation_image'];
-                $image_name[] = $_FILES['recommended_image'];
-                // echo'<pre>';print_r($image_name);exit;
-                foreach ($image_name as $imgkey => $imgval) {
-                    $pcount = $this->Comman_model->get_data('*','temp_img_name', array('obsercation_id' => $observation_id));
+            $isTempObjNumberExist = $this->Comman_model->get_data_by_id('*', 'observations', array('temp_observation_number' => $postData['temp_observation_number']));
+            if(!$isTempObjNumberExist){
+                $res = array(
+                    'success' => FALSE,
+                    'message' => 'Observation Number does not matched!',
+                    'result' => []
+                    
+                );
+                $this->response($res, RestController::HTTP_OK);
+                return;
+            }
+            
+            //get observation from temp_observation_id
+            $observation = $this->Comman_model->get_data_by_id('*', 'observations', array('temp_observation_number' => $postData['temp_observation_number']));
+            
+           
+           
+            $image_name = $_FILES['observation_image'];
+            $updaloaded_image_path = array();
+            // $image_name[] = isset($_FILES['recommended_image'];
+            // echo'<pre>';print_r($image_name);exit;
+            foreach ($image_name['name'] as $imgkey => $imgName) {
+                $pcount = $this->Comman_model->get_data('*','temp_img_name', array('observation_id' => $observation->observation_id));
+                // echo'<pre>';print_r($pcount);exit;
+                if (($image_name['size'][$imgkey]!= 0) || ($image_name['size'][$imgkey] != '')) {
+                    $pdata = array();
+                    $filenm = '';
+                    $config['upload_path'] = UPLOAD_OBSERVATION;
+                    $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
+                    $this->upload->initialize($config);
+                    //echo $_FILES[$image_name]['name'][$i];
+                    $newName = $pcount[$imgkey]->image_name;
+                    // echo'<pre>';print_r($imgval['type']);exit;
+                    $_FILES['userfile']['name'] = $newName;
+                    $_FILES['userfile']['type'] = $image_name['type'][$imgkey];
+                    $_FILES['userfile']['tmp_name'] = $image_name['tmp_name'][$imgkey];
+                    $_FILES['userfile']['error'] = $image_name['error'][$imgkey];
+                    $_FILES['userfile']['size'] = $image_name['size'][$imgkey];
+                    if (!$this->upload->do_upload('userfile')) {
+                        $filenm = '';
 
-                    foreach ($pcount as $temp_img) {
-                        if (($imgval['size'][$i] != 0) || ($imgval['size'][$i] != '')) {
-                            $pdata = array();
-                            $filenm = '';
-                            $config['upload_path'] = UPLOAD_OBSERVATION;
-                            $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
-                            $this->upload->initialize($config);
-                            //echo $_FILES[$image_name]['name'][$i];
-                            $newName = $temp_img->image_name;
-                            // echo'<pre>';print_r($newName);exit;
-                            $_FILES['userfile']['name'] = $newName;
-                            $_FILES['userfile']['type'] = $imgval['type'][$i];
-                            $_FILES['userfile']['tmp_name'] = $imgval['tmp_name'][$i];
-                            $_FILES['userfile']['error'] = $imgval['error'][$i];
-                            $_FILES['userfile']['size'] = $imgval['size'][$i];
-                            if (!$this->upload->do_upload('userfile')) {
-                                $filenm = '';
+                    } else {
+                        $fname = $this->upload->data();
+                        $filenm = UPLOAD_OBSERVATION . $fname['file_name'];
+                    // echo'<pre>';print_r($filenm);
+                        array_push($updaloaded_image_path, base_url().$filenm);
 
-                            } else {
-                                $fname = $this->upload->data();
-                                $filenm = UPLOAD_OBSERVATION . $fname['file_name'];
+                    }
+                    if ($filenm != '') {
+                        $image_param = array(
+                            'observation_id' => $observation->observation_id,
+                            'image_path' => $filenm,
+                            'obj_history_id' => 0,
+                            'image_type' => 0
+                        );
+                        $this->Comman_model->insert_data('observation_images', $image_param);
 
-                            }
-                            if ($filenm != '') {
-                                $image_param = array(
-                                    'observation_id' => $observation_id,
-                                    'image_path' => $filenm,
-                                    'obj_history_id' => $history_id,
-                                    'image_type' => $imgkey
-                                );
-                                $this->Comman_model->insert_data('observation_images', $image_param);
-
-                            }
-
-                        }
                     }
 
-
+                    
                 }
+
+
             }
+            // exit;
+
+            $res = array(
+                'success' => TRUE,
+                'message' => 'Imgaes Uploaded',
+                'result' => $updaloaded_image_path
+
+            );
+            $this->response($res, RestController::HTTP_OK);
+            
         }else{
             $res = array(
                 'success' => FALSE,
