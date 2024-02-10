@@ -76,6 +76,7 @@ class MaterialManegement extends CI_Controller
         if($postData)
         {
             $data['material_list'] = $this->Comman_model->get_data('*', 'total_material', array('project_id' => $postData['project_id']));
+            // print_r($data);exit;
             $data['selected_project'] = $postData['project_id'];
 
         }else{
@@ -130,7 +131,7 @@ class MaterialManegement extends CI_Controller
 
     public function supply_list()
     {
-        $data['supply_list'] = $this->Comman_model->get_data('*', 'supplied_material');
+        $data['supply_list'] = $this->Comman_model->get_data('*', 'supplied_material' , $where=false,$join=false,$orderclm=false, $order=false,$limit=false,$groupby='project_id');
         $data['_view'] = 'material/supply_list';
         $this->load->view('template/view', $data);
     }
@@ -181,7 +182,6 @@ class MaterialManegement extends CI_Controller
 
     }
 
-
     public function remove_material($material_id)
     {
         if ($material_id) {
@@ -189,6 +189,27 @@ class MaterialManegement extends CI_Controller
             redirect('material-list');
         }
     }
+
+    public function remove_supply($supply_id)
+    {
+        if($supply_id){
+            $this->Comman_model->permanant_delete('supplied_material', array('supply_id' => $supply_id));
+            redirect('supply-list');
+        }
+
+    }
+
+
+    public function project_supply_list($project_id)
+    {
+        $data['project_supply_list'] = $this->Comman_model->get_data('*','supplied_material', array('project_id' => $project_id));
+        // echo'<pre>';print_r($data);exit;      
+        $data['_view'] = 'material/project_supply_list';
+        $data['project_id'] = $project_id;
+        $this->load->view('template/view', $data);
+
+    }
+
     
 }
 

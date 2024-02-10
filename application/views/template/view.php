@@ -52,10 +52,45 @@
     width: 100%;
     /* margin-bottom: 15rem;  */
     top: 0; 
-    background-color: rgb(202, 204, 206);
+    background-color: #ffbd59;
     z-index: 200;
     padding: 5px;
+}
+.content-header .breadcrumb {
+    /* color:white; */
+}
+.main-sidebar{
+    background-color:#1f2d3d;
+}
+img{
+    height:120px;
+    width:217px;
+    object-fit: cover;
+    margin; 0;
+}
+.logo{
+    margin:15px;
+    margin-left:2px;
+    display:grid;
+    /* justify-content:center; */
+    align-item:center;
+}
+.info{
+   margin:5px;
+   display:grid;
+    justify-content:center;
+    align-item:center;
 
+}
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #FF914D !important;
+  
+}
+
+.card-primary:not(.card-outline)>.card-header,.btn-primary{
+    background-color: #FF914D !important;
+    border-color:#FF914D !important;
+   
 }
 </style>
 
@@ -87,16 +122,16 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="logo">
                     <div class="image">
-                        <!-- <img src="<?php echo base_url() ?>public/admin/dist/img/logo.png"
-                            class="img-circle elevation-2" alt="User Image"> -->
+                        <img src="../uploads/LogicSync-logo.png"
+                            class="img-fluid img-thumbnail" alt="logo">
                     </div>
-                    <div class="info">
+                    <!-- <div class="info">
                     <?php $role_name = (get_role_of_user($this->session->userdata('user_data')->user_type)); ?>
                         <a href="#" class="d-block">EPRt</a>
                         <span class="text-light"><?php echo $role_name; ?></span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Sidebar Menu -->

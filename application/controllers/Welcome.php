@@ -175,6 +175,12 @@ class Welcome extends CI_Controller {
 		$this->load->view('template/view', $data);
 
    }
+
+   public function toolbox_form(){
+		$data['_view'] = 'daily-toolbox/toolbox_form';
+		$this->load->view('daily-toolbox/toolbox_form', $data);
+
+   }
  
 }
 

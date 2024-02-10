@@ -8,7 +8,8 @@
     <div class="card-header">
         <h3 class="card-title">Developer List</h3>
     </div>
-    <!-- /.card-header -->
+    <!
+    -- /.card-header -->
     <!-- form start -->
 
     <div class="card-body">

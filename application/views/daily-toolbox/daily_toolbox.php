@@ -218,9 +218,9 @@
                 <?php $sr_no++; ?>
             </tbody>
         </table>
-        <div class="row d-flex">
-            <button type="button" id="add_row" class="btn btn-warning btn-sm p-0 col-md-1" onclick="addrow()">+</button>
-            <button type="button" id="remove_row" class="btn btn-warning btn-sm p-0 col-md-1" onclick="removerow()">-</button>
+        <div class="row d-flex justify-content-end">
+            <button type="button" id="add_row" class="btn btn-warning btn-sm p-0 col-md-1">+</button>
+            <!-- <button type="button" id="remove_row" class="btn btn-warning btn-sm p-0 col-md-1" onclick="removerow()">-</button> -->
         </div>
 
 
@@ -236,10 +236,23 @@
     <script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script>
+
+        var count = 2;
+         $('#add_row').on('click', function () {
+             $('table').find('tbody').append( `<tr>
+                                 <td>${count}</td>
+                                 <td><input type="text" class="form-control" name="name[]" /></td>
+                                 <td><input type="text" class="form-control" name="signature[]" /></td>
+                               </tr>`);
+                 count++
+             });
+
+
+
         // $(function () {
-        //     $("#table1").DataTable({
-        //         "responsive": true, "lengthChange": false, "autoWidth": true, "ordering": false,
-        //         "buttons": ["excel", "pdf", "print"]
+            //     $("#table1").DataTable({
+                //         "responsive": true, "lengthChange": false, "autoWidth": true, "ordering": false,
+                //         "buttons": ["excel", "pdf", "print"]
         //     }).buttons().container().appendTo('#table1_wrapper .col-md-6:eq(0)');
         // });
 
@@ -254,28 +267,16 @@
         });
 
 
-        function removerow() {
-            $("#remove_row").click(function () {
-                var rowCount = $("tr").length;
-                if (rowCount > 1) {
-                    $("#table-body tr:last").remove();
-                }
-            });
-        }
+        // function removerow() {
+        //     $("#remove_row").click(function () {
+        //         var rowCount = $("tr").length;
+        //         if (rowCount > 1) {
+        //             $("#table-body tr:last").remove();
+        //         }
+        //     });
+        // }
 
 
 
-        function addrow() {
-            let row_number = 1;
-            $("#add_row").click(function () {
-                var rowCount = $("tr").length++;
-                var newRow = `<tr>
-                                <td>${rowCount}</td>
-                                <td><input type="text" class="form-control" name="name[]" /></td>
-                                <td><input type="text" class="form-control" name="signature[]" /></td>
-                              </tr>`;
-                $("#table-body").append(newRow);
-            });
 
-        }
     </script>

@@ -49,7 +49,7 @@
             <select name="material_unit" class="form-control">
                 <option value="" selected>Select Units</option>
                 <?php foreach($measures as $measure){ ?>
-                    <option value="<?php echo $measure->measure_id ?>"><?php echo $measure->measure_name ?></option>
+                    <option value="<?php echo $measure->measure_id ?>"<?php echo ($measure->measure_id == $material->measure_id ? 'selected' : '') ?>><?php echo $measure->measure_name ?></option>
                 <?php } ?>
             </select>
         </div>

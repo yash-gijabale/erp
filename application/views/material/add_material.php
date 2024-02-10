@@ -1,6 +1,6 @@
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Add Trade</h3>
+        <h3 class="card-title">Add Material</h3>
         <a class="card-tools btn btn-warning text-dark" href="<?php echo base_url().'index.php/material-list' ?>">List</a>
     </div>
     <?php echo form_open('add-material') ?>

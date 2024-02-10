@@ -134,6 +134,7 @@ $route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
 $route['daily-toolbox'] = 'welcome/daily_toolbox';
 $route['daily-toolbox-list'] = 'welcome/daily_toolbox_list';
 $route['present-workers'] = 'welcome/present_workers';
+$route['toolbox-form'] = 'welcome/toolbox_form';
 
 
 // CONTRACTOR MANAGEMENT
@@ -153,6 +154,8 @@ $route['supply-material'] = 'materialManegement/supply_material';
 $route['supply-list'] = 'materialManegement/supply_list';
 $route['edit-material/(:any)'] = 'materialManegement/edit_material/$1';
 $route['remove-material/(:any)'] = 'materialManegement/remove_material/$1';
+$route['project-supply-list/(:any)'] = 'materialManegement/project_supply_list/$1';
+$route['remove-supply/(:any)'] = 'materialManegement/remove_supply/$1';
 
 
 
