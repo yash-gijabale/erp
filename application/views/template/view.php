@@ -208,6 +208,31 @@ img{
                                     <p>CheckList group master</p>
                             </a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    ToolBox
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/daily-toolbox'?>" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>New Toolbox</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url().'index.php/daily-toolbox-list'?>" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Toolbox list</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="nav-item">
                             <a href="<?php echo base_url().'index.php/logout'?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
