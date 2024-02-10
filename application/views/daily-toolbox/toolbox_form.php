@@ -105,6 +105,7 @@
     .w-order,
     .date {
         width: 20%;
+        font-weight:bold;
     }
 
     .i-w-detail,
@@ -127,6 +128,7 @@
     .contractor,
     .aeml {
         width: 40%;
+        font-weight:bold;
     }
 
     .i-contractor,
@@ -157,7 +159,9 @@
 
     .w-category,
     .outage {
-        width: 50%
+        width: 50%;
+        font-weight:bold;
+
     }
 
 
@@ -183,6 +187,7 @@
     .w-outage,
     .wo-outage {
         width: 70%;
+        font-weight:bold;
     }
 
     .i-w-outage,
@@ -193,6 +198,7 @@
     .ptw {
         display: flex;
         width: 100%;
+        font-weight:bold;
     }
 
     .ptw-txt {
@@ -236,6 +242,7 @@
     .work,
     .caution {
         width: 25%;
+        font-weight:bold;
     }
 
     .main-ptw {
@@ -275,6 +282,7 @@
 
     .a4-comman {
         width: 25%;
+        font-weight:bold;
     }
 
     .i-a4-comman {
@@ -292,6 +300,7 @@
 
     .hazards {
         height: 40%;
+        font-weight:bold;
     }
 
     .i-hazards {
@@ -310,6 +319,11 @@
 
     .a6-schild {
         width: 10%;
+    }
+
+    .txt-ppe{
+        font-weight:bold;
+
     }
 
     .main-ppe {
@@ -360,6 +374,7 @@
 
     .other {
         height: 100%;
+        font-weight:bold;
     }
 
     .txt-other {
@@ -457,7 +472,7 @@
                     <div class="a2-child a2-fchild">
                         <div class="main-contractor">
                             <div class="contractor">Name of contractor / AEML Staff / Supervisor leading the
-                                Toolboxmeeting</div>
+                                Toolboxmeeting:</div>
                             <div class="i-contractor">
                                 <?php echo $fromData->contractor_name; ?>
                             </div>
@@ -466,7 +481,7 @@
 
                     <div class="a2-child a2-schild">
                         <div class="main-aeml">
-                            <div class="aeml">Name of AEML Supervisor (If appointed)</div>
+                            <div class="aeml">Name of AEML Supervisor (If appointed):</div>
                             <div class="i-aeml">
                                 <?php echo $fromData->aeml_name; ?>
                             </div>
@@ -675,7 +690,7 @@
                 </div>
                 <div class="a-box a1">
                     <div class="head a1-head">
-                        <h2>A1</h2>
+                        <h2></h2>
                     </div>
                 </div>
                 <table class="table1">
