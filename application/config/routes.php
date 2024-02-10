@@ -134,7 +134,7 @@ $route['checklist-allocation'] = 'checklistAllocation/checklistAllocation';
 $route['daily-toolbox'] = 'welcome/daily_toolbox';
 $route['daily-toolbox-list'] = 'welcome/daily_toolbox_list';
 $route['present-workers'] = 'welcome/present_workers';
-$route['toolbox-form'] = 'welcome/toolbox_form';
+$route['toolbox-form/(:any)'] = 'welcome/toolbox_form/$1';
 
 
 // CONTRACTOR MANAGEMENT

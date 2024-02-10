@@ -176,7 +176,9 @@ class Welcome extends CI_Controller {
 
    }
 
-   public function toolbox_form(){
+   public function toolbox_form($id){
+		$data['fromData'] = $this->Comman_model->get_data_by_id('*', 'daily_toolbox', array('id' => $id));
+		// echo'<pre>';print_r($data);exit;
 		$data['_view'] = 'daily-toolbox/toolbox_form';
 		$this->load->view('daily-toolbox/toolbox_form', $data);
 

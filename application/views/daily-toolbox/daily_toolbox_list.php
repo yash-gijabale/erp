@@ -29,7 +29,7 @@
                     <td><?php echo $list->contractor_name?></td>
                    <td>
                         <a href="<?php echo base_url().'index.php/present-workers/'.$list->id ?>"class="btn btn-sm btn-primary">Show</a>
-                        <a href="<?php echo base_url().'index.php/toolbox-form' ?>"class="btn btn-sm btn-primary">Form PDF</a>
+                        <a href="<?php echo base_url().'index.php/toolbox-form/'.$list->id ?>"class="btn btn-sm btn-primary">Form PDF</a>
                     </td>
                 </tr>
                 <?php $sr_no++; } ?>

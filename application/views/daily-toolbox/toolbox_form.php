@@ -1,4 +1,8 @@
 <style>
+    * {
+        font-size: 20px;
+    }
+
     div {
         border: 1px solid black;
         background-color: white;
@@ -17,6 +21,25 @@
 
     .box {
         margin: 20px 10px;
+        width:100vw;
+    }
+
+    .caption {
+        height: 18vh;
+        display: grid;
+        justify-content: center;
+        align-item: center;
+    }
+
+    .p1,.p2,.p3{
+        margin:5px;
+        padding:0px;
+        display:grid;
+        justify-content:center;
+    }
+
+    p{
+        align-item: center;
     }
 
     /* heading */
@@ -30,6 +53,10 @@
 
     .heading-1 {
         width: 60%;
+    }
+
+    h2 {
+        font-size: 30px !important;
     }
 
     .form-group {
@@ -222,6 +249,11 @@
         height: 50%;
     }
 
+    .i-work,
+    .i-caution {
+        width: 75%;
+    }
+
 
     /* A4 */
 
@@ -350,14 +382,21 @@
 </head>
 
 <body>
-    <button id="print" class="print"> Print </button>
+    <!-- <button id="print" class="print"> Print </button> -->
     <div id="main" class="main-div">
         <div class="box">
             <header>
-                <div>
-                    `Record No.13.51
-                    Format No.13.51.01
-                    220kV ………………………………………… EHV Station`
+                <div class="caption">
+                    <p class="p1 text-right">
+                        `Record No.13.51
+                        Format No.13.51.01
+                    </p>
+                    <p class="p2 ">
+                        220kV ………………………………………… EHV Station
+                    </p>
+                    <p class="p3">
+                        TOOLBOX  MEETING  FORM 1
+                    </p>
 
                 </div>
             </header>
@@ -380,22 +419,30 @@
                     <div class="a1-child a1-fchild">
                         <div class="main-w-detail">
                             <div class="w-detail">Work Details:</div>
-                            <div class="i-w-detail"></div>
+                            <div class="i-w-detail">
+                                <?php echo $fromData->work_details; ?>
+                            </div>
                         </div>
                         <div class="main-w-location">
-                            <div class="w-location">work location:</div>
-                            <div class="i-w-location"></div>
+                            <div class="w-location">Work location:</div>
+                            <div class="i-w-location">
+                                <?php echo $fromData->work_location; ?>
+                            </div>
                         </div>
                     </div>
 
                     <div class="a1-child a1-schild">
                         <div class="main-w-order">
                             <div class="w-order">Work Order No.</div>
-                            <div class="i-w-order"></div>
+                            <div class="i-w-order">
+                                <?php echo $fromData->work_order_no; ?>
+                            </div>
                         </div>
                         <div class="main-date">
                             <div class="date">Date:</div>
-                            <div class="i-date"></div>
+                            <div class="i-date">
+                                <?php echo $fromData->date; ?>
+                            </div>
                         </div>
 
                     </div>
@@ -411,14 +458,18 @@
                         <div class="main-contractor">
                             <div class="contractor">Name of contractor / AEML Staff / Supervisor leading the
                                 Toolboxmeeting</div>
-                            <div class="i-contractor"></div>
+                            <div class="i-contractor">
+                                <?php echo $fromData->contractor_name; ?>
+                            </div>
                         </div>
                     </div>
 
                     <div class="a2-child a2-schild">
                         <div class="main-aeml">
                             <div class="aeml">Name of AEML Supervisor (If appointed)</div>
-                            <div class="i-aeml"></div>
+                            <div class="i-aeml">
+                                <?php echo $fromData->aeml_name; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -437,11 +488,15 @@
                         <div class="outage">
                             <div class="main-w-outage">
                                 <div class="w-outage">With Outage:</div>
-                                <div class="i-w-outage"></div>
+                                <div class="i-w-outage">
+                                    <?php echo $fromData->outage; ?>
+                                </div>
                             </div>
                             <div class="main-wo-outage">
                                 <div class="wo-outage">Without Outage:</div>
-                                <div class="i-wo-outage"></div>
+                                <div class="i-wo-outage">
+                                    <?php echo $fromData->outage; ?>
+                                </div>
                             </div>
 
                         </div>
@@ -453,8 +508,12 @@
                             <div class="ptw-txt">PTW Requied:</div>
                             <!-- </div> -->
                             <div class="ptw-select">
-                                <div class="i-ptw"></div>
-                                <div class="i-ptw"></div>
+                                <div class="i-ptw">
+                                    <?php echo $fromData->ptw; ?>
+                                </div>
+                                <div class="i-ptw">
+                                    <?php echo $fromData->ptw; ?>
+                                </div>
                             </div>
                         </div>
 
@@ -471,11 +530,15 @@
                                 <div class="work-caution">
                                     <div class="main-work">
                                         <div class="work">Work:</div>
-                                        <div class="i-work"></div>
+                                        <div class="i-work">
+                                            <?php echo $fromData->work; ?>
+                                        </div>
                                     </div>
                                     <div class="main-caution">
                                         <div class="caution">Caution:</div>
-                                        <div class="i-caution"></div>
+                                        <div class="i-caution">
+                                            <?php echo $fromData->caution; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -483,7 +546,9 @@
                             <div class="yes-box3">
                                 <div class="main-ptw">
                                     <div class="ptw-no">PTW No:</div>
-                                    <div class="i-ptw-no"></div>
+                                    <div class="i-ptw-no">
+                                        <?php echo $fromData->ptw_no; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -498,24 +563,32 @@
                     </div>
                     <div class="a4-child">
                         <div class="main-a4 main-risk">
-                            <div class="a4-comman risk">Risk Assessment discussed</div>
-                            <div class="i-a4-comman i-risk"></div>
+                            <div class="a4-comman risk">Risk Assessment discussed :</div>
+                            <!-- <div class="i-a4-comman i-risk"></div> -->
                         </div>
                         <div class="main-a4 main-hira">
                             <div class="a4-comman hira">HIRA Sr. Number :</div>
-                            <div class="i-a4-comman i-hira"></div>
+                            <div class="i-a4-comman i-hira">
+                                <?php echo $fromData->hira_number; ?>
+                            </div>
                         </div>
                         <div class="main-a4 main-ier">
                             <div class="a4-comman ier">IER Sr Number:</div>
-                            <div class="i-a4-comman i-ier"></div>
+                            <div class="i-a4-comman i-ier">
+                                <?php echo $fromData->ier_number; ?>
+                            </div>
                         </div>
                         <div class="main-a4 main-details">
                             <div class="a4-comman details">Details of job explained to workers:</div>
-                            <div class="i-a4-comman i-details"></div>
+                            <div class="i-a4-comman i-details">
+                                <?php echo $fromData->job_details; ?>
+                            </div>
                         </div>
                         <div class="main-a4 main-jsa">
                             <div class="a4-comman jsa">JSA Discussed:</div>
-                            <div class="i-a4-comman i-jsa"></div>
+                            <div class="i-a4-comman i-jsa">
+                                <?php echo $fromData->jsa; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -527,7 +600,9 @@
                     <div class="a5-child">
                         <div class="main-a5 main-hazards">
                             <div class="a5-comman hazards">Special Hazards if any and precautions to be taken: </div>
-                            <div class="i-a5-comman i-hazards"></div>
+                            <div class="i-a5-comman i-hazards">
+                                <?php echo $fromData->hazards; ?>
+                            </div>
                         </div>
 
                     </div>
@@ -591,7 +666,9 @@
                         <div class="main-other">
                             <div class="other">
                                 <div class="txt-other">Other PPE</div>
-                                <div class="i-other"></div>
+                                <div class="i-other">
+                                    <?php echo $fromData->other_ppe; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -645,28 +722,28 @@
 
 
         <script src="<?php echo base_url() ?>public/admin/plugins/jquery/jquery.min.js"></script>
-    <script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <script>
+        <script src="<?php echo base_url() ?>public/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script>
 
-$(function () {
-        $("#main").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"]
-        }).buttons().container().appendTo('#main_wrapper .col-md-6:eq(0)');
-    });
-
-
+            $(function () {
+                $("#main").DataTable({
+                    "responsive": true, "lengthChange": false, "autoWidth": false,
+                    "buttons": ["excel", "pdf", "print"]
+                }).buttons().container().appendTo('#main_wrapper .col-md-6:eq(0)');
+            });
 
 
-        //  $(document).ready(function () {
-        //     $('#print').click(function () {
-        //         var content = $('#main').html();
-        //         var myWindow = window.open('', '', 'width=800,height=600');
-        //         myWindow.document.write('<html><head><title>Print</title></head><body>');
-        //         myWindow.document.write(content);
-        //         myWindow.document.write('</body></html>');
-        //         myWindow.document.close();
-        //         myWindow.print();
-        //     });
-        // });
-    </script>
+
+
+            //  $(document).ready(function () {
+            //     $('#print').click(function () {
+            //         var content = $('#main').html();
+            //         var myWindow = window.open('', '', 'width=800,height=600');
+            //         myWindow.document.write('<html><head><title>Print</title></head><body>');
+            //         myWindow.document.write(content);
+            //         myWindow.document.write('</body></html>');
+            //         myWindow.document.close();
+            //         myWindow.print();
+            //     });
+            // });
+        </script>

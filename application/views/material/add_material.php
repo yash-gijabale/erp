@@ -12,7 +12,7 @@
                 <?php foreach($all_developers as $developer){ ?>
                     <option value="<?php echo($developer->developer_id) ?>"><?php echo($developer->developer_name) ?></option>
                 <?php } ?>
-            </select>
+            </select>w
         </div>
         <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Select Project: <span class="text-danger">*</span></label>
